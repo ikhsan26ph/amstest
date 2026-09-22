@@ -1,0 +1,16 @@
+{
+ "name": "amstest",
+ "version": "1.0.0",
+ "description": "Mesin automation testing AMS (Auction Management System) berbasis VS Code + Claude Code + Playwright MCP (browser agent).",
+ "main": "index.js",
+ "scripts": {
+  "test": "bash scripts/run-playwright.sh"
+ },
+ "keywords": [],
+ "author": "",
+ "license": "ISC",
+ "private": true,
+ "devDependencies": {
+  "@playwright/test": "^1.62.1"
+ }
+}

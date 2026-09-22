@@ -1,0 +1,45 @@
+# AMS — Claude Code
+
+Baca dan ikuti `docs/agent-guide.md` sebagai sumber utama aturan proyek.
+Semua path relatif terhadap root repository.
+
+Aplikasi target: **AMS (Auction Management System)** — staging `https://auction-staging.prahu-hub.com/`.
+
+Slash command di `.claude/commands/` meneruskan tugas dan argumen ke
+`docs/workflows/`. Definisi `.claude/agents/` merujuk `docs/roles/`.
+Gunakan peran secara berurutan; delegasi opsional mengikuti izin dan kemampuan sesi.
+Konfigurasi browser MCP Claude ada di `.mcp.json`.
+Perbarui prosedur bersama di `docs/`, bukan menyalinnya ke adapter ini.
+
+## Aturan Keras
+
+- Kredensial hanya boleh ada di `config/env.md` (gitignored) — **tidak pernah** dicetak ke
+  log/output/commit/dokumentasi. Kredensial diisi manual oleh manusia, jangan diisi otomatis.
+- Semua parameter login (`loginPath`, `loginSuccessUrlPattern`, `loginEmailSelector`,
+  `loginPasswordSelector`, `loginButtonSelector`) dibaca dari `config/env.md` — jangan
+  di-hardcode di test/fixture.
+- Login gagal 2x berturut-turut = **berhenti**, jangan retry otomatis, lapor ke user.
+- Dilarang aksi destruktif terhadap data yang bukan dibuat oleh run testing itu sendiri.
+- Data test yang dibuat wajib berprefix `AUTOTEST-<tanggal>-`.
+- Repo GitHub proyek ini harus **private sejak awal dibuat**; jangan pernah public.
+
+## Hipotesis Belum Terverifikasi (dibawa dari OMS)
+
+Mesin ini disalin dari mesin testing OMS. Perilaku UI berikut ditemukan di OMS dan **mungkin**
+berlaku di AMS, tapi **belum dicek**. Semua item **WAJIB diverifikasi ulang** saat `/explore`
+dan `/harvest-selectors` di AMS — minimal pada 1 halaman list dan 1 halaman form — dan
+**jangan diasumsikan benar begitu saja**. Setelah dicek, ubah kolom Status menjadi salah satu:
+`TERVERIFIKASI SAMA (YYYY-MM-DD)`, `BERBEDA (YYYY-MM-DD; penjelasan singkat)`, atau
+`BELUM DICEK (YYYY-MM-DD; alasan)`.
+
+| # | Hipotesis (perilaku di OMS) | Dampak jika benar | Status |
+|---|---|---|---|
+| 1 | Klik elemen butuh `dispatchEvent('click')` (bukan klik native Playwright biasa) | set `loginClickMode: dispatch` di `config/env.md`; executor pakai `dispatchEvent` | BELUM DICEK |
+| 2 | Backend menolak `storageState` lintas context → login 1x per worker, `workers=1` | pertahankan pola `tests/helpers/fixtures.js` + `workers: 1` di `playwright.config.js` | BELUM DICEK |
+| 3 | Pola dropdown: tombol (button) + daftar opsi, bukan `<select>` native | jangan pakai `selectOption()`; klik button lalu pilih opsi | BELUM DICEK |
+| 4 | Datepicker pakai selector `button.h-9.w-9`, dengan baris berisi sisa tanggal bulan sebelumnya/berikutnya yang perlu difilter | filter tombol tanggal yang bukan bulan aktif sebelum klik | BELUM DICEK |
+| 5 | Modal tidak memakai atribut `role="dialog"` | `getByRole('dialog')` tidak bisa dipakai; cari modal via heading/teks | BELUM DICEK |
+| 6 | Tidak ada atribut `data-testid` di elemen-elemen interaktif | selector priority mulai dari `getByRole`/`getByLabel`; `getByTestId` hanya jika ditemukan | BELUM DICEK |
+
+Catatan: bila hasil verifikasi `BERBEDA`, perbarui juga komentar terkait di
+`tests/helpers/fixtures.js`, `playwright.config.js`, dan `docs/agent-guide.md`.

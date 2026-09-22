@@ -1,0 +1,16 @@
+# Kredensial & konfigurasi lokal — JANGAN PERNAH di-commit
+config/env.md
+.claude/settings.local.json
+.claude/scheduled_tasks.lock
+
+# Output run
+results/
+reports/
+artifacts/
+results/_playwright/
+.playwright-mcp/
+
+# Toolchain
+node_modules/
+*.pyc
+__pycache__/
