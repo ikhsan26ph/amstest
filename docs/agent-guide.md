@@ -108,8 +108,11 @@ berisi sheet: **Summary**, **Detail**, **Failed & Bug Candidates**. Jangan menul
 
 Catatan sesi: pola **login sekali per worker pada context yang terus hidup** (`tests/helpers/fixtures.js`,
 `workers: 1`) dibawa dari OMS, di mana backend menolak sesi lintas context (`storageState` tidak berfungsi).
-Untuk AMS ini **hipotesis #2** (`CLAUDE.md`) — pertahankan pola ini sampai terverifikasi; jangan
-beralih ke `storageState` tanpa bukti. Guard "login gagal 2x → berhenti" berlaku di semua mode.
+**Hipotesis #2** (`CLAUDE.md`) sudah diverifikasi 2026-09-23: BERBEDA — di AMS `storageState` ternyata
+berhasil dipakai lintas context (lihat `explore/module-map.md`). Pola login-sekali-per-worker tetap
+dipertahankan untuk sementara sebagai kehati-hatian (staging berisi data nyata), bukan karena
+keterpaksaan teknis — jangan beralih ke `storageState` + `workers>1` tanpa konfirmasi eksplisit user
+lebih dulu. Guard "login gagal 2x → berhenti" berlaku di semua mode.
 
 ## Batasan Eksekusi Browser
 

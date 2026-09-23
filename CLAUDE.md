@@ -34,12 +34,13 @@ dan `/harvest-selectors` di AMS — minimal pada 1 halaman list dan 1 halaman fo
 
 | # | Hipotesis (perilaku di OMS) | Dampak jika benar | Status |
 |---|---|---|---|
-| 1 | Klik elemen butuh `dispatchEvent('click')` (bukan klik native Playwright biasa) | set `loginClickMode: dispatch` di `config/env.md`; executor pakai `dispatchEvent` | BELUM DICEK |
-| 2 | Backend menolak `storageState` lintas context → login 1x per worker, `workers=1` | pertahankan pola `tests/helpers/fixtures.js` + `workers: 1` di `playwright.config.js` | BELUM DICEK |
-| 3 | Pola dropdown: tombol (button) + daftar opsi, bukan `<select>` native | jangan pakai `selectOption()`; klik button lalu pilih opsi | BELUM DICEK |
-| 4 | Datepicker pakai selector `button.h-9.w-9`, dengan baris berisi sisa tanggal bulan sebelumnya/berikutnya yang perlu difilter | filter tombol tanggal yang bukan bulan aktif sebelum klik | BELUM DICEK |
-| 5 | Modal tidak memakai atribut `role="dialog"` | `getByRole('dialog')` tidak bisa dipakai; cari modal via heading/teks | BELUM DICEK |
-| 6 | Tidak ada atribut `data-testid` di elemen-elemen interaktif | selector priority mulai dari `getByRole`/`getByLabel`; `getByTestId` hanya jika ditemukan | BELUM DICEK |
+| 1 | Klik elemen butuh `dispatchEvent('click')` (bukan klik native Playwright biasa) | set `loginClickMode: dispatch` di `config/env.md`; executor pakai `dispatchEvent` | BERBEDA (2026-09-23; login sungguhan berhasil dengan `page.click()` native pada tombol Login, `dispatchEvent` tidak diperlukan — lihat `explore/module-map.md`) |
+| 2 | Backend menolak `storageState` lintas context → login 1x per worker, `workers=1` | pertahankan pola `tests/helpers/fixtures.js` + `workers: 1` di `playwright.config.js` | BERBEDA (2026-09-23; diuji langsung — storageState dari context A BERHASIL dipakai di context B baru untuk akses `/monitoring`, tidak ditolak. `workers: 1` tetap dipertahankan untuk saat ini sebagai kehati-hatian pada data staging nyata, bukan keterpaksaan teknis — lihat `explore/module-map.md`) |
+| 3 | Pola dropdown: tombol (button) + daftar opsi, bukan `<select>` native | jangan pakai `selectOption()`; klik button lalu pilih opsi | TERVERIFIKASI SAMA (2026-09-23; tombol filter di Master Provinsi: `aria-haspopup="listbox"` `aria-expanded`) |
+| 4 | Datepicker pakai selector `button.h-9.w-9`, dengan baris berisi sisa tanggal bulan sebelumnya/berikutnya yang perlu difilter | filter tombol tanggal yang bukan bulan aktif sebelum klik | BERBEDA (2026-09-23; AMS pakai library flatpickr — sel tanggal `span.flatpickr-day`, bukan `button.h-9.w-9`. Konsep overflow-tanggal tetap ada, ditandai class `prevMonthDay`/`nextMonthDay` — lihat `explore/module-map.md`) |
+| 5 | Modal tidak memakai atribut `role="dialog"` | `getByRole('dialog')` tidak bisa dipakai; cari modal via heading/teks | BELUM DICEK (2026-09-23; tombol "Tambah" di 2 halaman yang dicoba ternyata navigasi ke halaman penuh, bukan modal — belum ketemu modal sungguhan untuk diuji, lihat `explore/module-map.md`) |
+| 6 | Tidak ada atribut `data-testid` di elemen-elemen interaktif | selector priority mulai dari `getByRole`/`getByLabel`; `getByTestId` hanya jika ditemukan | TERVERIFIKASI SAMA (2026-09-23; 0 elemen `[data-testid]` di 28 route yang dipindai) |
 
 Catatan: bila hasil verifikasi `BERBEDA`, perbarui juga komentar terkait di
-`tests/helpers/fixtures.js`, `playwright.config.js`, dan `docs/agent-guide.md`.
+`tests/helpers/fixtures.js`, `playwright.config.js`, dan `docs/agent-guide.md`. (Sudah dilakukan
+untuk item #1, #2, #4 di atas per 2026-09-23.)

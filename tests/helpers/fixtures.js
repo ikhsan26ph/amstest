@@ -2,9 +2,12 @@
 // dibaca dari config/env.md lewat tests/helpers/env.js — tidak ada yang di-hardcode di sini.
 //
 // Pola "login SEKALI per worker, satu context dibagi seluruh test" dibawa dari OMS, di mana
-// backend menolak storageState lintas context. Untuk AMS ini masih HIPOTESIS (CLAUDE.md →
-// "Hipotesis Belum Terverifikasi" #2). Jangan diganti ke pola storageState sebelum diverifikasi.
-// Konsekuensi pola ini: workers=1 (playwright.config.js) dan test dalam satu file berjalan serial.
+// backend menolak storageState lintas context. DIVERIFIKASI 2026-09-23 di AMS (CLAUDE.md →
+// hipotesis #2): BERBEDA — storageState TERNYATA berhasil dipakai lintas context (lihat
+// explore/module-map.md). Pola login-sekali-per-worker tetap dipertahankan di sini untuk
+// SEMENTARA sebagai kehati-hatian (staging berisi data nyata), BUKAN karena keterpaksaan
+// teknis — beralih ke storageState + workers>1 kini mungkin, tapi itu keputusan yang perlu
+// dikonfirmasi eksplisit dengan user sebelum diterapkan.
 const fs = require('fs');
 const path = require('path');
 const base = require('@playwright/test');
@@ -47,8 +50,10 @@ function resolveLocator(page, spec) {
   return page.getByRole(val.slice(0, idx), { name: val.slice(idx + 1) });
 }
 
-// Hipotesis #1 (CLAUDE.md): di OMS klik kadang butuh dispatchEvent('click'). Default native;
-// set `loginClickMode: dispatch` di config/env.md HANYA jika kalibrasi membuktikan klik native gagal.
+// Hipotesis #1 (CLAUDE.md): di OMS klik kadang butuh dispatchEvent('click'). DIVERIFIKASI
+// 2026-09-23 di AMS: BERBEDA — klik native berhasil untuk tombol Login. Default tetap native;
+// set `loginClickMode: dispatch` di config/env.md hanya jika suatu saat terbukti perlu untuk
+// tombol/elemen lain.
 async function clickByMode(locator, mode) {
   if (mode === 'dispatch') return locator.dispatchEvent('click');
   return locator.click();

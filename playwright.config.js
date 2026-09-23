@@ -10,9 +10,11 @@ module.exports = defineConfig({
   timeout: 90_000,
   expect: { timeout: 10_000 },
   // workers=1 dibawa dari OMS: di sana backend menolak sesi lintas context (storageState tidak
-  // berfungsi), sehingga satu context login dibagi seluruh test lewat tests/helpers/fixtures.js.
-  // Untuk AMS ini masih HIPOTESIS (CLAUDE.md → "Hipotesis Belum Terverifikasi" #2).
-  // Tetap 1 worker sampai terverifikasi — staging bisa berisi data nyata, jangan paralel.
+  // berfungsi). DIVERIFIKASI 2026-09-23 di AMS (CLAUDE.md hipotesis #2): BERBEDA — storageState
+  // ternyata BERHASIL lintas context di AMS (lihat explore/module-map.md). workers=1 tetap
+  // dipertahankan untuk SEMENTARA sebagai kehati-hatian pada staging berisi data nyata, bukan
+  // karena keterpaksaan teknis. Beralih ke storageState + workers>1 mungkin secara teknis, tapi
+  // perlu keputusan eksplisit user dulu sebelum diterapkan.
   fullyParallel: false,
   workers: 1,
   // Login gagal tidak boleh di-retry otomatis (aturan: 2x gagal = berhenti;
