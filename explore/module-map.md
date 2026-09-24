@@ -42,7 +42,7 @@ bagian "Keterbatasan" di akhir dokumen).
 | 19 | Master Unit | `/master/unit` | List (tab: Armada/Jenis Armada/Jenis Kontainer) | Tambah Armada, Import Data, Download Template, Filter | Belum | Submenu "Master Operasional". Tombol Tambah Armada → **halaman penuh** `/master/unit/tambah-armada`, bukan modal. Form ini TIDAK punya field tanggal. |
 | 20 | Master Sopir | `/master/sopir` | List | Tambah Sopir, Filter | Belum | Submenu "Master Operasional". |
 | 21 | Master CS | `/master/cs` | List | Filter, Riwayat | Belum | Submenu "Master Operasional". |
-| 22 | Manajemen Vendor | `/manajemen-vendor` | List | Filter (status, pengelola, CS penanggung jawab) | Belum | |
+| 22 | Manajemen Vendor | `/manajemen-vendor` | List | Tambah Vendor, Filter (status, pengelola, CS penanggung jawab), Riwayat; aksi baris Detail/Edit | Belum | Eksplorasi detail 2026-09-23: `explore/manajemen-vendor.md` (sub-route `/tambah`, `/riwayat`, `/{uuid}`, `/{uuid}/edit`). Sidebar kini juga punya menu top-level **Negosiasi** (`/negosiasi`) yang belum dipetakan. |
 | 23 | Pengaturan Akun | `/pengaturan-akun` | List (tab: Sub User/Hak Akses) | Tambah Sub User, Filter, Riwayat | Belum | |
 | 24 | Akun Saya | `/akun-saya` | Detail/Profil | Edit Informasi, Ubah Password, Riwayat | Belum | |
 | 25 | Pengaturan Sistem | `/setting/sistem` | Form pengaturan | Batal, Simpan | Belum | Field: durasi kedaluwarsa undangan vendor, nomor WhatsApp CS. Tidak dibungkus tag `<form>` (JS-driven). |
