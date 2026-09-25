@@ -70,3 +70,23 @@ Tidak ada `data-testid` sama sekali (hipotesis #6). Tidak ada `id` stabil (id li
 - `buat-lelang-buka`, `buat-lelang-rencana-awal`, `buat-lelang-rencana-akhir` (trigger picker)
 - `pic-pengirim-<n>`, `wa-pengirim-<n>`, `pic-penerima-<n>`, `wa-penerima-<n>`
 - `confirm-dialog` + `role="dialog"` pada konfirmasi Batal
+
+## Tambahan FTL (ams002, 2026-09-24)
+
+| SCR | Elemen | Selector terbaik | Catatan |
+|---|---|---|---|
+| list-lelang | Menu aksi card | `button[title="Aksi"]` (urutan = urutan card) | card = `div.rounded-xl` berisi `No. Lelang:`; item abu-abu → toast alert singkat |
+| list-lelang | Filter | `getByRole('button', { name: 'Filter', exact: true })` | 24/09: panel "Filter Lelang" kini terbuka |
+| list-lelang | Popup Multidrop/Multipickup | klik teks `Multidrop` di card | isi "Drop Off n — Kota — Drop Point" |
+| informasi-umum | Salin data | `input[type=checkbox]` pertama; Periode = flatpickr range (`span.flatpickr-day[aria-label="September 24, 2026"]`, `.flatpickr-prev-month/next-month`); Data Lelang = listbox "Pilih No. Lelang \| Rute" | |
+| informasi-umum | Jenis Armada | `button[aria-haspopup="listbox"]` "Pilih Jenis Armada" + `getByPlaceholder('Cari Jenis Armada...')` | multiselect tag, tanpa Pilih Semua |
+| informasi-umum | Pengirim/Penerima | listbox "Semua Pengirim"/"Semua Penerima" (filter drop point per perusahaan) | |
+| informasi-umum | PIC / WA | `getByPlaceholder('Masukkan PIC Pengirim')`, `'Masukkan PIC Penerima'`, `'Masukkan No. WhatsApp PIC'` nth(0/1) | WA membuang huruf |
+| informasi-umum | Nilai Barang | `getByPlaceholder('Rp 0')` nth(0/1) | muncul saat Gunakan Asuransi dicentang |
+| informasi-umum | Baris multi | `getByRole('button', { name: 'Hapus Muat 2' })` / `'Hapus Bongkar 2'` | label "Muat n"/"Bongkar n" |
+| informasi-umum | Dokumen | file chooser via `Pilih File` (multiple) | |
+| peserta-lelang | Vendor | `label` berisi checkbox + nama; `getByPlaceholder('Cari nama vendor')`; `getByText('Pilih semua vendor')`; counter `getByText(/vendor diundang/)` | "Selanjutnya" di step 01 langsung membuat draft (POST /api/lelang) |
+| detail/edit/peserta/penawaran/ulang | Route | `/lelang/{id}`, `/edit`, `/peserta`, `/penawaran`, `/ulang`, `/riwayat-ulang` | `/riwayat` = 404 |
+| harga-penawaran | Filter/Urutkan/Ajukan Nego | tombol teks; Filter membuka panel (Vendor, Jenis Armada, Target Waktu, Reset, Terapkan); tab card `getByText('Detail Biaya'|'Detail Armada'|'Vendor')` | opsi dropdown: `[role=listbox] [role=option]` (hindari `<select>` Tampilkan) |
+| batalkan-lelang | Dialog | `getByPlaceholder('Tuliskan alasan pembatalan')`, tombol `Batalkan Order` / `Kembali` | |
+| draft | Hapus | menu `Hapus Draft` → dialog "Hapus Draf Lelang?" tombol `Tidak` / `Hapus Draft` | |
