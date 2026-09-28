@@ -26,3 +26,9 @@ loginClickMode: native       # opsional: native | dispatch
 email: ISI_DISINI
 password: ISI_DISINI
 role: ISI_DISINI             # opsional, label untuk laporan
+
+# Akun kedua (opsional) — Vendor. Kosongkan/biarkan ISI_DISINI jika tidak ada.
+vendorEmail: ISI_DISINI
+vendorPassword: ISI_DISINI
+vendorLoginSuccessUrlPattern: \/vendor-portal
+vendorRole: Vendor

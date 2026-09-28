@@ -9,7 +9,8 @@
 //   - Nilai kosong = belum diisi.
 // Key yang dikenal: baseUrl, loginPath, loginSuccessUrlPattern, loginEmailSelector,
 //   loginPasswordSelector, loginButtonSelector, loginClickMode (opsional: native|dispatch),
-//   email, password, role (opsional).
+//   email, password, role (opsional),
+//   vendorEmail, vendorPassword, vendorRole, vendorLoginSuccessUrlPattern (opsional — akun kedua, env.vendor).
 const fs = require('fs');
 const path = require('path');
 
@@ -33,7 +34,7 @@ function readRaw(file = ENV_FILE) {
     if (!m) continue;
     const key = m[1];
     let value = m[2];
-    if (key !== 'password') value = value.replace(/(^|\s+)#\s.*$/, '');
+    if (!/^(\w*P|p)assword$/.test(key)) value = value.replace(/(^|\s+)#\s.*$/, '');
     raw[key] = value.trim();
   }
   return raw;
@@ -56,8 +57,15 @@ function parseEnv(opts = {}) {
   const email = raw.email || '';
   const password = raw.password || '';
   if (!isPlaceholder(email) && !isPlaceholder(password)) {
-    accounts.push({ email, password, role: raw.role || '' });
+    accounts.push({ key: 'main', email, password, role: raw.role || '' });
   }
+  const vEmail = raw.vendorEmail || '';
+  const vPassword = raw.vendorPassword || '';
+  const vendor = !isPlaceholder(vEmail) && !isPlaceholder(vPassword)
+    ? { key: 'vendor', email: vEmail, password: vPassword, role: raw.vendorRole || 'Vendor',
+        loginSuccessUrlPattern: isPlaceholder(raw.vendorLoginSuccessUrlPattern) ? '' : raw.vendorLoginSuccessUrlPattern }
+    : null;
+  if (vendor) accounts.push(vendor);
 
   const env = {
     baseUrl,
@@ -68,7 +76,8 @@ function parseEnv(opts = {}) {
     loginButtonSelector: isPlaceholder(raw.loginButtonSelector) ? '' : raw.loginButtonSelector,
     loginClickMode: (raw.loginClickMode || 'native').toLowerCase() === 'dispatch' ? 'dispatch' : 'native',
     accounts,
-    main: accounts[0] || null,
+    main: accounts.find((a) => a.key === 'main') || null,
+    vendor,
   };
   return env;
 }

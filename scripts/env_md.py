@@ -27,7 +27,7 @@ def read_raw(file=ENV_FILE):
         if not m:
             continue
         key, value = m.group(1), m.group(2)
-        if key != "password":
+        if not re.fullmatch(r"(\w*P|p)assword", key):
             value = re.sub(r"(^|\s+)#\s.*$", "", value)  # komentar = "# " (pagar+spasi); "#password" aman
         raw[key] = value.strip()
     return raw

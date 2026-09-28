@@ -132,7 +132,7 @@ Pemetaan browser dilakukan pada `/lelang`, panel Filter, `/lelang/buat` mode FTL
 | informasi-umum | Kode Pos Asal | `page.getByPlaceholder('Kode Pos').nth(0)` | placeholder | Disabled; ada asal/tujuan |
 | informasi-umum | Alamat Asal | `page.getByPlaceholder('Alamat Asal')` | placeholder | Disabled textarea |
 | informasi-umum | Catatan Pengirim | `page.getByPlaceholder('Masukkan Catatan').nth(0)` | placeholder | Textarea |
-| informasi-umum | Tambah Baris Input Pengirim | `page.getByRole('button', { name: 'Tambah Lokasi Muat' })` | role | 2026-09-28: label berubah dari `Tambah Baris Input` (FTL & FCL, semua metode) |
+| informasi-umum | Tambah Baris Input Pengirim | `page.getByRole('button', { name: 'Tambah Lokasi Muat' })` | role | 2026-09-28: label berubah dari `Tambah Baris Input` (FTL & FCL). Enabled: FTL, FCL Door to Door/Door to CY; `disabled` (cursor not-allowed, abu-abu): FCL CY to Door/CY to CY |
 | informasi-umum | Drop Point Tujuan | `page.locator('button').filter({ hasText: 'Pilih Drop Point Tujuan' })` | text | FTL/FCL |
 | informasi-umum | Penerima | `page.locator('button').filter({ hasText: 'Semua Penerima' })` | text | Dropdown kustom |
 | informasi-umum | PIC Penerima | `page.getByPlaceholder('Masukkan PIC Penerima')` | placeholder | Stabil pada harvest 2026-09-25 |
@@ -144,7 +144,7 @@ Pemetaan browser dilakukan pada `/lelang`, panel Filter, `/lelang/buat` mode FTL
 | informasi-umum | Kode Pos Tujuan | `page.getByPlaceholder('Kode Pos').nth(1)` | placeholder | Disabled; ada asal/tujuan |
 | informasi-umum | Alamat Tujuan | `page.getByPlaceholder('Alamat Tujuan')` | placeholder | Disabled textarea |
 | informasi-umum | Catatan Penerima | `page.getByPlaceholder('Masukkan Catatan').nth(1)` | placeholder | Textarea |
-| informasi-umum | Tambah Baris Input Penerima | `page.getByRole('button', { name: 'Tambah Lokasi Bongkar' })` | role | 2026-09-28: label berubah dari `Tambah Baris Input` |
+| informasi-umum | Tambah Baris Input Penerima | `page.getByRole('button', { name: 'Tambah Lokasi Bongkar' })` | role | 2026-09-28: label berubah dari `Tambah Baris Input`. Enabled: FTL, FCL Door to Door/CY to Door; `disabled`: FCL Door to CY/CY to CY. Ganti metode ke sisi disabled memangkas baris ekstra jadi 1 |
 | informasi-umum | Batal | `page.getByRole('button', { name: 'Batal', exact: true })` | role | Membuka konfirmasi; aman bila ditutup dengan `Tidak` |
 | informasi-umum | Simpan ke Draft | `page.getByRole('button', { name: 'Simpan ke Draft' })` | role | Aksi tulis; jangan klik saat harvest |
 | informasi-umum | Selanjutnya | `page.getByRole('button', { name: 'Selanjutnya' })` | role | Dapat validasi/POST; jangan dipakai harvest kecuali skenario test |
