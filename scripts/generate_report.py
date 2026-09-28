@@ -201,7 +201,12 @@ def main():
 
     REPORTS.mkdir(exist_ok=True)
     if len(runs) == 1:
-        name = f"{runs[0].get('module','run')}__{runs[0].get('runId','')}.xlsx"
+        # File batch memiliki module/runId yang sama. Gunakan nama input agar report
+        # Batch 02 tidak menimpa report Batch 01.
+        if paths[0].stem.startswith("_batch"):
+            name = f"{paths[0].stem.lstrip('_')}.xlsx"
+        else:
+            name = f"{runs[0].get('module','run')}__{runs[0].get('runId','')}.xlsx"
     else:
         name = f"rekap-all__{datetime.now().strftime('%Y%m%d-%H%M%S')}.xlsx"
     out = REPORTS / name

@@ -15,5 +15,9 @@ Langkah:
 4. Tampilkan plan singkat ke user (jumlah skenario, estimasi, apa yang di-skip) — lanjut eksekusi tanpa menunggu jika jumlah ≤ 30, minta konfirmasi jika lebih.
 5. **Jalur cepat (prioritas):** jika `tests/<modul>.spec.js` ada, jalankan `bash scripts/run-playwright.sh <modul>` (hasil + report otomatis; filter via `--grep`). Skenario dari plan yang belum tercakup spec dieksekusi peran **test-executor** (ikuti mode eksekusi di `docs/agent-guide.md`) per batch 10-15 skenario, lalu hasilnya digabung ke file results yang sama. Jika spec belum ada sama sekali, seluruh plan dieksekusi test-executor. Jika sesi browser mati di tengah, login ulang dan lanjut dari skenario berikutnya (yang gagal ditandai `blocked`).
 6. Setelah selesai, jalankan peran **bug-triager** pada hasil failed/bug-candidate untuk memisahkan: bug aplikasi vs selector/timing issue vs gap desain (rujuk FND-xx di ui-inventory).
-7. Generate report: `python scripts/generate_report.py results/<modul>__<runId>.json`
+7. Setelah setiap batch selesai, generate report batch:
+   `python3 scripts/generate_report.py results/_batchNN__<modul>__<runId>.json`.
+   Nama output mengikuti nama batch (`reports/batchNN__<modul>__<runId>.xlsx`) agar tidak
+   saling menimpa. Setelah semua batch digabung, generate juga report final:
+   `python3 scripts/generate_report.py results/<modul>__<runId>.json`.
 8. Ringkas ke user: total pass/fail/blocked/skip, daftar failed teratas + dugaan penyebab dari triager, path file Excel.
