@@ -1,0 +1,2264 @@
+{
+  "summary": {
+    "total": 40,
+    "positive": 15,
+    "negative": 15,
+    "edge": 5,
+    "stress": 5
+  },
+  "source": {
+    "spec": "inputs/ams003-live-bidding-shipper/spec.txt",
+    "designs": [
+      "inputs/ams003-live-bidding-shipper/designs/054.png",
+      "inputs/ams003-live-bidding-shipper/designs/055.png"
+    ],
+    "extras": [
+      "inputs/ams003-live-bidding-shipper/extras/laporan-lelang-spot-rate-11092026.xlsx"
+    ]
+  },
+  "scenarios": [
+    {
+      "id": "AMS003-LIVE-BIDDING-SHIPPER-POS-001",
+      "title": "Live Bidding hanya menampilkan lelang Spot Rate milik shipper",
+      "category": "positive",
+      "priority": "high",
+      "requirement": "REQ-001",
+      "screen": "Live Bidding",
+      "preconditions": [
+        "User login sebagai Shipper Admin",
+        "Data lelang dan waktu server WIB tersedia sesuai skenario"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Live Bidding Spot Rate",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Tab Live Bidding dan Laporan Lelang",
+          "value": "tersedia"
+        },
+        {
+          "action": "expect",
+          "target": "Daftar lelang",
+          "value": "hanya Spot Rate FTL/FCL milik shipper dengan waktu WIB"
+        }
+      ],
+      "expected": [
+        "Tab Live Bidding dan Laporan Lelang: tersedia",
+        "Daftar lelang: hanya Spot Rate FTL/FCL milik shipper dengan waktu WIB"
+      ],
+      "testData": {
+        "timezone": "Asia/Jakarta",
+        "module": "ams003-live-bidding-shipper"
+      },
+      "selectorHints": {
+        "Live Bidding Spot Rate": {
+          "role": "region",
+          "name": "Live Bidding Spot Rate",
+          "testid": "live-bidding-spot-rate"
+        },
+        "Tab Live Bidding dan Laporan Lelang": {
+          "role": "tab",
+          "name": "Tab Live Bidding dan Laporan Lelang",
+          "testid": "tab-live-bidding-dan-laporan-lelang"
+        },
+        "Daftar lelang": {
+          "role": "region",
+          "name": "Daftar lelang",
+          "testid": "daftar-lelang"
+        }
+      }
+    },
+    {
+      "id": "AMS003-LIVE-BIDDING-SHIPPER-NEG-001",
+      "title": "Lelang kontrak dan milik shipper lain tidak bocor ke halaman",
+      "category": "negative",
+      "priority": "high",
+      "requirement": "REQ-001",
+      "screen": "Live Bidding",
+      "preconditions": [
+        "User login sebagai Shipper Admin",
+        "Data lelang dan waktu server WIB tersedia sesuai skenario"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Live Bidding Spot Rate",
+          "value": ""
+        },
+        {
+          "action": "fill",
+          "target": "No. Lelang",
+          "value": "KONTRAK-OTHER-001"
+        },
+        {
+          "action": "click",
+          "target": "Terapkan",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Daftar lelang",
+          "value": "tidak memuat lelang kontrak atau milik shipper lain"
+        }
+      ],
+      "expected": [
+        "Daftar lelang: tidak memuat lelang kontrak atau milik shipper lain"
+      ],
+      "testData": {
+        "timezone": "Asia/Jakarta",
+        "module": "ams003-live-bidding-shipper"
+      },
+      "selectorHints": {
+        "Live Bidding Spot Rate": {
+          "role": "region",
+          "name": "Live Bidding Spot Rate",
+          "testid": "live-bidding-spot-rate"
+        },
+        "No. Lelang": {
+          "role": "region",
+          "name": "No. Lelang",
+          "testid": "no-lelang"
+        },
+        "Terapkan": {
+          "role": "button",
+          "name": "Terapkan",
+          "testid": "terapkan"
+        },
+        "Daftar lelang": {
+          "role": "region",
+          "name": "Daftar lelang",
+          "testid": "daftar-lelang"
+        }
+      }
+    },
+    {
+      "id": "AMS003-LIVE-BIDDING-SHIPPER-POS-002",
+      "title": "Filter gabungan diterapkan dan Reset mengosongkan seluruh filter",
+      "category": "positive",
+      "priority": "medium",
+      "requirement": "REQ-002",
+      "screen": "Live Bidding",
+      "preconditions": [
+        "User login sebagai Shipper Admin",
+        "Data lelang dan waktu server WIB tersedia sesuai skenario"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Live Bidding Spot Rate",
+          "value": ""
+        },
+        {
+          "action": "fill",
+          "target": "No. Lelang",
+          "value": "FTL-NRM-01/200726"
+        },
+        {
+          "action": "fill",
+          "target": "Buka Lelang",
+          "value": "11/05/2026 08:11"
+        },
+        {
+          "action": "select",
+          "target": "Jenis Pengiriman",
+          "value": "FTL"
+        },
+        {
+          "action": "click",
+          "target": "Terapkan",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Card lelang",
+          "value": "sesuai seluruh filter"
+        },
+        {
+          "action": "click",
+          "target": "Reset",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Filter",
+          "value": "kembali kosong"
+        }
+      ],
+      "expected": [
+        "Card lelang: sesuai seluruh filter",
+        "Filter: kembali kosong"
+      ],
+      "testData": {
+        "timezone": "Asia/Jakarta",
+        "module": "ams003-live-bidding-shipper"
+      },
+      "selectorHints": {
+        "Live Bidding Spot Rate": {
+          "role": "region",
+          "name": "Live Bidding Spot Rate",
+          "testid": "live-bidding-spot-rate"
+        },
+        "No. Lelang": {
+          "role": "region",
+          "name": "No. Lelang",
+          "testid": "no-lelang"
+        },
+        "Buka Lelang": {
+          "role": "region",
+          "name": "Buka Lelang",
+          "testid": "buka-lelang"
+        },
+        "Jenis Pengiriman": {
+          "role": "combobox",
+          "name": "Jenis Pengiriman",
+          "testid": "jenis-pengiriman"
+        },
+        "Terapkan": {
+          "role": "button",
+          "name": "Terapkan",
+          "testid": "terapkan"
+        },
+        "Card lelang": {
+          "role": "region",
+          "name": "Card lelang",
+          "testid": "card-lelang"
+        },
+        "Reset": {
+          "role": "button",
+          "name": "Reset",
+          "testid": "reset"
+        },
+        "Filter": {
+          "role": "region",
+          "name": "Filter",
+          "testid": "filter"
+        }
+      }
+    },
+    {
+      "id": "AMS003-LIVE-BIDDING-SHIPPER-NEG-002",
+      "title": "Rentang tanggal terbalik ditolak",
+      "category": "negative",
+      "priority": "medium",
+      "requirement": "REQ-002",
+      "screen": "Live Bidding",
+      "preconditions": [
+        "User login sebagai Shipper Admin",
+        "Data lelang dan waktu server WIB tersedia sesuai skenario"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Live Bidding Spot Rate",
+          "value": ""
+        },
+        {
+          "action": "fill",
+          "target": "Periode Pengiriman",
+          "value": "18/05/2026 15:00 - 11/05/2026 08:11"
+        },
+        {
+          "action": "click",
+          "target": "Terapkan",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Validasi Periode Pengiriman",
+          "value": "tanggal awal tidak boleh setelah tanggal akhir"
+        }
+      ],
+      "expected": [
+        "Validasi Periode Pengiriman: tanggal awal tidak boleh setelah tanggal akhir"
+      ],
+      "testData": {
+        "timezone": "Asia/Jakarta",
+        "module": "ams003-live-bidding-shipper"
+      },
+      "selectorHints": {
+        "Live Bidding Spot Rate": {
+          "role": "region",
+          "name": "Live Bidding Spot Rate",
+          "testid": "live-bidding-spot-rate"
+        },
+        "Periode Pengiriman": {
+          "role": "region",
+          "name": "Periode Pengiriman",
+          "testid": "periode-pengiriman"
+        },
+        "Terapkan": {
+          "role": "button",
+          "name": "Terapkan",
+          "testid": "terapkan"
+        },
+        "Validasi Periode Pengiriman": {
+          "role": "region",
+          "name": "Validasi Periode Pengiriman",
+          "testid": "validasi-periode-pengiriman"
+        }
+      }
+    },
+    {
+      "id": "AMS003-LIVE-BIDDING-SHIPPER-POS-003",
+      "title": "Filter kota mencocokkan salah satu titik multipickup atau multidrop",
+      "category": "positive",
+      "priority": "medium",
+      "requirement": "REQ-003",
+      "screen": "Live Bidding",
+      "preconditions": [
+        "User login sebagai Shipper Admin",
+        "Data lelang dan waktu server WIB tersedia sesuai skenario"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Live Bidding Spot Rate",
+          "value": ""
+        },
+        {
+          "action": "select",
+          "target": "Kota Asal",
+          "value": "Surabaya"
+        },
+        {
+          "action": "select",
+          "target": "Kota Tujuan",
+          "value": "Makassar"
+        },
+        {
+          "action": "click",
+          "target": "Terapkan",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Card rute multipoint",
+          "value": "muncul bila salah satu titik cocok"
+        }
+      ],
+      "expected": [
+        "Card rute multipoint: muncul bila salah satu titik cocok"
+      ],
+      "testData": {
+        "timezone": "Asia/Jakarta",
+        "module": "ams003-live-bidding-shipper"
+      },
+      "selectorHints": {
+        "Live Bidding Spot Rate": {
+          "role": "region",
+          "name": "Live Bidding Spot Rate",
+          "testid": "live-bidding-spot-rate"
+        },
+        "Kota Asal": {
+          "role": "region",
+          "name": "Kota Asal",
+          "testid": "kota-asal"
+        },
+        "Kota Tujuan": {
+          "role": "region",
+          "name": "Kota Tujuan",
+          "testid": "kota-tujuan"
+        },
+        "Terapkan": {
+          "role": "button",
+          "name": "Terapkan",
+          "testid": "terapkan"
+        },
+        "Card rute multipoint": {
+          "role": "region",
+          "name": "Card rute multipoint",
+          "testid": "card-rute-multipoint"
+        }
+      }
+    },
+    {
+      "id": "AMS003-LIVE-BIDDING-SHIPPER-NEG-003",
+      "title": "Filter pelabuhan tidak menghasilkan kecocokan semu pada FTL",
+      "category": "negative",
+      "priority": "medium",
+      "requirement": "REQ-003",
+      "screen": "Live Bidding",
+      "preconditions": [
+        "User login sebagai Shipper Admin",
+        "Data lelang dan waktu server WIB tersedia sesuai skenario"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Live Bidding Spot Rate",
+          "value": ""
+        },
+        {
+          "action": "select",
+          "target": "Jenis Pengiriman",
+          "value": "FTL"
+        },
+        {
+          "action": "select",
+          "target": "Pelabuhan Asal",
+          "value": "Tanjung Perak"
+        },
+        {
+          "action": "click",
+          "target": "Terapkan",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Card FTL",
+          "value": "tidak difilter menggunakan atribut pelabuhan"
+        }
+      ],
+      "expected": [
+        "Card FTL: tidak difilter menggunakan atribut pelabuhan"
+      ],
+      "testData": {
+        "timezone": "Asia/Jakarta",
+        "module": "ams003-live-bidding-shipper"
+      },
+      "selectorHints": {
+        "Live Bidding Spot Rate": {
+          "role": "region",
+          "name": "Live Bidding Spot Rate",
+          "testid": "live-bidding-spot-rate"
+        },
+        "Jenis Pengiriman": {
+          "role": "combobox",
+          "name": "Jenis Pengiriman",
+          "testid": "jenis-pengiriman"
+        },
+        "Pelabuhan Asal": {
+          "role": "region",
+          "name": "Pelabuhan Asal",
+          "testid": "pelabuhan-asal"
+        },
+        "Terapkan": {
+          "role": "button",
+          "name": "Terapkan",
+          "testid": "terapkan"
+        },
+        "Card FTL": {
+          "role": "region",
+          "name": "Card FTL",
+          "testid": "card-ftl"
+        }
+      }
+    },
+    {
+      "id": "AMS003-LIVE-BIDDING-SHIPPER-POS-004",
+      "title": "Sub-tab FCL dan pagination mempertahankan filter aktif",
+      "category": "positive",
+      "priority": "medium",
+      "requirement": "REQ-004",
+      "screen": "Live Bidding",
+      "preconditions": [
+        "User login sebagai Shipper Admin",
+        "Data lelang dan waktu server WIB tersedia sesuai skenario"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Live Bidding Spot Rate",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "FCL (Full Container Load)",
+          "value": ""
+        },
+        {
+          "action": "select",
+          "target": "Tampilkan",
+          "value": "20"
+        },
+        {
+          "action": "click",
+          "target": "Halaman 2",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Card lelang",
+          "value": "hanya FCL dan filter tetap aktif"
+        }
+      ],
+      "expected": [
+        "Card lelang: hanya FCL dan filter tetap aktif"
+      ],
+      "testData": {
+        "timezone": "Asia/Jakarta",
+        "module": "ams003-live-bidding-shipper"
+      },
+      "selectorHints": {
+        "Live Bidding Spot Rate": {
+          "role": "region",
+          "name": "Live Bidding Spot Rate",
+          "testid": "live-bidding-spot-rate"
+        },
+        "FCL (Full Container Load)": {
+          "role": "tab",
+          "name": "FCL (Full Container Load)",
+          "testid": "fcl-full-container-load"
+        },
+        "Tampilkan": {
+          "role": "combobox",
+          "name": "Tampilkan",
+          "testid": "tampilkan"
+        },
+        "Halaman 2": {
+          "role": "button",
+          "name": "Halaman 2",
+          "testid": "halaman-2"
+        },
+        "Card lelang": {
+          "role": "region",
+          "name": "Card lelang",
+          "testid": "card-lelang"
+        }
+      }
+    },
+    {
+      "id": "AMS003-LIVE-BIDDING-SHIPPER-NEG-004",
+      "title": "Nilai page size di luar opsi tidak diterapkan",
+      "category": "negative",
+      "priority": "medium",
+      "requirement": "REQ-004",
+      "screen": "Live Bidding",
+      "preconditions": [
+        "User login sebagai Shipper Admin",
+        "Data lelang dan waktu server WIB tersedia sesuai skenario"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Live Bidding Spot Rate",
+          "value": ""
+        },
+        {
+          "action": "select",
+          "target": "Tampilkan",
+          "value": "nilai tidak didukung"
+        },
+        {
+          "action": "expect",
+          "target": "Tampilkan",
+          "value": "tetap pada opsi valid dan default 20 saat awal"
+        }
+      ],
+      "expected": [
+        "Tampilkan: tetap pada opsi valid dan default 20 saat awal"
+      ],
+      "testData": {
+        "timezone": "Asia/Jakarta",
+        "module": "ams003-live-bidding-shipper"
+      },
+      "selectorHints": {
+        "Live Bidding Spot Rate": {
+          "role": "region",
+          "name": "Live Bidding Spot Rate",
+          "testid": "live-bidding-spot-rate"
+        },
+        "Tampilkan": {
+          "role": "combobox",
+          "name": "Tampilkan",
+          "testid": "tampilkan"
+        }
+      }
+    },
+    {
+      "id": "AMS003-LIVE-BIDDING-SHIPPER-POS-005",
+      "title": "Card muncul saat buka dan berpindah otomatis saat tutup",
+      "category": "positive",
+      "priority": "high",
+      "requirement": "REQ-005",
+      "screen": "Live Bidding",
+      "preconditions": [
+        "User login sebagai Shipper Admin",
+        "Data lelang dan waktu server WIB tersedia sesuai skenario"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Live Bidding Spot Rate",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Card lelang",
+          "value": "muncul tepat saat status Sedang Buka"
+        },
+        {
+          "action": "expect",
+          "target": "Laporan Lelang",
+          "value": "menerima card setelah waktu tutup tanpa reload"
+        }
+      ],
+      "expected": [
+        "Card lelang: muncul tepat saat status Sedang Buka",
+        "Laporan Lelang: menerima card setelah waktu tutup tanpa reload"
+      ],
+      "testData": {
+        "timezone": "Asia/Jakarta",
+        "module": "ams003-live-bidding-shipper"
+      },
+      "selectorHints": {
+        "Live Bidding Spot Rate": {
+          "role": "region",
+          "name": "Live Bidding Spot Rate",
+          "testid": "live-bidding-spot-rate"
+        },
+        "Card lelang": {
+          "role": "region",
+          "name": "Card lelang",
+          "testid": "card-lelang"
+        },
+        "Laporan Lelang": {
+          "role": "region",
+          "name": "Laporan Lelang",
+          "testid": "laporan-lelang"
+        }
+      }
+    },
+    {
+      "id": "AMS003-LIVE-BIDDING-SHIPPER-NEG-005",
+      "title": "Lelang yang dibatalkan langsung hilang dan tidak masuk laporan",
+      "category": "negative",
+      "priority": "high",
+      "requirement": "REQ-005",
+      "screen": "Live Bidding",
+      "preconditions": [
+        "User login sebagai Shipper Admin",
+        "Data lelang dan waktu server WIB tersedia sesuai skenario"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Live Bidding Spot Rate",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Card lelang dibatalkan",
+          "value": "hilang dari Live Bidding"
+        },
+        {
+          "action": "click",
+          "target": "Laporan Lelang",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Laporan Lelang",
+          "value": "tidak memuat lelang dibatalkan"
+        }
+      ],
+      "expected": [
+        "Card lelang dibatalkan: hilang dari Live Bidding",
+        "Laporan Lelang: tidak memuat lelang dibatalkan"
+      ],
+      "testData": {
+        "timezone": "Asia/Jakarta",
+        "module": "ams003-live-bidding-shipper"
+      },
+      "selectorHints": {
+        "Live Bidding Spot Rate": {
+          "role": "region",
+          "name": "Live Bidding Spot Rate",
+          "testid": "live-bidding-spot-rate"
+        },
+        "Card lelang dibatalkan": {
+          "role": "region",
+          "name": "Card lelang dibatalkan",
+          "testid": "card-lelang-dibatalkan"
+        },
+        "Laporan Lelang": {
+          "role": "region",
+          "name": "Laporan Lelang",
+          "testid": "laporan-lelang"
+        }
+      }
+    },
+    {
+      "id": "AMS003-LIVE-BIDDING-SHIPPER-POS-006",
+      "title": "Nomor lelang dengan beberapa armada menjadi card terpisah",
+      "category": "positive",
+      "priority": "medium",
+      "requirement": "REQ-006",
+      "screen": "Live Bidding",
+      "preconditions": [
+        "User login sebagai Shipper Admin",
+        "Data lelang dan waktu server WIB tersedia sesuai skenario"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Live Bidding Spot Rate",
+          "value": ""
+        },
+        {
+          "action": "fill",
+          "target": "No. Lelang",
+          "value": "FTL-NRM-01/200726"
+        },
+        {
+          "action": "click",
+          "target": "Terapkan",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Card lelang",
+          "value": "satu card per jenis armada dengan Top 3 masing-masing"
+        }
+      ],
+      "expected": [
+        "Card lelang: satu card per jenis armada dengan Top 3 masing-masing"
+      ],
+      "testData": {
+        "timezone": "Asia/Jakarta",
+        "module": "ams003-live-bidding-shipper"
+      },
+      "selectorHints": {
+        "Live Bidding Spot Rate": {
+          "role": "region",
+          "name": "Live Bidding Spot Rate",
+          "testid": "live-bidding-spot-rate"
+        },
+        "No. Lelang": {
+          "role": "region",
+          "name": "No. Lelang",
+          "testid": "no-lelang"
+        },
+        "Terapkan": {
+          "role": "button",
+          "name": "Terapkan",
+          "testid": "terapkan"
+        },
+        "Card lelang": {
+          "role": "region",
+          "name": "Card lelang",
+          "testid": "card-lelang"
+        }
+      }
+    },
+    {
+      "id": "AMS003-LIVE-BIDDING-SHIPPER-NEG-006",
+      "title": "Badge tipe Normal tidak ditampilkan dan data antar armada tidak tercampur",
+      "category": "negative",
+      "priority": "medium",
+      "requirement": "REQ-006",
+      "screen": "Live Bidding",
+      "preconditions": [
+        "User login sebagai Shipper Admin",
+        "Data lelang dan waktu server WIB tersedia sesuai skenario"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Live Bidding Spot Rate",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Badge tipe Normal",
+          "value": "tidak tampil"
+        },
+        {
+          "action": "expect",
+          "target": "Top 3 per armada",
+          "value": "tidak menggunakan penawaran armada lain"
+        }
+      ],
+      "expected": [
+        "Badge tipe Normal: tidak tampil",
+        "Top 3 per armada: tidak menggunakan penawaran armada lain"
+      ],
+      "testData": {
+        "timezone": "Asia/Jakarta",
+        "module": "ams003-live-bidding-shipper"
+      },
+      "selectorHints": {
+        "Live Bidding Spot Rate": {
+          "role": "region",
+          "name": "Live Bidding Spot Rate",
+          "testid": "live-bidding-spot-rate"
+        },
+        "Badge tipe Normal": {
+          "role": "region",
+          "name": "Badge tipe Normal",
+          "testid": "badge-tipe-normal"
+        },
+        "Top 3 per armada": {
+          "role": "region",
+          "name": "Top 3 per armada",
+          "testid": "top-3-per-armada"
+        }
+      }
+    },
+    {
+      "id": "AMS003-LIVE-BIDDING-SHIPPER-POS-007",
+      "title": "Link multipickup dan multidrop membuka detail titik yang tepat",
+      "category": "positive",
+      "priority": "medium",
+      "requirement": "REQ-007",
+      "screen": "Live Bidding",
+      "preconditions": [
+        "User login sebagai Shipper Admin",
+        "Data lelang dan waktu server WIB tersedia sesuai skenario"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Live Bidding Spot Rate",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Multipickup",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Detail Multipickup",
+          "value": "seluruh titik asal"
+        },
+        {
+          "action": "click",
+          "target": "Multidrop",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Detail Multidrop",
+          "value": "seluruh titik tujuan"
+        }
+      ],
+      "expected": [
+        "Detail Multipickup: seluruh titik asal",
+        "Detail Multidrop: seluruh titik tujuan"
+      ],
+      "testData": {
+        "timezone": "Asia/Jakarta",
+        "module": "ams003-live-bidding-shipper"
+      },
+      "selectorHints": {
+        "Live Bidding Spot Rate": {
+          "role": "region",
+          "name": "Live Bidding Spot Rate",
+          "testid": "live-bidding-spot-rate"
+        },
+        "Multipickup": {
+          "role": "button",
+          "name": "Multipickup",
+          "testid": "multipickup"
+        },
+        "Detail Multipickup": {
+          "role": "region",
+          "name": "Detail Multipickup",
+          "testid": "detail-multipickup"
+        },
+        "Multidrop": {
+          "role": "button",
+          "name": "Multidrop",
+          "testid": "multidrop"
+        },
+        "Detail Multidrop": {
+          "role": "region",
+          "name": "Detail Multidrop",
+          "testid": "detail-multidrop"
+        }
+      }
+    },
+    {
+      "id": "AMS003-LIVE-BIDDING-SHIPPER-NEG-007",
+      "title": "Rute tanpa detail lengkap tidak membuka dialog kosong atau salah",
+      "category": "negative",
+      "priority": "medium",
+      "requirement": "REQ-007",
+      "screen": "Live Bidding",
+      "preconditions": [
+        "User login sebagai Shipper Admin",
+        "Data lelang dan waktu server WIB tersedia sesuai skenario"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Live Bidding Spot Rate",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Link detail rute tidak lengkap",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Detail rute",
+          "value": "menampilkan fallback aman tanpa mencampur lelang lain"
+        }
+      ],
+      "expected": [
+        "Detail rute: menampilkan fallback aman tanpa mencampur lelang lain"
+      ],
+      "testData": {
+        "timezone": "Asia/Jakarta",
+        "module": "ams003-live-bidding-shipper"
+      },
+      "selectorHints": {
+        "Live Bidding Spot Rate": {
+          "role": "region",
+          "name": "Live Bidding Spot Rate",
+          "testid": "live-bidding-spot-rate"
+        },
+        "Link detail rute tidak lengkap": {
+          "role": "region",
+          "name": "Link detail rute tidak lengkap",
+          "testid": "link-detail-rute-tidak-lengkap"
+        },
+        "Detail rute": {
+          "role": "region",
+          "name": "Detail rute",
+          "testid": "detail-rute"
+        }
+      }
+    },
+    {
+      "id": "AMS003-LIVE-BIDDING-SHIPPER-POS-008",
+      "title": "Countdown berkurang per detik dan card hilang pada nol",
+      "category": "positive",
+      "priority": "high",
+      "requirement": "REQ-008",
+      "screen": "Live Bidding",
+      "preconditions": [
+        "User login sebagai Shipper Admin",
+        "Data lelang dan waktu server WIB tersedia sesuai skenario"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Live Bidding Spot Rate",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Countdown",
+          "value": "format Hari:Jam:Menit:Detik dan berkurang realtime"
+        },
+        {
+          "action": "expect",
+          "target": "Card lelang",
+          "value": "hilang ketika countdown 00:00:00:00"
+        }
+      ],
+      "expected": [
+        "Countdown: format Hari:Jam:Menit:Detik dan berkurang realtime",
+        "Card lelang: hilang ketika countdown 00:00:00:00"
+      ],
+      "testData": {
+        "timezone": "Asia/Jakarta",
+        "module": "ams003-live-bidding-shipper"
+      },
+      "selectorHints": {
+        "Live Bidding Spot Rate": {
+          "role": "region",
+          "name": "Live Bidding Spot Rate",
+          "testid": "live-bidding-spot-rate"
+        },
+        "Countdown": {
+          "role": "region",
+          "name": "Countdown",
+          "testid": "countdown"
+        },
+        "Card lelang": {
+          "role": "region",
+          "name": "Card lelang",
+          "testid": "card-lelang"
+        }
+      }
+    },
+    {
+      "id": "AMS003-LIVE-BIDDING-SHIPPER-NEG-008",
+      "title": "Countdown tidak menjadi negatif saat waktu klien berbeda",
+      "category": "negative",
+      "priority": "high",
+      "requirement": "REQ-008",
+      "screen": "Live Bidding",
+      "preconditions": [
+        "User login sebagai Shipper Admin",
+        "Data lelang dan waktu server WIB tersedia sesuai skenario"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Live Bidding Spot Rate",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Countdown",
+          "value": "tidak menampilkan nilai negatif dan mengikuti waktu WIB server"
+        }
+      ],
+      "expected": [
+        "Countdown: tidak menampilkan nilai negatif dan mengikuti waktu WIB server"
+      ],
+      "testData": {
+        "timezone": "Asia/Jakarta",
+        "module": "ams003-live-bidding-shipper"
+      },
+      "selectorHints": {
+        "Live Bidding Spot Rate": {
+          "role": "region",
+          "name": "Live Bidding Spot Rate",
+          "testid": "live-bidding-spot-rate"
+        },
+        "Countdown": {
+          "role": "region",
+          "name": "Countdown",
+          "testid": "countdown"
+        }
+      }
+    },
+    {
+      "id": "AMS003-LIVE-BIDDING-SHIPPER-POS-009",
+      "title": "Top 3 mengikuti DPP dan seluruh aturan tie-break",
+      "category": "positive",
+      "priority": "high",
+      "requirement": "REQ-009",
+      "screen": "Live Bidding",
+      "preconditions": [
+        "User login sebagai Shipper Admin",
+        "Data lelang dan waktu server WIB tersedia sesuai skenario"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Live Bidding Spot Rate",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Top 3",
+          "value": "DPP terendah lalu waktu, rating, kemenangan, armada atau kapal, dan created date"
+        }
+      ],
+      "expected": [
+        "Top 3: DPP terendah lalu waktu, rating, kemenangan, armada atau kapal, dan created date"
+      ],
+      "testData": {
+        "timezone": "Asia/Jakarta",
+        "module": "ams003-live-bidding-shipper"
+      },
+      "selectorHints": {
+        "Live Bidding Spot Rate": {
+          "role": "region",
+          "name": "Live Bidding Spot Rate",
+          "testid": "live-bidding-spot-rate"
+        },
+        "Top 3": {
+          "role": "region",
+          "name": "Top 3",
+          "testid": "top-3"
+        }
+      }
+    },
+    {
+      "id": "AMS003-LIVE-BIDDING-SHIPPER-NEG-009",
+      "title": "Bid tidak valid tidak memengaruhi ranking",
+      "category": "negative",
+      "priority": "high",
+      "requirement": "REQ-009",
+      "screen": "Live Bidding",
+      "preconditions": [
+        "User login sebagai Shipper Admin",
+        "Data lelang dan waktu server WIB tersedia sesuai skenario"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Live Bidding Spot Rate",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Top 3",
+          "value": "mengabaikan harga kosong, negatif, atau bid di luar periode"
+        }
+      ],
+      "expected": [
+        "Top 3: mengabaikan harga kosong, negatif, atau bid di luar periode"
+      ],
+      "testData": {
+        "timezone": "Asia/Jakarta",
+        "module": "ams003-live-bidding-shipper"
+      },
+      "selectorHints": {
+        "Live Bidding Spot Rate": {
+          "role": "region",
+          "name": "Live Bidding Spot Rate",
+          "testid": "live-bidding-spot-rate"
+        },
+        "Top 3": {
+          "role": "region",
+          "name": "Top 3",
+          "testid": "top-3"
+        }
+      }
+    },
+    {
+      "id": "AMS003-LIVE-BIDDING-SHIPPER-POS-010",
+      "title": "Top 3 realtime menyembunyikan vendor dan menampilkan nominal",
+      "category": "positive",
+      "priority": "high",
+      "requirement": "REQ-010",
+      "screen": "Live Bidding",
+      "preconditions": [
+        "User login sebagai Shipper Admin",
+        "Data lelang dan waktu server WIB tersedia sesuai skenario"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Live Bidding Spot Rate",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Top 3",
+          "value": "berubah tanpa reload, nama vendor tersembunyi, harga terlihat"
+        }
+      ],
+      "expected": [
+        "Top 3: berubah tanpa reload, nama vendor tersembunyi, harga terlihat"
+      ],
+      "testData": {
+        "timezone": "Asia/Jakarta",
+        "module": "ams003-live-bidding-shipper"
+      },
+      "selectorHints": {
+        "Live Bidding Spot Rate": {
+          "role": "region",
+          "name": "Live Bidding Spot Rate",
+          "testid": "live-bidding-spot-rate"
+        },
+        "Top 3": {
+          "role": "region",
+          "name": "Top 3",
+          "testid": "top-3"
+        }
+      }
+    },
+    {
+      "id": "AMS003-LIVE-BIDDING-SHIPPER-NEG-010",
+      "title": "Identitas vendor tidak terekspos pada UI lelang terbuka",
+      "category": "negative",
+      "priority": "high",
+      "requirement": "REQ-010",
+      "screen": "Live Bidding",
+      "preconditions": [
+        "User login sebagai Shipper Admin",
+        "Data lelang dan waktu server WIB tersedia sesuai skenario"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Live Bidding Spot Rate",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Nama vendor",
+          "value": "tidak terlihat pada slot, tooltip, atau label aksesibel Top 3"
+        }
+      ],
+      "expected": [
+        "Nama vendor: tidak terlihat pada slot, tooltip, atau label aksesibel Top 3"
+      ],
+      "testData": {
+        "timezone": "Asia/Jakarta",
+        "module": "ams003-live-bidding-shipper"
+      },
+      "selectorHints": {
+        "Live Bidding Spot Rate": {
+          "role": "region",
+          "name": "Live Bidding Spot Rate",
+          "testid": "live-bidding-spot-rate"
+        },
+        "Nama vendor": {
+          "role": "region",
+          "name": "Nama vendor",
+          "testid": "nama-vendor"
+        }
+      }
+    },
+    {
+      "id": "AMS003-LIVE-BIDDING-SHIPPER-POS-011",
+      "title": "Total penawaran dan ranking lelang ulang dihitung benar",
+      "category": "positive",
+      "priority": "medium",
+      "requirement": "REQ-011",
+      "screen": "Live Bidding",
+      "preconditions": [
+        "User login sebagai Shipper Admin",
+        "Data lelang dan waktu server WIB tersedia sesuai skenario"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Live Bidding Spot Rate",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Total Penawaran",
+          "value": "x dari y Vendor sesuai input valid"
+        },
+        {
+          "action": "expect",
+          "target": "Lelang Ulang",
+          "value": "Top 3 memakai bid yang berlaku pada periode ulang"
+        }
+      ],
+      "expected": [
+        "Total Penawaran: x dari y Vendor sesuai input valid",
+        "Lelang Ulang: Top 3 memakai bid yang berlaku pada periode ulang"
+      ],
+      "testData": {
+        "timezone": "Asia/Jakarta",
+        "module": "ams003-live-bidding-shipper"
+      },
+      "selectorHints": {
+        "Live Bidding Spot Rate": {
+          "role": "region",
+          "name": "Live Bidding Spot Rate",
+          "testid": "live-bidding-spot-rate"
+        },
+        "Total Penawaran": {
+          "role": "region",
+          "name": "Total Penawaran",
+          "testid": "total-penawaran"
+        },
+        "Lelang Ulang": {
+          "role": "region",
+          "name": "Lelang Ulang",
+          "testid": "lelang-ulang"
+        }
+      }
+    },
+    {
+      "id": "AMS003-LIVE-BIDDING-SHIPPER-NEG-011",
+      "title": "Vendor FCL tanpa jadwal tidak dihitung sebagai pemberi penawaran",
+      "category": "negative",
+      "priority": "medium",
+      "requirement": "REQ-011",
+      "screen": "Live Bidding",
+      "preconditions": [
+        "User login sebagai Shipper Admin",
+        "Data lelang dan waktu server WIB tersedia sesuai skenario"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Live Bidding Spot Rate",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Total Penawaran FCL",
+          "value": "tidak menambah x sampai harga dan jadwal lengkap"
+        }
+      ],
+      "expected": [
+        "Total Penawaran FCL: tidak menambah x sampai harga dan jadwal lengkap"
+      ],
+      "testData": {
+        "timezone": "Asia/Jakarta",
+        "module": "ams003-live-bidding-shipper"
+      },
+      "selectorHints": {
+        "Live Bidding Spot Rate": {
+          "role": "region",
+          "name": "Live Bidding Spot Rate",
+          "testid": "live-bidding-spot-rate"
+        },
+        "Total Penawaran FCL": {
+          "role": "region",
+          "name": "Total Penawaran FCL",
+          "testid": "total-penawaran-fcl"
+        }
+      }
+    },
+    {
+      "id": "AMS003-LIVE-BIDDING-SHIPPER-POS-012",
+      "title": "Detail Lelang membuka lelang tepat dan halaman tetap read-only",
+      "category": "positive",
+      "priority": "medium",
+      "requirement": "REQ-012",
+      "screen": "Live Bidding",
+      "preconditions": [
+        "User login sebagai Shipper Admin",
+        "Data lelang dan waktu server WIB tersedia sesuai skenario"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Live Bidding Spot Rate",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Detail Lelang",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Detail Lelang Spot Rate",
+          "value": "nomor lelang yang dipilih"
+        }
+      ],
+      "expected": [
+        "Detail Lelang Spot Rate: nomor lelang yang dipilih"
+      ],
+      "testData": {
+        "timezone": "Asia/Jakarta",
+        "module": "ams003-live-bidding-shipper"
+      },
+      "selectorHints": {
+        "Live Bidding Spot Rate": {
+          "role": "region",
+          "name": "Live Bidding Spot Rate",
+          "testid": "live-bidding-spot-rate"
+        },
+        "Detail Lelang": {
+          "role": "link",
+          "name": "Detail Lelang",
+          "testid": "detail-lelang"
+        },
+        "Detail Lelang Spot Rate": {
+          "role": "link",
+          "name": "Detail Lelang Spot Rate",
+          "testid": "detail-lelang-spot-rate"
+        }
+      }
+    },
+    {
+      "id": "AMS003-LIVE-BIDDING-SHIPPER-NEG-012",
+      "title": "Kontrol bid dan Lihat Penawaran tidak tersedia saat lelang buka",
+      "category": "negative",
+      "priority": "medium",
+      "requirement": "REQ-012",
+      "screen": "Live Bidding",
+      "preconditions": [
+        "User login sebagai Shipper Admin",
+        "Data lelang dan waktu server WIB tersedia sesuai skenario"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Live Bidding Spot Rate",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Aksi card",
+          "value": "tidak memuat input bid atau tombol Lihat Penawaran"
+        }
+      ],
+      "expected": [
+        "Aksi card: tidak memuat input bid atau tombol Lihat Penawaran"
+      ],
+      "testData": {
+        "timezone": "Asia/Jakarta",
+        "module": "ams003-live-bidding-shipper"
+      },
+      "selectorHints": {
+        "Live Bidding Spot Rate": {
+          "role": "region",
+          "name": "Live Bidding Spot Rate",
+          "testid": "live-bidding-spot-rate"
+        },
+        "Aksi card": {
+          "role": "region",
+          "name": "Aksi card",
+          "testid": "aksi-card"
+        }
+      }
+    },
+    {
+      "id": "AMS003-LIVE-BIDDING-SHIPPER-POS-013",
+      "title": "Laporan default H+3 dan filter menemukan data lebih lama",
+      "category": "positive",
+      "priority": "high",
+      "requirement": "REQ-013",
+      "screen": "Laporan Lelang",
+      "preconditions": [
+        "User login sebagai Shipper Admin",
+        "Data lelang dan waktu server WIB tersedia sesuai skenario"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Laporan Lelang",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Card laporan",
+          "value": "lelang tutup sampai H+3 dalam urutan terbaru"
+        },
+        {
+          "action": "fill",
+          "target": "Tutup Lelang",
+          "value": "01/05/2026 00:00"
+        },
+        {
+          "action": "click",
+          "target": "Terapkan",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Card historis",
+          "value": "lelang lebih lama dari H+3"
+        }
+      ],
+      "expected": [
+        "Card laporan: lelang tutup sampai H+3 dalam urutan terbaru",
+        "Card historis: lelang lebih lama dari H+3"
+      ],
+      "testData": {
+        "timezone": "Asia/Jakarta",
+        "module": "ams003-live-bidding-shipper"
+      },
+      "selectorHints": {
+        "Laporan Lelang": {
+          "role": "region",
+          "name": "Laporan Lelang",
+          "testid": "laporan-lelang"
+        },
+        "Card laporan": {
+          "role": "region",
+          "name": "Card laporan",
+          "testid": "card-laporan"
+        },
+        "Tutup Lelang": {
+          "role": "region",
+          "name": "Tutup Lelang",
+          "testid": "tutup-lelang"
+        },
+        "Terapkan": {
+          "role": "button",
+          "name": "Terapkan",
+          "testid": "terapkan"
+        },
+        "Card historis": {
+          "role": "region",
+          "name": "Card historis",
+          "testid": "card-historis"
+        }
+      }
+    },
+    {
+      "id": "AMS003-LIVE-BIDDING-SHIPPER-NEG-013",
+      "title": "Lelang belum tutup dan dibatalkan tidak tampil di laporan",
+      "category": "negative",
+      "priority": "high",
+      "requirement": "REQ-013",
+      "screen": "Laporan Lelang",
+      "preconditions": [
+        "User login sebagai Shipper Admin",
+        "Data lelang dan waktu server WIB tersedia sesuai skenario"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Laporan Lelang",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Card laporan",
+          "value": "tidak memuat lelang aktif atau dibatalkan"
+        }
+      ],
+      "expected": [
+        "Card laporan: tidak memuat lelang aktif atau dibatalkan"
+      ],
+      "testData": {
+        "timezone": "Asia/Jakarta",
+        "module": "ams003-live-bidding-shipper"
+      },
+      "selectorHints": {
+        "Laporan Lelang": {
+          "role": "region",
+          "name": "Laporan Lelang",
+          "testid": "laporan-lelang"
+        },
+        "Card laporan": {
+          "role": "region",
+          "name": "Card laporan",
+          "testid": "card-laporan"
+        }
+      }
+    },
+    {
+      "id": "AMS003-LIVE-BIDDING-SHIPPER-POS-014",
+      "title": "Laporan menampilkan vendor harga final dan navigasi penawaran",
+      "category": "positive",
+      "priority": "medium",
+      "requirement": "REQ-014",
+      "screen": "Laporan Lelang",
+      "preconditions": [
+        "User login sebagai Shipper Admin",
+        "Data lelang dan waktu server WIB tersedia sesuai skenario"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Laporan Lelang",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Top 3",
+          "value": "nama vendor dan harga termasuk PPN/PPh"
+        },
+        {
+          "action": "click",
+          "target": "Lihat Penawaran",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Detail Harga Penawaran",
+          "value": "lelang yang dipilih"
+        }
+      ],
+      "expected": [
+        "Top 3: nama vendor dan harga termasuk PPN/PPh",
+        "Detail Harga Penawaran: lelang yang dipilih"
+      ],
+      "testData": {
+        "timezone": "Asia/Jakarta",
+        "module": "ams003-live-bidding-shipper"
+      },
+      "selectorHints": {
+        "Laporan Lelang": {
+          "role": "region",
+          "name": "Laporan Lelang",
+          "testid": "laporan-lelang"
+        },
+        "Top 3": {
+          "role": "region",
+          "name": "Top 3",
+          "testid": "top-3"
+        },
+        "Lihat Penawaran": {
+          "role": "button",
+          "name": "Lihat Penawaran",
+          "testid": "lihat-penawaran"
+        },
+        "Detail Harga Penawaran": {
+          "role": "region",
+          "name": "Detail Harga Penawaran",
+          "testid": "detail-harga-penawaran"
+        }
+      }
+    },
+    {
+      "id": "AMS003-LIVE-BIDDING-SHIPPER-NEG-014",
+      "title": "Bid terlambat tidak mengubah ranking yang sudah terkunci",
+      "category": "negative",
+      "priority": "medium",
+      "requirement": "REQ-014",
+      "screen": "Laporan Lelang",
+      "preconditions": [
+        "User login sebagai Shipper Admin",
+        "Data lelang dan waktu server WIB tersedia sesuai skenario"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Laporan Lelang",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Top 3 setelah tutup",
+          "value": "tetap sama setelah bid terlambat diterima atau ditolak"
+        }
+      ],
+      "expected": [
+        "Top 3 setelah tutup: tetap sama setelah bid terlambat diterima atau ditolak"
+      ],
+      "testData": {
+        "timezone": "Asia/Jakarta",
+        "module": "ams003-live-bidding-shipper"
+      },
+      "selectorHints": {
+        "Laporan Lelang": {
+          "role": "region",
+          "name": "Laporan Lelang",
+          "testid": "laporan-lelang"
+        },
+        "Top 3 setelah tutup": {
+          "role": "region",
+          "name": "Top 3 setelah tutup",
+          "testid": "top-3-setelah-tutup"
+        }
+      }
+    },
+    {
+      "id": "AMS003-LIVE-BIDDING-SHIPPER-POS-015",
+      "title": "Export menghasilkan seluruh hasil filter sesuai template",
+      "category": "positive",
+      "priority": "high",
+      "requirement": "REQ-015",
+      "screen": "Laporan Lelang",
+      "preconditions": [
+        "User login sebagai Shipper Admin",
+        "Data lelang dan waktu server WIB tersedia sesuai skenario"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Laporan Lelang",
+          "value": ""
+        },
+        {
+          "action": "select",
+          "target": "Vendor",
+          "value": "PT Trans Logistik Jaya"
+        },
+        {
+          "action": "click",
+          "target": "Terapkan",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Export",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "File Excel",
+          "value": "seluruh hasil filter lintas halaman dengan satu baris per penawaran"
+        }
+      ],
+      "expected": [
+        "File Excel: seluruh hasil filter lintas halaman dengan satu baris per penawaran"
+      ],
+      "testData": {
+        "timezone": "Asia/Jakarta",
+        "module": "ams003-live-bidding-shipper"
+      },
+      "selectorHints": {
+        "Laporan Lelang": {
+          "role": "region",
+          "name": "Laporan Lelang",
+          "testid": "laporan-lelang"
+        },
+        "Vendor": {
+          "role": "combobox",
+          "name": "Vendor",
+          "testid": "vendor"
+        },
+        "Terapkan": {
+          "role": "button",
+          "name": "Terapkan",
+          "testid": "terapkan"
+        },
+        "Export": {
+          "role": "button",
+          "name": "Export",
+          "testid": "export"
+        },
+        "File Excel": {
+          "role": "region",
+          "name": "File Excel",
+          "testid": "file-excel"
+        }
+      }
+    },
+    {
+      "id": "AMS003-LIVE-BIDDING-SHIPPER-NEG-015",
+      "title": "Kegagalan export tidak menghasilkan file rusak",
+      "category": "negative",
+      "priority": "high",
+      "requirement": "REQ-015",
+      "screen": "Laporan Lelang",
+      "preconditions": [
+        "User login sebagai Shipper Admin",
+        "Data lelang dan waktu server WIB tersedia sesuai skenario"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Laporan Lelang",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Export",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Status export",
+          "value": "kesalahan ditampilkan dan file parsial tidak diunduh"
+        }
+      ],
+      "expected": [
+        "Status export: kesalahan ditampilkan dan file parsial tidak diunduh"
+      ],
+      "testData": {
+        "timezone": "Asia/Jakarta",
+        "module": "ams003-live-bidding-shipper"
+      },
+      "selectorHints": {
+        "Laporan Lelang": {
+          "role": "region",
+          "name": "Laporan Lelang",
+          "testid": "laporan-lelang"
+        },
+        "Export": {
+          "role": "button",
+          "name": "Export",
+          "testid": "export"
+        },
+        "Status export": {
+          "role": "region",
+          "name": "Status export",
+          "testid": "status-export"
+        }
+      }
+    },
+    {
+      "id": "AMS003-LIVE-BIDDING-SHIPPER-EDG-001",
+      "title": "Warna countdown tepat pada batas 24 jam dan 1 jam",
+      "category": "edge",
+      "priority": "high",
+      "requirement": "REQ-008",
+      "screen": "Live Bidding",
+      "preconditions": [
+        "User login sebagai Shipper Admin",
+        "Data lelang dan waktu server WIB tersedia sesuai skenario"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Live Bidding Spot Rate",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Countdown 24:00:00",
+          "value": "oranye"
+        },
+        {
+          "action": "expect",
+          "target": "Countdown 01:00:00",
+          "value": "merah"
+        },
+        {
+          "action": "expect",
+          "target": "Countdown di atas 24 jam",
+          "value": "abu"
+        }
+      ],
+      "expected": [
+        "Countdown 24:00:00: oranye",
+        "Countdown 01:00:00: merah",
+        "Countdown di atas 24 jam: abu"
+      ],
+      "testData": {
+        "timezone": "Asia/Jakarta",
+        "module": "ams003-live-bidding-shipper"
+      },
+      "selectorHints": {
+        "Live Bidding Spot Rate": {
+          "role": "region",
+          "name": "Live Bidding Spot Rate",
+          "testid": "live-bidding-spot-rate"
+        },
+        "Countdown 24:00:00": {
+          "role": "region",
+          "name": "Countdown 24:00:00",
+          "testid": "countdown-24-00-00"
+        },
+        "Countdown 01:00:00": {
+          "role": "region",
+          "name": "Countdown 01:00:00",
+          "testid": "countdown-01-00-00"
+        },
+        "Countdown di atas 24 jam": {
+          "role": "region",
+          "name": "Countdown di atas 24 jam",
+          "testid": "countdown-di-atas-24-jam"
+        }
+      }
+    },
+    {
+      "id": "AMS003-LIVE-BIDDING-SHIPPER-EDG-002",
+      "title": "Tie-break berakhir pada vendor baru rating default 3,0",
+      "category": "edge",
+      "priority": "high",
+      "requirement": "REQ-009",
+      "screen": "Live Bidding",
+      "preconditions": [
+        "User login sebagai Shipper Admin",
+        "Data lelang dan waktu server WIB tersedia sesuai skenario"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Live Bidding Spot Rate",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Top 3 harga sama",
+          "value": "menggunakan timestamp lalu rating default 3,0 dan tie-break lanjutan"
+        }
+      ],
+      "expected": [
+        "Top 3 harga sama: menggunakan timestamp lalu rating default 3,0 dan tie-break lanjutan"
+      ],
+      "testData": {
+        "timezone": "Asia/Jakarta",
+        "module": "ams003-live-bidding-shipper"
+      },
+      "selectorHints": {
+        "Live Bidding Spot Rate": {
+          "role": "region",
+          "name": "Live Bidding Spot Rate",
+          "testid": "live-bidding-spot-rate"
+        },
+        "Top 3 harga sama": {
+          "role": "region",
+          "name": "Top 3 harga sama",
+          "testid": "top-3-harga-sama"
+        }
+      }
+    },
+    {
+      "id": "AMS003-LIVE-BIDDING-SHIPPER-EDG-003",
+      "title": "Top 3 menangani nol satu dan tepat tiga penawaran",
+      "category": "edge",
+      "priority": "high",
+      "requirement": "REQ-010",
+      "screen": "Live Bidding",
+      "preconditions": [
+        "User login sebagai Shipper Admin",
+        "Data lelang dan waktu server WIB tersedia sesuai skenario"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Live Bidding Spot Rate",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Top 3",
+          "value": "slot kosong dimasking untuk jumlah penawaran 0, 1, dan 3"
+        }
+      ],
+      "expected": [
+        "Top 3: slot kosong dimasking untuk jumlah penawaran 0, 1, dan 3"
+      ],
+      "testData": {
+        "timezone": "Asia/Jakarta",
+        "module": "ams003-live-bidding-shipper"
+      },
+      "selectorHints": {
+        "Live Bidding Spot Rate": {
+          "role": "region",
+          "name": "Live Bidding Spot Rate",
+          "testid": "live-bidding-spot-rate"
+        },
+        "Top 3": {
+          "role": "region",
+          "name": "Top 3",
+          "testid": "top-3"
+        }
+      }
+    },
+    {
+      "id": "AMS003-LIVE-BIDDING-SHIPPER-EDG-004",
+      "title": "Retensi laporan tepat pada batas H+3",
+      "category": "edge",
+      "priority": "high",
+      "requirement": "REQ-013",
+      "screen": "Laporan Lelang",
+      "preconditions": [
+        "User login sebagai Shipper Admin",
+        "Data lelang dan waktu server WIB tersedia sesuai skenario"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Laporan Lelang",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Card laporan pada tepat H+3",
+          "value": "masih tampil"
+        },
+        {
+          "action": "expect",
+          "target": "Card laporan setelah H+3",
+          "value": "hanya tampil melalui filter"
+        }
+      ],
+      "expected": [
+        "Card laporan pada tepat H+3: masih tampil",
+        "Card laporan setelah H+3: hanya tampil melalui filter"
+      ],
+      "testData": {
+        "timezone": "Asia/Jakarta",
+        "module": "ams003-live-bidding-shipper"
+      },
+      "selectorHints": {
+        "Laporan Lelang": {
+          "role": "region",
+          "name": "Laporan Lelang",
+          "testid": "laporan-lelang"
+        },
+        "Card laporan pada tepat H+3": {
+          "role": "region",
+          "name": "Card laporan pada tepat H+3",
+          "testid": "card-laporan-pada-tepat-h-3"
+        },
+        "Card laporan setelah H+3": {
+          "role": "region",
+          "name": "Card laporan setelah H+3",
+          "testid": "card-laporan-setelah-h-3"
+        }
+      }
+    },
+    {
+      "id": "AMS003-LIVE-BIDDING-SHIPPER-EDG-005",
+      "title": "Lelang tanpa penawaran tetap diekspor satu baris kosong",
+      "category": "edge",
+      "priority": "high",
+      "requirement": "REQ-015",
+      "screen": "Laporan Lelang",
+      "preconditions": [
+        "User login sebagai Shipper Admin",
+        "Data lelang dan waktu server WIB tersedia sesuai skenario"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Laporan Lelang",
+          "value": ""
+        },
+        {
+          "action": "fill",
+          "target": "No. Lelang",
+          "value": "FCL-MTD-NOBID"
+        },
+        {
+          "action": "click",
+          "target": "Terapkan",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Export",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "File Excel",
+          "value": "satu baris lelang dengan kolom penawaran kosong"
+        }
+      ],
+      "expected": [
+        "File Excel: satu baris lelang dengan kolom penawaran kosong"
+      ],
+      "testData": {
+        "timezone": "Asia/Jakarta",
+        "module": "ams003-live-bidding-shipper"
+      },
+      "selectorHints": {
+        "Laporan Lelang": {
+          "role": "region",
+          "name": "Laporan Lelang",
+          "testid": "laporan-lelang"
+        },
+        "No. Lelang": {
+          "role": "region",
+          "name": "No. Lelang",
+          "testid": "no-lelang"
+        },
+        "Terapkan": {
+          "role": "button",
+          "name": "Terapkan",
+          "testid": "terapkan"
+        },
+        "Export": {
+          "role": "button",
+          "name": "Export",
+          "testid": "export"
+        },
+        "File Excel": {
+          "role": "region",
+          "name": "File Excel",
+          "testid": "file-excel"
+        }
+      }
+    },
+    {
+      "id": "AMS003-LIVE-BIDDING-SHIPPER-STR-001",
+      "title": "Pagination dan filter stabil pada ribuan card",
+      "category": "stress",
+      "priority": "medium",
+      "requirement": "REQ-004",
+      "screen": "Live Bidding",
+      "preconditions": [
+        "User login sebagai Shipper Admin",
+        "Data lelang dan waktu server WIB tersedia sesuai skenario"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Live Bidding Spot Rate",
+          "value": ""
+        },
+        {
+          "action": "select",
+          "target": "Tampilkan",
+          "value": "20"
+        },
+        {
+          "action": "click",
+          "target": "Halaman terakhir",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Daftar lelang volume besar",
+          "value": "responsif, urutan konsisten, tanpa duplikasi"
+        }
+      ],
+      "expected": [
+        "Daftar lelang volume besar: responsif, urutan konsisten, tanpa duplikasi"
+      ],
+      "testData": {
+        "timezone": "Asia/Jakarta",
+        "module": "ams003-live-bidding-shipper"
+      },
+      "selectorHints": {
+        "Live Bidding Spot Rate": {
+          "role": "region",
+          "name": "Live Bidding Spot Rate",
+          "testid": "live-bidding-spot-rate"
+        },
+        "Tampilkan": {
+          "role": "combobox",
+          "name": "Tampilkan",
+          "testid": "tampilkan"
+        },
+        "Halaman terakhir": {
+          "role": "button",
+          "name": "Halaman terakhir",
+          "testid": "halaman-terakhir"
+        },
+        "Daftar lelang volume besar": {
+          "role": "region",
+          "name": "Daftar lelang volume besar",
+          "testid": "daftar-lelang-volume-besar"
+        }
+      }
+    },
+    {
+      "id": "AMS003-LIVE-BIDDING-SHIPPER-STR-002",
+      "title": "Top 3 tetap konsisten saat banyak bid realtime bersamaan",
+      "category": "stress",
+      "priority": "medium",
+      "requirement": "REQ-010",
+      "screen": "Live Bidding",
+      "preconditions": [
+        "User login sebagai Shipper Admin",
+        "Data lelang dan waktu server WIB tersedia sesuai skenario"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Live Bidding Spot Rate",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Top 3 saat bid paralel",
+          "value": "hasil akhir konsisten tanpa reload atau urutan sementara salah"
+        }
+      ],
+      "expected": [
+        "Top 3 saat bid paralel: hasil akhir konsisten tanpa reload atau urutan sementara salah"
+      ],
+      "testData": {
+        "timezone": "Asia/Jakarta",
+        "module": "ams003-live-bidding-shipper"
+      },
+      "selectorHints": {
+        "Live Bidding Spot Rate": {
+          "role": "region",
+          "name": "Live Bidding Spot Rate",
+          "testid": "live-bidding-spot-rate"
+        },
+        "Top 3 saat bid paralel": {
+          "role": "region",
+          "name": "Top 3 saat bid paralel",
+          "testid": "top-3-saat-bid-paralel"
+        }
+      }
+    },
+    {
+      "id": "AMS003-LIVE-BIDDING-SHIPPER-STR-003",
+      "title": "Ratusan countdown diperbarui serentak tanpa membekukan UI",
+      "category": "stress",
+      "priority": "medium",
+      "requirement": "REQ-008",
+      "screen": "Live Bidding",
+      "preconditions": [
+        "User login sebagai Shipper Admin",
+        "Data lelang dan waktu server WIB tersedia sesuai skenario"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Live Bidding Spot Rate",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Seluruh countdown",
+          "value": "berkurang per detik dan card jatuh tempo hilang tepat waktu"
+        }
+      ],
+      "expected": [
+        "Seluruh countdown: berkurang per detik dan card jatuh tempo hilang tepat waktu"
+      ],
+      "testData": {
+        "timezone": "Asia/Jakarta",
+        "module": "ams003-live-bidding-shipper"
+      },
+      "selectorHints": {
+        "Live Bidding Spot Rate": {
+          "role": "region",
+          "name": "Live Bidding Spot Rate",
+          "testid": "live-bidding-spot-rate"
+        },
+        "Seluruh countdown": {
+          "role": "region",
+          "name": "Seluruh countdown",
+          "testid": "seluruh-countdown"
+        }
+      }
+    },
+    {
+      "id": "AMS003-LIVE-BIDDING-SHIPPER-STR-004",
+      "title": "Export volume besar mencakup semua halaman tanpa timeout senyap",
+      "category": "stress",
+      "priority": "medium",
+      "requirement": "REQ-015",
+      "screen": "Laporan Lelang",
+      "preconditions": [
+        "User login sebagai Shipper Admin",
+        "Data lelang dan waktu server WIB tersedia sesuai skenario"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Laporan Lelang",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Export",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "File Excel volume besar",
+          "value": "lengkap, dapat dibuka, dan jumlah baris sesuai hasil filter"
+        }
+      ],
+      "expected": [
+        "File Excel volume besar: lengkap, dapat dibuka, dan jumlah baris sesuai hasil filter"
+      ],
+      "testData": {
+        "timezone": "Asia/Jakarta",
+        "module": "ams003-live-bidding-shipper"
+      },
+      "selectorHints": {
+        "Laporan Lelang": {
+          "role": "region",
+          "name": "Laporan Lelang",
+          "testid": "laporan-lelang"
+        },
+        "Export": {
+          "role": "button",
+          "name": "Export",
+          "testid": "export"
+        },
+        "File Excel volume besar": {
+          "role": "region",
+          "name": "File Excel volume besar",
+          "testid": "file-excel-volume-besar"
+        }
+      }
+    },
+    {
+      "id": "AMS003-LIVE-BIDDING-SHIPPER-STR-005",
+      "title": "Perpindahan card konsisten saat cutoff dan bid terjadi bersamaan",
+      "category": "stress",
+      "priority": "medium",
+      "requirement": "REQ-005",
+      "screen": "Live Bidding",
+      "preconditions": [
+        "User login sebagai Shipper Admin",
+        "Data lelang dan waktu server WIB tersedia sesuai skenario"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Live Bidding Spot Rate",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Card pada waktu cutoff",
+          "value": "muncul tepat sekali di laporan dan tidak tersisa di Live Bidding"
+        }
+      ],
+      "expected": [
+        "Card pada waktu cutoff: muncul tepat sekali di laporan dan tidak tersisa di Live Bidding"
+      ],
+      "testData": {
+        "timezone": "Asia/Jakarta",
+        "module": "ams003-live-bidding-shipper"
+      },
+      "selectorHints": {
+        "Live Bidding Spot Rate": {
+          "role": "region",
+          "name": "Live Bidding Spot Rate",
+          "testid": "live-bidding-spot-rate"
+        },
+        "Card pada waktu cutoff": {
+          "role": "region",
+          "name": "Card pada waktu cutoff",
+          "testid": "card-pada-waktu-cutoff"
+        }
+      }
+    }
+  ]
+}
