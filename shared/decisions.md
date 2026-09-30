@@ -84,3 +84,30 @@
 - **Belum terverifikasi:** form Input Harga vendor (diblokir dialog "Lelang belum dibuka"), halaman Penawaran vendor berisi data, detail Negosiasi/Order, dan biaya lain (Buruh, Kawalan, tag Lainnya) apakah juga tampil mentah. Butuh lelang FCL terbuka dengan peserta IK (aksi tulis, menunggu persetujuan user).
 - **SELESAI FCL Batch 21–24 (2026-09-30):** seluruh 24 batch run `ams001-buat-lelang-fcl-shipper__20260928-095629` selesai; setiap batch memiliki JSON + report Excel. Batch 21 **1 passed/10 blocked**; Batch 22 **6 passed/1 failed/3 blocked**; Batch 23 **8 passed**; Batch 24 **1 passed/7 blocked**. Hasil final 303 skenario sumber: **170 passed, 4 failed, 107 blocked, 22 skipped**. Sebanyak 281 skenario masuk 24 batch; 22 auto-skip terdiri dari 16 stress dan 6 skenario Jumlah Kontainer yang sudah dinyatakan tidak valid. Report final: `reports/ams001-buat-lelang-fcl-shipper__20260928-095629.xlsx`.
 - **Empat failed final FCL:** SCN-0090 tombol `Edit Data` tampil pada halaman Detail yang diharapkan sepenuhnya read-only; SCN-0193/0194 file PDF 4 MiB−1 dan tepat 4 MiB ditolak (`FILE4MB`); SCN-0236 form Lelang Ulang dari sumber tanpa asuransi tetap menampilkan `Nilai Barang` (`ULANGNILAIBARANG`). Filter nomor, empty state, tipe, status, kota, dan pelabuhan pada Batch 23 seluruhnya lulus. Blocker akhir didominasi fixture tenant/order/penawaran/lifecycle/waktu yang tidak tersedia; tiga filter badge Batch 24 juga blocked karena sesi aplikasi berulang kali diarahkan ke Login saat eksekusi, bukan diklasifikasikan sebagai failure aplikasi.
+
+## 2026-09-30 — Keputusan user pasca-triase run 20260928-095629
+
+- **Jumlah Armada diabaikan (konfirmasi user):** field tidak berlaku di FTL, sama seperti Jumlah Kontainer di FCL. SCN-0059, 0060, 0162–0165, 0285 (7 skenario) diubah `failed` → `skipped` di hasil final dan batch terkait; report FTL dibuat ulang. Hasil FTL final menjadi **184 passed, 33 failed, 63 blocked, 23 skipped**. REQ-030 tidak berlaku; jangan buat skenario baru untuk field ini.
+- **Batas file = 4 MiB (4.194.304 B) (konfirmasi user):** penolakan PDF 4.194.303/4.194.304 B adalah **BUG** aplikasi (kemungkinan batas 4.000.000 B), bukan gap. SCN-0173 (FTL), 0193/0194 (FCL).
+- **Auto-koreksi datepicker:** menunggu keputusan user (disengaja atau bug).
+- Triase lengkap: `shared/bug-triage-20260928-run.md`.
+
+## 2026-09-30 — Rerun skenario harness/fixture (16 skenario)
+
+- Hasil: `results/_rerun__ams002-buat-lelang-ftl__20260930.json` (13) dan `results/_rerun__ams001-buat-lelang-fcl-shipper__20260930.json` (3); **belum digabung ke hasil final** dan report Excel belum dibuat. Ringkasan: 11 passed, 5 failed.
+- FTL passed: 0021, 0023, 0101, 0127, 0250, 0278, 0279, 0289, 0290. FCL passed: 0246, 0247, 0248 (0248 di-set passed manual dari counter tab; kartu tidak memuat teks "Lelang Ulang").
+- FTL tetap failed: 0007, 0299, 0300 = kandidat `AUDIT-GAP` (Riwayat Perubahan tidak mencatat PIC Pengirim, Catatan Penerima, Dokumen Tambahan; kemungkinan gap desain, perlu keputusan produk). 0100 = `DATEPICKER-AUTOCORRECT` (terkait TRI-16).
+- Data AUTOTEST baru: FTL-NRM-12/300926, FTL-NRM-13/300926, FCL-NRM-11/300926 (belum dibatalkan). Daftar: `artifacts/probe/ams002/created.md`.
+
+## 2026-09-30 — Keputusan user: datepicker & merge rerun
+
+- **Auto-koreksi datepicker DISENGAJA (konfirmasi user):** datepicker membatasi pilihan tanggal/waktu, nilai tidak valid dikoreksi ke batas minimum. Bukan bug; TRI-16 ditutup sebagai desain. Skenario "ditolak" (0052, 0056, 0058) dan 0100 ("edit tidak valid tidak mengubah data") memakai ekspektasi usang — perbarui ekspektasi bila skenario ditulis ulang. 0100 tetap `failed` di hasil dengan catatan.
+- **Rerun digabung ke hasil final (izin user):** FTL menjadi **193 passed, 24 failed, 63 blocked, 23 skipped**; FCL menjadi **173 passed, 4 failed, 104 blocked, 22 skipped**. Report kedua modul dibuat ulang. Tiap skenario terdampak mencatat status sebelumnya di `notes`.
+
+## 2026-09-30 — Audit field Riwayat Perubahan FTL (FTL-NRM-12/300926)
+
+- Hasil: `results/_audit-riwayat__ams002-buat-lelang-ftl__20260930.json`; screenshot `artifacts/screenshots/20260930-audit/`.
+- **Tercatat:** Durasi, Buka/Tutup, Rencana Awal/Akhir Kirim, Jenis Armada (tambah/hapus), Deskripsi Barang, Catatan Tambahan, Nilai Barang min/maks, Gunakan Asuransi; terbatas: tipe & jumlah baris multipickup/multidrop, jumlah peserta (nama vendor tidak dicatat).
+- **TIDAK tercatat (kandidat bug AUDIT-GAP, REQ-004/050; menunggu konfirmasi user apakah sengaja):** PIC Pengirim/Penerima, No. WA PIC Pengirim/Penerima, Catatan Pengirim/Penerima, Dokumen Tambahan (tambah & hapus), Drop Point Asal/Tujuan, isi baris multipoint (Drop Point/PIC/WA), nama vendor peserta.
+- Catatan UI: nilai tanggal di riwayat tampil ISO UTC mentah (`2026-10-03T03:00:00.000Z`), durasi dalam menit, tipe pengiriman sebagai enum mentah (kandidat kosmetik). Ganti Drop Point menimpa PIC & WA otomatis dari master.
+- Kondisi akhir fixture FTL-NRM-12/300926: PIC & WA tertimpa master (bukan lagi prefix AUTOTEST); peserta hanya DIBANTU-ADMIN.
