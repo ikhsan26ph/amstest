@@ -111,3 +111,101 @@
 - **TIDAK tercatat (kandidat bug AUDIT-GAP, REQ-004/050; menunggu konfirmasi user apakah sengaja):** PIC Pengirim/Penerima, No. WA PIC Pengirim/Penerima, Catatan Pengirim/Penerima, Dokumen Tambahan (tambah & hapus), Drop Point Asal/Tujuan, isi baris multipoint (Drop Point/PIC/WA), nama vendor peserta.
 - Catatan UI: nilai tanggal di riwayat tampil ISO UTC mentah (`2026-10-03T03:00:00.000Z`), durasi dalam menit, tipe pengiriman sebagai enum mentah (kandidat kosmetik). Ganti Drop Point menimpa PIC & WA otomatis dari master.
 - Kondisi akhir fixture FTL-NRM-12/300926: PIC & WA tertimpa master (bukan lagi prefix AUTOTEST); peserta hanya DIBANTU-ADMIN.
+
+## 2026-09-30 — ams003-live-bidding-shipper (run 20260930-202714, cakupan tulis penuh)
+
+Hasil: 28 passed / 7 failed / 5 skipped (stress). Harness `artifacts/probe/ams003/` (dual context admin + vendor IK).
+Data run: `artifacts/probe/ams003/created.json` (A–H + lelang ulang G; C dibatalkan). Triage:
+
+| SCN | Klasifikasi | Rujukan | Severity | Analisis singkat | Rekomendasi |
+|---|---|---|---|---|---|
+| NEG-011 | BUG (probable) | REQ-011 | major | Harga FCL tanpa jadwal langsung dihitung "1 dari 1 Vendor" dan masuk Top 3. | Hitung x FCL hanya bila harga+jadwal lengkap, atau konfirmasi produk bila disengaja. |
+| NEG-003 | BUG (probable) | REQ-003 | minor | Jenis FTL + Pelabuhan Asal → 0 card (ada 4 FTL); filter pelabuhan ikut menyaring FTL. | Abaikan pelabuhan untuk FTL / nonaktifkan field saat FTL. |
+| NEG-002 | BUG (probable) | REQ-002, validasi rentang | minor | Buka Lelang > Tutup Lelang diterapkan tanpa pesan validasi. Range Periode Pengiriman tidak teruji (harness). | Tambah validasi; ulang uji range picker setelah harvest selector. |
+| POS-015 | BUG (probable) | REQ-015 | minor | Nama file `Laporan Lelang Spot Rate - ddmmyyyy.xlsx`; export hanya Top 1–3 per card (bukan tiap penawaran); jam Buka/Tutup hilang. Lintas halaman & filter OK. | Konfirmasi format dengan produk (template extras memakai nama berbeda juga). |
+| EDG-005 | BUG (probable) | REQ-015 | minor | Lelang tanpa bid diekspor 3 baris "-", bukan 1 baris kosong. | Sama dengan POS-015. |
+| NEG-015 | BUG (probable) | REQ-015 | minor | Export gagal (API 500 disimulasikan) tanpa pesan ke pengguna. | Tampilkan toast error. |
+| EDG-002 | NEED RECHECK / BUG candidate | REQ-009 | minor | Tie-break waktu input benar; vendor baru di API vendor-options `rating: 0`, bukan default 3,0. Tie-break antar-vendor tak teruji (1 akun vendor). | Konfirmasi apakah rating 0 = "belum ada" dan dihitung 3,0 di ranking; butuh akun vendor ke-2. |
+
+Observasi (passed dengan catatan, perlu konfirmasi produk): Total Penawaran dihitung per lelang, bukan per armada
+(card 40 FT "1 dari 1" walau bid hanya 20 FT); nominal Top 3 saat buka = harga termasuk PPN/PPh (ranking tetap DPP);
+FTL: beberapa bid vendor yang sama pada armada sama hanya tampil yang terbaik; countdown/visibilitas card memakai jam
+klien, bukan `serverNow`; halaman Detail Lelang menampilkan "Edit Data" saat Sedang Buka.
+
+## 2026-10-01 — ams004-input-harga-penawaran-vendor (run 20260930-221800, cakupan tulis penuh)
+
+Hasil: 24 passed / 9 failed / 1 blocked / 4 skipped (stress). Harness `artifacts/probe/ams004/` (dual context admin + vendor IK; `lib4.js`, `b1..b4.js`, `t1.js`, `build_results.py`).
+Data run: `artifacts/probe/ams004/created.json` (lelang `AUTOTEST-20260930-A4-*`) + harga vendor IK berdeskripsi `AUTOTEST-20261001-A4-*`. Triage:
+
+| SCN | Klasifikasi | Rujukan | Severity | Analisis singkat | Rekomendasi |
+|---|---|---|---|---|---|
+| POS-006 | BUG (probable) | REQ-009 | major | PPN/PPh di form vendor default 0 dan bisa diedit (bukan default master + disabled). Input membuang titik ("1.1" → 11). | Isi dari master setting & kunci field. |
+| POS-011, NEG-011 | BUG (probable) | REQ-011 | major | Batal langsung keluar tanpa konfirmasi, selalu ke Daftar Penawaran (bukan halaman asal Detail Lelang); input hilang. | Tambah dialog konfirmasi + kembali ke halaman asal. |
+| POS-012 | BUG candidate / NEED RECHECK | REQ-010, REQ-012 | minor | Edit = update in-place (PUT), tak ada versi lama berbadge "Tidak Berlaku"; Riwayat mencatat 12000000→13000000 (tanpa format Rp, Mulai Berlaku ISO). Badge Tidak Berlaku ada di data lain → pemicu belum jelas. | Konfirmasi produk soal versioning edit; format nilai di Riwayat. |
+| POS-013 | BUG (probable) | REQ-013 | minor | Hapus OK (DELETE 200, status kembali Belum Input) tetapi audit hapus tak bisa dilihat vendor: menu Riwayat Perubahan di Daftar Lelang hanya membuka Daftar Penawaran. Jadwal ikut terhapus belum teruji. | Riwayat per lelang yang memuat harga terhapus. |
+| POS-002 | GAP DESAIN | REQ-002 | minor | Daftar Lelang vendor tanpa panel Filter (hanya kotak cari). Counter, legend, border, pagination OK. | Implementasi filter atau revisi desain. |
+| POS-003 | GAP DESAIN | REQ-003 | minor | Detail Lelang vendor tanpa Syarat & Ketentuan, Data Pengirim/Penerima, Dokumen, Filter/Urutkan/tab detail harga. | Sama. |
+| NEG-001 | BUG (probable, UX) | REQ-001 | minor | URL lelang tanpa undangan: API 404, tak ada data bocor, tapi halaman kosong tanpa pesan akses ditolak. | Tampilkan pesan "Lelang tidak ditemukan atau Anda tidak memiliki akses". |
+| EDG-005 | NEED PRODUCT CONFIRMATION | REQ-010 | minor | Harga bertanggal 30/09 tidak expired pada 01/10; field berlabel "Mulai Berlaku" (Assumption 2 analysis). | Tetapkan semantik tanggal berlaku. |
+| NEG-014 | BLOCKED (data) | REQ-014 | — | Tidak ada harga FCL IK dengan Rencana Akhir Kirim lewat. | Uji ulang setelah 06/10/2026 pada FCL-NRM-30/58. |
+
+Keterbatasan data staging: master Jenis Kontainer hanya "20 Feet" (lelang FCL 2 jenis tidak bisa dibuat), master pelayaran Meratus/SPILL/TANTO (tanpa ASDP), hanya 1 akun vendor (isolasi antar-vendor diuji sebatas "tidak ada identitas vendor lain" di DOM/API).
+Observasi lulus: lelang tutup saat dialog konfirmasi → 409 `LELANG_TIDAK_SEDANG_BUKA` + alert, tak ada data; lelang ulang menampilkan harga lama read-only & menandainya Kadaluwarsa; Live Bidding hanya memakai harga termurah per vendor.
+Catatan: selama run ada aktivitas vendor IK dari sesi lain pada FTL-NRM-01/011026, FTL-NRM-48 & FCL-NRM-50/300926 (bukan data run ini, tidak disentuh).
+
+## 2026-10-01 — ams005-live-bidding-vendor (run 20260930-221807, cakupan tulis penuh)
+
+Hasil: 39 passed / 7 failed / 1 blocked / 3 skipped (stress). Harness `artifacts/probe/ams005/` (dual context admin + vendor IK;
+`dual5.js` mendukung `VENDOR_TZ`). Eksekusi 30/09 malam terhenti (sesi berakhir, lelang tutup) → batch diulang 01/10 dengan data baru
+`AUTOTEST-20261001-A5-*` (`artifacts/probe/ams005/created-1001.json`). Triage:
+
+| SCN | Klasifikasi | Rujukan | Severity | Analisis singkat | Rekomendasi |
+|---|---|---|---|---|---|
+| EDG-001 | BUG (probable) | REQ-002 | major | Browser UTC: Periode Pengiriman 09:00–17:00 WIB tampil 02:00–10:00 (dirender zona browser). Waktu kemunculan card tetap benar (absolut). | Format semua timestamp dengan timeZone `Asia/Jakarta`. |
+| POS-013 | BUG (probable) | REQ-013 | major | Lelang Ulang baru dibuka: Top 3 sudah memuat harga putaran 0 (Rp 7.700.000) dan "1 dari 1 Vendor" sebelum ada bid periode ulang. | Filter ranking/total per `putaranUlang` aktif; konfirmasi produk. |
+| NEG-013 | BUG (probable) | REQ-013 | major | FCL harga tanpa jadwal ("Belum Input Jadwal") tetap dihitung "1 dari 1" dan masuk Top 3 (sama dgn ams003 NEG-011); x=0 tidak merah di sisi vendor. | Hitung x FCL hanya bila harga+jadwal; warna merah saat x=0. |
+| NEG-004 | BUG (probable) | REQ-004 | minor | Buka Lelang > Tutup Lelang diterapkan tanpa validasi (konsisten ams003 NEG-002). Range Periode tidak teruji (picker tak terisi harness). | Tambah validasi; harvest selector range picker. |
+| NEG-019 | BUG (probable) | REQ-019 | minor | Deep link lelang tanpa undangan → API 404, data tidak bocor, tetapi halaman kosong tanpa pesan "Anda tidak memiliki akses ke lelang ini". | Tampilkan pesan/redirect. |
+| POS-017 | BUG (probable, kosmetik) | REQ-017 | minor | Bid tersimpan & card terupdate; toast "Bid harga berhasil disimpan" ≠ "Harga penawaran berhasil disimpan". | Samakan copy dengan desain atau perbarui skenario. |
+| POS-015 | DESIGN GAP | REQ-015 | minor | Card FTL tidak punya dropdown Jenis Kendaraan (card sudah per armada); bid tetap jalan. Card FCL punya dropdown Pelayaran. | Konfirmasi desain; sesuaikan skenario bila dropdown memang hanya untuk FCL. |
+| NEG-021 | TEST ISSUE (blocked) | REQ-021 | low | Dropdown filter riwayat hanya berisi pelayaran yang punya riwayat → empty state tak dapat dipicu via UI. | Ubah skenario (mis. filter kombinasi) atau terima sebagai by design. |
+
+Observasi (passed dengan catatan): tombol "Input Harga" tetap tampil di detail vendor untuk lelang Dibatalkan/Tutup, tetapi klik
+memunculkan "Aksi Tidak Dapat Dilakukan" (kosmetik); detail vendor (Penawaran) hanya menampilkan harga terakhir, riwayat lengkap ada di
+dialog Riwayat card; masking/tie-break antar-vendor hanya teruji dengan 1 akun vendor. Pelajaran harness: page kedua di context yang sama
+(tab background) tidak me-render pembaruan Live Bidding — jalankan alur time-critical di page foreground/proses terpisah; `lib3.cards`
+tidak cocok untuk portal vendor (header No. Lelang terpisah dari blok Top 3) → `lib5.cards`.
+
+## 2026-10-01 — ams006-tambah-jadwal-vendor (run 20261001-093252)
+
+Hasil: **47 passed / 5 failed / 6 blocked / 4 skipped** (stress). Detail triase: `shared/bug-triage-ams006-20261001.md`.
+Temuan utama: edit Voyage saja menggeser seluruh waktu jadwal +7 jam; tambah/detail juga merender waktu bergantung zona browser;
+fitur Download Template/Import Jadwal tidak tersedia; deep link konteks invalid tidak selalu menampilkan pesan; empty-state filter
+memakai copy empty umum; Voyage dan Open Stack tidak sortable terpisah. Batas waktu setelah Rencana Akhir Kirim dan larangan hapus
+harga Kadaluwarsa terverifikasi backend 409. Fixture order, harga N/A, dan harga Tidak Berlaku yang masih memiliki jadwal tidak tersedia.
+
+## 2026-10-03 — Pemeriksaan Reset Filter lintas modul (Admin)
+
+- Diagnosis read-only pada 43 halaman/tab: 22 halaman utama dengan Reset, 3 tab tambahan (Jenis Armada, Jenis Kontainer, Hak Akses), 17 halaman riwayat perubahan, dan Detail Harga Penawaran Spot Rate. Semua menerapkan Reset langsung; perilaku hanya mereset field sampai Terapkan belum ditemukan pada cakupan tersebut.
+- Bukti: `artifacts/reset-filter-20261003/summary.json`, `evidence.json`, dan screenshot `*-reset.png`. Metode: isi filter → Terapkan → Reset → bandingkan daftar/parameter API sebelum Terapkan kembali. Halaman kosong diverifikasi lewat request tanpa filter dengan limit berbeda untuk menghindari cache; ketiadaan request baru saja bukan bukti bahwa Reset hanya mengosongkan field.
+- Contoh: Provinsi 0 → 38 data; Order 0 → 2; Daftar Lelang Spot Rate 0 → 377; Kontrak 0 → 5; Detail Harga Penawaran Spot Rate (target waktu 1 jam) 0 → 2. Reset Spot Rate menutup panel; Reset Kontrak membiarkan panel terbuka tetapi daftar sudah kembali.
+- Filter periode kedua dashboard dan Data Periode Kontrak tidak menampilkan tombol Reset. Riwayat Pembatalan Lelang/Order dan Riwayat Perubahan Kontrak juga tidak memiliki tombol Reset.
+- Batas cakupan: akun admin; role vendor, tab riwayat penghapusan, dan seluruh detail tiap entitas tidak diuji satu per satu. Ini diagnosis perilaku, bukan run penuh scenarios.json. Tidak ada mutasi data bisnis.
+
+### 2026-10-03 — Pemeriksaan ulang Reset: Admin, Vendor, dan field belum diterapkan
+
+- Rincian bukti baru: `artifacts/reset-filter-detail-20261003/summary.json`, JSON per role, dan screenshot. Bukti run sebelumnya dipertahankan. Pemeriksaan read-only; tidak membuat/mengubah data bisnis.
+- **Klarifikasi penting atas kesimpulan sebelumnya:** dua hasil visual dapat muncul pada halaman yang sama. Di **Master Provinsi (Admin)**, field diisi saat filter default aktif, tanpa klik Terapkan → Reset mengosongkan field, tabel tetap 38 data, tanpa request API baru. Di **Penawaran (Vendor)** kondisi yang sama membuat field kosong, tabel tetap 49 data, tanpa request API baru. Master Armada Vendor juga demikian, tetapi tabel awal kosong sehingga tidak membuktikan perubahan baris.
+- Bila filter sudah diterapkan, Reset menghapus filter aktif langsung: Provinsi 0 → 38, Daftar Lelang Spot Rate 0 → 377, Negosiasi Admin 0 → 13, Penawaran Vendor 0 → 49, filter FCL Vendor 28 → 49, Detail Jadwal Vendor 0 → 2, Kelola Armada Admin 0 → 2, dan Detail Harga FCL Admin (ETD) 0 → 1. Mengubah draft saat filter lain sudah diterapkan lalu Reset juga menghapus filter aktif langsung. **Belum ditemukan Reset yang mempertahankan data terfilter sampai klik Terapkan.**
+- Vendor: 12 halaman/tab diuji (Order, Live Bidding, Penawaran dengan 5 tab, Negosiasi, Tracking, Master Armada, Master Sopir, dan Detail Jadwal FCL). Daftar Lelang Vendor memakai pencarian Enter dan tidak memiliki tombol Reset. Detail Lelang FTL/FCL serta pop-up Riwayat Perubahan Penawaran juga tidak memiliki filter Reset.
+- Admin: handler klik Reset pada 43 halaman/tab run sebelumnya diperiksa ulang tanpa error; 9 halaman/tab menjalani pengujian interaksi tambahan, termasuk Kelola Armada/Sopir per Vendor, riwayat Armada/Sopir, tab Riwayat Penghapusan Drop Point, dan filter ETD Detail Harga FCL. Handler riwayat penghapusan membersihkan field dan filter aktif serta meminta endpoint `/deletions` tanpa filter. Riwayat Vendor tidak memiliki tab penghapusan.
+- Batas bukti: card Live Bidding Vendor sedang kosong, sehingga pop-up Riwayat Harga Penawaran dari card belum dapat diperiksa. Negosiasi Vendor dan beberapa master/riwayat kosong; hasil memakai indikator filter aktif, parameter request bila tersedia, dan inspeksi handler, bukan mengarang perubahan baris.
+
+## 2026-10-04 — Eksplorasi detail seluruh halaman (Admin dan Vendor)
+
+- Read-only: tidak submit, simpan, hapus, atau mengubah setting. Akun dari config/env.md; dua browser context role terpisah.
+- Output: explore/module-map.md dan explore/page-inventory-20261004.md; 187 observasi unik pada 93 pasangan role–route, 85 screenshot. Bukti mentah tersamarkan: artifacts/explore-detail-20261003/.
+- Tambahan terhadap peta lama: Lelang Kontrak dan turunannya, Riwayat Order Tidak Aktif, serta portal Vendor. List, form tambah, tab, riwayat perubahan/penghapusan, dan sampel detail diperiksa berdasarkan jenis halaman.
+- Batas: tidak seluruh record/paginasi; step yang memerlukan submit belum diperiksa; Input Harga Vendor tidak punya lelang sedang buka; Tambah Jadwal sampel ditolak karena melewati rencana akhir kirim. Sesi Vendor kemudian redirect login setelah cross-context check berhasil, penyebab belum dibuktikan.
+- Hipotesis diperbarui di CLAUDE.md: native click berhasil; dropdown kustom dengan select Tampilkan; datepicker dashboard flatpickr/form kustom; dialog Batal tanpa role; 0 data-testid. Tidak ada verdict skenario formal maupun report Excel dari eksplorasi ini.
+- Handoff: eksplorasi selesai sesuai cakupan read-only; run test-module sebelumnya tidak dilanjutkan oleh permintaan ini.

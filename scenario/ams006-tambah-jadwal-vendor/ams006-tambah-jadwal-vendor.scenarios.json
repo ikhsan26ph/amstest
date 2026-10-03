@@ -1,0 +1,5663 @@
+{
+  "summary": {
+    "total": 62,
+    "positive": 22,
+    "negative": 29,
+    "edge": 7,
+    "stress": 4
+  },
+  "source": {
+    "spec": "inputs/ams006-tambah-jadwal-vendor/spec.txt",
+    "designs": [
+      "inputs/ams006-tambah-jadwal-vendor/designs/074.png",
+      "inputs/ams006-tambah-jadwal-vendor/designs/075.png",
+      "inputs/ams006-tambah-jadwal-vendor/designs/075a.png",
+      "inputs/ams006-tambah-jadwal-vendor/designs/076.png",
+      "inputs/ams006-tambah-jadwal-vendor/designs/077.png",
+      "inputs/ams006-tambah-jadwal-vendor/designs/078.png",
+      "inputs/ams006-tambah-jadwal-vendor/designs/079.png",
+      "inputs/ams006-tambah-jadwal-vendor/designs/080.png"
+    ],
+    "extras": []
+  },
+  "scenarios": [
+    {
+      "id": "AMS006-TAMBAH-JADWAL-VENDOR-POS-001",
+      "title": "Aksi jadwal tersedia hanya pada harga FCL",
+      "category": "positive",
+      "priority": "high",
+      "requirement": "REQ-001",
+      "screen": "Daftar Penawaran",
+      "preconditions": [
+        "Vendor login dan memiliki harga FCL serta FTL"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Daftar Penawaran",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Menu Aksi harga FCL",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Menu Aksi",
+          "value": "Tambah Jadwal dan Lihat Jadwal"
+        },
+        {
+          "action": "click",
+          "target": "Menu Aksi harga FTL",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Menu Aksi",
+          "value": "tidak memuat Tambah Jadwal atau Lihat Jadwal"
+        }
+      ],
+      "expected": [
+        "Aksi jadwal tampil pada FCL dan tidak tampil pada FTL"
+      ],
+      "testData": {
+        "fclAuction": "FCL-NRM-01/200526",
+        "ftlAuction": "FTL-NRM-01/200526"
+      },
+      "selectorHints": {
+        "Daftar Penawaran": {
+          "role": "document",
+          "name": "Daftar Penawaran",
+          "testid": "daftar-penawaran"
+        },
+        "Menu Aksi harga FCL": {
+          "role": "button",
+          "name": "Menu Aksi harga FCL",
+          "testid": "menu-aksi-harga-fcl"
+        },
+        "Menu Aksi": {
+          "role": "status",
+          "name": "Menu Aksi",
+          "testid": "menu-aksi"
+        },
+        "Menu Aksi harga FTL": {
+          "role": "button",
+          "name": "Menu Aksi harga FTL",
+          "testid": "menu-aksi-harga-ftl"
+        }
+      }
+    },
+    {
+      "id": "AMS006-TAMBAH-JADWAL-VENDOR-POS-002",
+      "title": "Banyak jadwal tersimpan pada satu harga asal",
+      "category": "positive",
+      "priority": "high",
+      "requirement": "REQ-002",
+      "screen": "Detail Jadwal",
+      "preconditions": [
+        "Vendor memiliki satu harga FCL yang aktif"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Detail Jadwal",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Tambah Jadwal",
+          "value": ""
+        },
+        {
+          "action": "fill",
+          "target": "Nama Kapal",
+          "value": "KM Satu"
+        },
+        {
+          "action": "fill",
+          "target": "Voyage",
+          "value": "V001"
+        },
+        {
+          "action": "click",
+          "target": "Simpan",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Tambah Jadwal",
+          "value": ""
+        },
+        {
+          "action": "fill",
+          "target": "Nama Kapal",
+          "value": "KM Dua"
+        },
+        {
+          "action": "fill",
+          "target": "Voyage",
+          "value": "V002"
+        },
+        {
+          "action": "click",
+          "target": "Simpan",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Tabel Jadwal",
+          "value": "KM Satu dan KM Dua pada No. Lelang yang sama"
+        }
+      ],
+      "expected": [
+        "Dua jadwal terikat pada harga yang sama"
+      ],
+      "testData": {
+        "scheduleCount": 2
+      },
+      "selectorHints": {
+        "Detail Jadwal": {
+          "role": "document",
+          "name": "Detail Jadwal",
+          "testid": "detail-jadwal"
+        },
+        "Tambah Jadwal": {
+          "role": "button",
+          "name": "Tambah Jadwal",
+          "testid": "tambah-jadwal"
+        },
+        "Nama Kapal": {
+          "role": "textbox",
+          "name": "Nama Kapal",
+          "testid": "nama-kapal"
+        },
+        "Voyage": {
+          "role": "textbox",
+          "name": "Voyage",
+          "testid": "voyage"
+        },
+        "Simpan": {
+          "role": "button",
+          "name": "Simpan",
+          "testid": "simpan"
+        },
+        "Tabel Jadwal": {
+          "role": "table",
+          "name": "Tabel Jadwal",
+          "testid": "tabel-jadwal"
+        }
+      }
+    },
+    {
+      "id": "AMS006-TAMBAH-JADWAL-VENDOR-POS-003",
+      "title": "Jadwal pertama melengkapi penawaran FCL",
+      "category": "positive",
+      "priority": "high",
+      "requirement": "REQ-003",
+      "screen": "Daftar Penawaran",
+      "preconditions": [
+        "Harga FCL belum memiliki jadwal aktif"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Tambah Jadwal",
+          "value": ""
+        },
+        {
+          "action": "select",
+          "target": "Jenis Jadwal Kapal",
+          "value": "Direct"
+        },
+        {
+          "action": "fill",
+          "target": "Nama Kapal",
+          "value": "KM Meratus"
+        },
+        {
+          "action": "fill",
+          "target": "Voyage",
+          "value": "M001"
+        },
+        {
+          "action": "fill",
+          "target": "Closing Time",
+          "value": "25/09/2026 10:00"
+        },
+        {
+          "action": "fill",
+          "target": "Berangkat (ETD)",
+          "value": "26/09/2026 10:00"
+        },
+        {
+          "action": "fill",
+          "target": "Tiba (ETA)",
+          "value": "28/09/2026 10:00"
+        },
+        {
+          "action": "click",
+          "target": "Simpan",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Toast",
+          "value": "Jadwal berhasil disimpan"
+        },
+        {
+          "action": "navigate",
+          "target": "Daftar Penawaran",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Tab Penawaran Lengkap",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Card Harga",
+          "value": "status Input Penawaran dan tanpa badge Belum Input Jadwal"
+        },
+        {
+          "action": "navigate",
+          "target": "Detail Harga Penawaran Shipper",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Tombol Pesan",
+          "value": "aktif"
+        }
+      ],
+      "expected": [
+        "Harga berpindah ke Penawaran Lengkap, status vendor menjadi Input Penawaran, dan Pesan aktif"
+      ],
+      "testData": {},
+      "selectorHints": {
+        "Tambah Jadwal": {
+          "role": "document",
+          "name": "Tambah Jadwal",
+          "testid": "tambah-jadwal"
+        },
+        "Jenis Jadwal Kapal": {
+          "role": "combobox",
+          "name": "Jenis Jadwal Kapal",
+          "testid": "jenis-jadwal-kapal"
+        },
+        "Nama Kapal": {
+          "role": "textbox",
+          "name": "Nama Kapal",
+          "testid": "nama-kapal"
+        },
+        "Voyage": {
+          "role": "textbox",
+          "name": "Voyage",
+          "testid": "voyage"
+        },
+        "Closing Time": {
+          "role": "textbox",
+          "name": "Closing Time",
+          "testid": "closing-time"
+        },
+        "Berangkat (ETD)": {
+          "role": "textbox",
+          "name": "Berangkat (ETD)",
+          "testid": "berangkat-etd"
+        },
+        "Tiba (ETA)": {
+          "role": "textbox",
+          "name": "Tiba (ETA)",
+          "testid": "tiba-eta"
+        },
+        "Simpan": {
+          "role": "button",
+          "name": "Simpan",
+          "testid": "simpan"
+        },
+        "Toast": {
+          "role": "status",
+          "name": "Toast",
+          "testid": "toast"
+        },
+        "Daftar Penawaran": {
+          "role": "document",
+          "name": "Daftar Penawaran",
+          "testid": "daftar-penawaran"
+        },
+        "Tab Penawaran Lengkap": {
+          "role": "tab",
+          "name": "Tab Penawaran Lengkap",
+          "testid": "tab-penawaran-lengkap"
+        },
+        "Card Harga": {
+          "role": "status",
+          "name": "Card Harga",
+          "testid": "card-harga"
+        },
+        "Detail Harga Penawaran Shipper": {
+          "role": "document",
+          "name": "Detail Harga Penawaran Shipper",
+          "testid": "detail-harga-penawaran-shipper"
+        },
+        "Tombol Pesan": {
+          "role": "status",
+          "name": "Tombol Pesan",
+          "testid": "tombol-pesan"
+        }
+      }
+    },
+    {
+      "id": "AMS006-TAMBAH-JADWAL-VENDOR-POS-004",
+      "title": "Tambah jadwal setelah lelang tutup sebelum akhir kirim",
+      "category": "positive",
+      "priority": "high",
+      "requirement": "REQ-004",
+      "screen": "Tambah Jadwal",
+      "preconditions": [
+        "Lelang sudah tutup tetapi Rencana Akhir Kirim masih di masa depan"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Daftar Penawaran",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Menu Aksi harga FCL",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Tambah Jadwal",
+          "value": ""
+        },
+        {
+          "action": "select",
+          "target": "Jenis Jadwal Kapal",
+          "value": "Direct"
+        },
+        {
+          "action": "fill",
+          "target": "Nama Kapal",
+          "value": "KM Pasca Tutup"
+        },
+        {
+          "action": "fill",
+          "target": "Voyage",
+          "value": "PT01"
+        },
+        {
+          "action": "fill",
+          "target": "Closing Time",
+          "value": "25/09/2026 09:00"
+        },
+        {
+          "action": "fill",
+          "target": "Berangkat (ETD)",
+          "value": "26/09/2026 09:00"
+        },
+        {
+          "action": "fill",
+          "target": "Tiba (ETA)",
+          "value": "27/09/2026 09:00"
+        },
+        {
+          "action": "click",
+          "target": "Simpan",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Toast",
+          "value": "Jadwal berhasil disimpan"
+        }
+      ],
+      "expected": [
+        "Jadwal dapat disimpan meskipun lelang telah tutup"
+      ],
+      "testData": {},
+      "selectorHints": {
+        "Daftar Penawaran": {
+          "role": "document",
+          "name": "Daftar Penawaran",
+          "testid": "daftar-penawaran"
+        },
+        "Menu Aksi harga FCL": {
+          "role": "button",
+          "name": "Menu Aksi harga FCL",
+          "testid": "menu-aksi-harga-fcl"
+        },
+        "Tambah Jadwal": {
+          "role": "button",
+          "name": "Tambah Jadwal",
+          "testid": "tambah-jadwal"
+        },
+        "Jenis Jadwal Kapal": {
+          "role": "combobox",
+          "name": "Jenis Jadwal Kapal",
+          "testid": "jenis-jadwal-kapal"
+        },
+        "Nama Kapal": {
+          "role": "textbox",
+          "name": "Nama Kapal",
+          "testid": "nama-kapal"
+        },
+        "Voyage": {
+          "role": "textbox",
+          "name": "Voyage",
+          "testid": "voyage"
+        },
+        "Closing Time": {
+          "role": "textbox",
+          "name": "Closing Time",
+          "testid": "closing-time"
+        },
+        "Berangkat (ETD)": {
+          "role": "textbox",
+          "name": "Berangkat (ETD)",
+          "testid": "berangkat-etd"
+        },
+        "Tiba (ETA)": {
+          "role": "textbox",
+          "name": "Tiba (ETA)",
+          "testid": "tiba-eta"
+        },
+        "Simpan": {
+          "role": "button",
+          "name": "Simpan",
+          "testid": "simpan"
+        },
+        "Toast": {
+          "role": "status",
+          "name": "Toast",
+          "testid": "toast"
+        }
+      }
+    },
+    {
+      "id": "AMS006-TAMBAH-JADWAL-VENDOR-POS-005",
+      "title": "Edit dan hapus jadwal yang masih memenuhi syarat",
+      "category": "positive",
+      "priority": "high",
+      "requirement": "REQ-005",
+      "screen": "Detail Jadwal",
+      "preconditions": [
+        "Belum melewati Rencana Akhir Kirim, harga aktif, jadwal belum memiliki order"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Detail Jadwal",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Edit Jadwal",
+          "value": ""
+        },
+        {
+          "action": "fill",
+          "target": "Voyage",
+          "value": "EDIT-01"
+        },
+        {
+          "action": "click",
+          "target": "Kirim",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Tabel Jadwal",
+          "value": "Voyage EDIT-01"
+        },
+        {
+          "action": "click",
+          "target": "Hapus Jadwal",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Konfirmasi Hapus",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Tabel Jadwal",
+          "value": "jadwal tidak tampil"
+        }
+      ],
+      "expected": [
+        "Edit dan hapus berhasil tanpa alert larangan"
+      ],
+      "testData": {},
+      "selectorHints": {
+        "Detail Jadwal": {
+          "role": "document",
+          "name": "Detail Jadwal",
+          "testid": "detail-jadwal"
+        },
+        "Edit Jadwal": {
+          "role": "button",
+          "name": "Edit Jadwal",
+          "testid": "edit-jadwal"
+        },
+        "Voyage": {
+          "role": "textbox",
+          "name": "Voyage",
+          "testid": "voyage"
+        },
+        "Kirim": {
+          "role": "button",
+          "name": "Kirim",
+          "testid": "kirim"
+        },
+        "Tabel Jadwal": {
+          "role": "table",
+          "name": "Tabel Jadwal",
+          "testid": "tabel-jadwal"
+        },
+        "Hapus Jadwal": {
+          "role": "button",
+          "name": "Hapus Jadwal",
+          "testid": "hapus-jadwal"
+        },
+        "Konfirmasi Hapus": {
+          "role": "button",
+          "name": "Konfirmasi Hapus",
+          "testid": "konfirmasi-hapus"
+        }
+      }
+    },
+    {
+      "id": "AMS006-TAMBAH-JADWAL-VENDOR-POS-006",
+      "title": "Menu jadwal membuka layar sesuai aksi",
+      "category": "positive",
+      "priority": "medium",
+      "requirement": "REQ-006",
+      "screen": "Daftar Penawaran",
+      "preconditions": [
+        "Vendor berada pada card harga FCL"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Daftar Penawaran",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Menu Aksi harga FCL",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Tambah Jadwal",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Heading",
+          "value": "Tambah Jadwal"
+        },
+        {
+          "action": "navigate",
+          "target": "Daftar Penawaran",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Menu Aksi harga FCL",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Lihat Jadwal",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Heading",
+          "value": "Detail Jadwal"
+        }
+      ],
+      "expected": [
+        "Tambah Jadwal membuka form dan Lihat Jadwal membuka detail harga terkait"
+      ],
+      "testData": {},
+      "selectorHints": {
+        "Daftar Penawaran": {
+          "role": "document",
+          "name": "Daftar Penawaran",
+          "testid": "daftar-penawaran"
+        },
+        "Menu Aksi harga FCL": {
+          "role": "button",
+          "name": "Menu Aksi harga FCL",
+          "testid": "menu-aksi-harga-fcl"
+        },
+        "Tambah Jadwal": {
+          "role": "button",
+          "name": "Tambah Jadwal",
+          "testid": "tambah-jadwal"
+        },
+        "Heading": {
+          "role": "heading",
+          "name": "Heading",
+          "testid": "heading"
+        },
+        "Lihat Jadwal": {
+          "role": "button",
+          "name": "Lihat Jadwal",
+          "testid": "lihat-jadwal"
+        }
+      }
+    },
+    {
+      "id": "AMS006-TAMBAH-JADWAL-VENDOR-POS-007",
+      "title": "Informasi lelang dan harga tampil lengkap serta read-only",
+      "category": "positive",
+      "priority": "medium",
+      "requirement": "REQ-007",
+      "screen": "Detail Jadwal",
+      "preconditions": [
+        "Harga FCL memiliki detail lengkap"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Detail Jadwal",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Panel Informasi Lelang dan Harga",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Informasi Lelang dan Harga",
+          "value": "No. Lelang, Jenis, Tipe, Skema, Pelayaran, Kontainer, Harga, Mulai Berlaku, PPN, PPh, rute, Biaya Termasuk, Deskripsi Harga"
+        },
+        {
+          "action": "expect",
+          "target": "Informasi Lelang dan Harga",
+          "value": "read-only"
+        }
+      ],
+      "expected": [
+        "Semua informasi sumber tampil dan tidak dapat diedit"
+      ],
+      "testData": {},
+      "selectorHints": {
+        "Detail Jadwal": {
+          "role": "document",
+          "name": "Detail Jadwal",
+          "testid": "detail-jadwal"
+        },
+        "Informasi Lelang dan Harga": {
+          "role": "status",
+          "name": "Informasi Lelang dan Harga",
+          "testid": "informasi-lelang-dan-harga"
+        },
+        "Panel Informasi Lelang dan Harga": {
+          "role": "button",
+          "name": "Panel Informasi Lelang dan Harga",
+          "testid": "panel-informasi-lelang-dan-harga"
+        }
+      }
+    },
+    {
+      "id": "AMS006-TAMBAH-JADWAL-VENDOR-POS-008",
+      "title": "Tabel jadwal memakai urutan terbaru dan pagination 20",
+      "category": "positive",
+      "priority": "medium",
+      "requirement": "REQ-008",
+      "screen": "Detail Jadwal",
+      "preconditions": [
+        "Harga memiliki lebih dari 20 jadwal dengan Tanggal Buat berbeda"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Detail Jadwal",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Header Tabel Jadwal",
+          "value": "Tanggal Buat, Nama Kapal, Voyage, Closing Time, Open Stack, Berangkat (ETD), Tiba (ETA), Edit, Hapus"
+        },
+        {
+          "action": "expect",
+          "target": "Baris Pertama",
+          "value": "Tanggal Buat terbaru"
+        },
+        {
+          "action": "expect",
+          "target": "Ukuran Halaman",
+          "value": "20"
+        },
+        {
+          "action": "click",
+          "target": "Header Nama Kapal",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Tabel Jadwal",
+          "value": "terurut berdasarkan Nama Kapal"
+        }
+      ],
+      "expected": [
+        "Kolom lengkap, default terbaru, 20 item per halaman, dan sorting bekerja"
+      ],
+      "testData": {},
+      "selectorHints": {
+        "Detail Jadwal": {
+          "role": "document",
+          "name": "Detail Jadwal",
+          "testid": "detail-jadwal"
+        },
+        "Header Tabel Jadwal": {
+          "role": "table",
+          "name": "Header Tabel Jadwal",
+          "testid": "header-tabel-jadwal"
+        },
+        "Baris Pertama": {
+          "role": "status",
+          "name": "Baris Pertama",
+          "testid": "baris-pertama"
+        },
+        "Ukuran Halaman": {
+          "role": "status",
+          "name": "Ukuran Halaman",
+          "testid": "ukuran-halaman"
+        },
+        "Header Nama Kapal": {
+          "role": "button",
+          "name": "Header Nama Kapal",
+          "testid": "header-nama-kapal"
+        },
+        "Tabel Jadwal": {
+          "role": "table",
+          "name": "Tabel Jadwal",
+          "testid": "tabel-jadwal"
+        }
+      }
+    },
+    {
+      "id": "AMS006-TAMBAH-JADWAL-VENDOR-POS-009",
+      "title": "Filter jadwal diterapkan lalu direset",
+      "category": "positive",
+      "priority": "medium",
+      "requirement": "REQ-009",
+      "screen": "Detail Jadwal",
+      "preconditions": [
+        "Tabel memiliki jadwal Direct dan Connecting"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Detail Jadwal",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Filter",
+          "value": ""
+        },
+        {
+          "action": "fill",
+          "target": "Nama Kapal",
+          "value": "KM Tidar"
+        },
+        {
+          "action": "fill",
+          "target": "Voyage",
+          "value": "088"
+        },
+        {
+          "action": "select",
+          "target": "Jenis Jadwal",
+          "value": "Direct"
+        },
+        {
+          "action": "click",
+          "target": "Terapkan",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Tabel Jadwal",
+          "value": "hanya KM Tidar voyage 088 Direct"
+        },
+        {
+          "action": "click",
+          "target": "Reset",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Filter Jadwal",
+          "value": "semua nilai kosong"
+        },
+        {
+          "action": "expect",
+          "target": "Tabel Jadwal",
+          "value": "semua jadwal kembali tampil"
+        }
+      ],
+      "expected": [
+        "Filter membatasi hasil dan Reset mengembalikan kondisi awal"
+      ],
+      "testData": {},
+      "selectorHints": {
+        "Detail Jadwal": {
+          "role": "document",
+          "name": "Detail Jadwal",
+          "testid": "detail-jadwal"
+        },
+        "Filter": {
+          "role": "button",
+          "name": "Filter",
+          "testid": "filter"
+        },
+        "Nama Kapal": {
+          "role": "textbox",
+          "name": "Nama Kapal",
+          "testid": "nama-kapal"
+        },
+        "Voyage": {
+          "role": "textbox",
+          "name": "Voyage",
+          "testid": "voyage"
+        },
+        "Jenis Jadwal": {
+          "role": "combobox",
+          "name": "Jenis Jadwal",
+          "testid": "jenis-jadwal"
+        },
+        "Terapkan": {
+          "role": "button",
+          "name": "Terapkan",
+          "testid": "terapkan"
+        },
+        "Tabel Jadwal": {
+          "role": "table",
+          "name": "Tabel Jadwal",
+          "testid": "tabel-jadwal"
+        },
+        "Reset": {
+          "role": "button",
+          "name": "Reset",
+          "testid": "reset"
+        },
+        "Filter Jadwal": {
+          "role": "status",
+          "name": "Filter Jadwal",
+          "testid": "filter-jadwal"
+        }
+      }
+    },
+    {
+      "id": "AMS006-TAMBAH-JADWAL-VENDOR-POS-010",
+      "title": "Badge connecting menampilkan seluruh rangkaian kapal",
+      "category": "positive",
+      "priority": "medium",
+      "requirement": "REQ-010",
+      "screen": "Detail Kapal Connecting",
+      "preconditions": [
+        "Tersedia jadwal dengan dua transit"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Detail Jadwal",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "2x Connecting",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Dialog Detail Kapal Connecting",
+          "value": "asal dengan kapal utama, dua pelabuhan transit, dan tujuan"
+        },
+        {
+          "action": "expect",
+          "target": "Rangkaian Connecting",
+          "value": "ETD Asal, ETD Connecting, dan ETA Tujuan"
+        },
+        {
+          "action": "click",
+          "target": "Tutup Dialog",
+          "value": ""
+        }
+      ],
+      "expected": [
+        "Dialog menampilkan rangkaian berurutan dan dapat ditutup"
+      ],
+      "testData": {},
+      "selectorHints": {
+        "Detail Jadwal": {
+          "role": "document",
+          "name": "Detail Jadwal",
+          "testid": "detail-jadwal"
+        },
+        "2x Connecting": {
+          "role": "button",
+          "name": "2x Connecting",
+          "testid": "2x-connecting"
+        },
+        "Dialog Detail Kapal Connecting": {
+          "role": "alertdialog",
+          "name": "Dialog Detail Kapal Connecting",
+          "testid": "dialog-detail-kapal-connecting"
+        },
+        "Rangkaian Connecting": {
+          "role": "status",
+          "name": "Rangkaian Connecting",
+          "testid": "rangkaian-connecting"
+        },
+        "Tutup Dialog": {
+          "role": "button",
+          "name": "Tutup Dialog",
+          "testid": "tutup-dialog"
+        }
+      }
+    },
+    {
+      "id": "AMS006-TAMBAH-JADWAL-VENDOR-POS-011",
+      "title": "Informasi umum dan detail multipickup multidrop tampil",
+      "category": "positive",
+      "priority": "medium",
+      "requirement": "REQ-011",
+      "screen": "Tambah Jadwal",
+      "preconditions": [
+        "Harga FCL memakai multipickup dan multidrop"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Tambah Jadwal",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "No. Lelang",
+          "value": "terisi otomatis dan nonaktif"
+        },
+        {
+          "action": "expect",
+          "target": "Informasi Umum",
+          "value": "jenis, jumlah kontainer, asuransi, biaya, POL-POD dan alamat"
+        },
+        {
+          "action": "click",
+          "target": "Multipickup",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Dialog Detail Pickup",
+          "value": "seluruh drop point asal"
+        },
+        {
+          "action": "click",
+          "target": "Tutup Dialog",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Multidrop",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Dialog Detail Drop",
+          "value": "seluruh drop point tujuan"
+        }
+      ],
+      "expected": [
+        "Informasi umum benar dan tautan menampilkan detail lokasi"
+      ],
+      "testData": {},
+      "selectorHints": {
+        "Tambah Jadwal": {
+          "role": "document",
+          "name": "Tambah Jadwal",
+          "testid": "tambah-jadwal"
+        },
+        "No. Lelang": {
+          "role": "status",
+          "name": "No. Lelang",
+          "testid": "no-lelang"
+        },
+        "Informasi Umum": {
+          "role": "status",
+          "name": "Informasi Umum",
+          "testid": "informasi-umum"
+        },
+        "Multipickup": {
+          "role": "link",
+          "name": "Multipickup",
+          "testid": "multipickup"
+        },
+        "Dialog Detail Pickup": {
+          "role": "alertdialog",
+          "name": "Dialog Detail Pickup",
+          "testid": "dialog-detail-pickup"
+        },
+        "Tutup Dialog": {
+          "role": "button",
+          "name": "Tutup Dialog",
+          "testid": "tutup-dialog"
+        },
+        "Multidrop": {
+          "role": "link",
+          "name": "Multidrop",
+          "testid": "multidrop"
+        },
+        "Dialog Detail Drop": {
+          "role": "alertdialog",
+          "name": "Dialog Detail Drop",
+          "testid": "dialog-detail-drop"
+        }
+      }
+    },
+    {
+      "id": "AMS006-TAMBAH-JADWAL-VENDOR-POS-012",
+      "title": "Pergantian jenis mempertahankan detail kapal utama",
+      "category": "positive",
+      "priority": "high",
+      "requirement": "REQ-012",
+      "screen": "Tambah Jadwal",
+      "preconditions": [
+        "Form Tambah Jadwal terbuka"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Tambah Jadwal",
+          "value": ""
+        },
+        {
+          "action": "select",
+          "target": "Jenis Jadwal Kapal",
+          "value": "Direct"
+        },
+        {
+          "action": "fill",
+          "target": "Nama Kapal",
+          "value": "KM Persisten"
+        },
+        {
+          "action": "fill",
+          "target": "Voyage",
+          "value": "P001"
+        },
+        {
+          "action": "select",
+          "target": "Jenis Jadwal Kapal",
+          "value": "Connecting"
+        },
+        {
+          "action": "expect",
+          "target": "Data Kapal Connecting",
+          "value": "tampil tanpa reload"
+        },
+        {
+          "action": "expect",
+          "target": "Nama Kapal",
+          "value": "KM Persisten"
+        },
+        {
+          "action": "select",
+          "target": "Jenis Jadwal Kapal",
+          "value": "Direct"
+        },
+        {
+          "action": "expect",
+          "target": "Data Kapal Connecting",
+          "value": "tidak tampil"
+        },
+        {
+          "action": "expect",
+          "target": "Voyage",
+          "value": "P001"
+        }
+      ],
+      "expected": [
+        "Section dinamis berubah dan detail kapal utama dipertahankan"
+      ],
+      "testData": {},
+      "selectorHints": {
+        "Tambah Jadwal": {
+          "role": "document",
+          "name": "Tambah Jadwal",
+          "testid": "tambah-jadwal"
+        },
+        "Jenis Jadwal Kapal": {
+          "role": "combobox",
+          "name": "Jenis Jadwal Kapal",
+          "testid": "jenis-jadwal-kapal"
+        },
+        "Nama Kapal": {
+          "role": "status",
+          "name": "Nama Kapal",
+          "testid": "nama-kapal"
+        },
+        "Voyage": {
+          "role": "status",
+          "name": "Voyage",
+          "testid": "voyage"
+        },
+        "Data Kapal Connecting": {
+          "role": "status",
+          "name": "Data Kapal Connecting",
+          "testid": "data-kapal-connecting"
+        }
+      }
+    },
+    {
+      "id": "AMS006-TAMBAH-JADWAL-VENDOR-POS-013",
+      "title": "Simpan jadwal Direct dengan urutan waktu valid",
+      "category": "positive",
+      "priority": "high",
+      "requirement": "REQ-013",
+      "screen": "Tambah Jadwal",
+      "preconditions": [
+        "Harga mulai berlaku sebelum waktu pengujian dan pelayaran Meratus aktif"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Tambah Jadwal",
+          "value": ""
+        },
+        {
+          "action": "select",
+          "target": "Jenis Jadwal Kapal",
+          "value": "Direct"
+        },
+        {
+          "action": "expect",
+          "target": "Pelayaran",
+          "value": "Meratus dan nonaktif"
+        },
+        {
+          "action": "fill",
+          "target": "Nama Kapal",
+          "value": "KM Valid"
+        },
+        {
+          "action": "fill",
+          "target": "Voyage",
+          "value": "VAL-01"
+        },
+        {
+          "action": "fill",
+          "target": "Open Stack",
+          "value": "24/09/2026 08:00"
+        },
+        {
+          "action": "fill",
+          "target": "Closing Time",
+          "value": "24/09/2026 12:00"
+        },
+        {
+          "action": "fill",
+          "target": "Berangkat (ETD)",
+          "value": "25/09/2026 12:00"
+        },
+        {
+          "action": "fill",
+          "target": "Tiba (ETA)",
+          "value": "27/09/2026 12:00"
+        },
+        {
+          "action": "click",
+          "target": "Simpan",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Toast",
+          "value": "Jadwal berhasil disimpan"
+        }
+      ],
+      "expected": [
+        "Jadwal Direct valid tersimpan"
+      ],
+      "testData": {},
+      "selectorHints": {
+        "Tambah Jadwal": {
+          "role": "document",
+          "name": "Tambah Jadwal",
+          "testid": "tambah-jadwal"
+        },
+        "Jenis Jadwal Kapal": {
+          "role": "combobox",
+          "name": "Jenis Jadwal Kapal",
+          "testid": "jenis-jadwal-kapal"
+        },
+        "Pelayaran": {
+          "role": "status",
+          "name": "Pelayaran",
+          "testid": "pelayaran"
+        },
+        "Nama Kapal": {
+          "role": "textbox",
+          "name": "Nama Kapal",
+          "testid": "nama-kapal"
+        },
+        "Voyage": {
+          "role": "textbox",
+          "name": "Voyage",
+          "testid": "voyage"
+        },
+        "Open Stack": {
+          "role": "textbox",
+          "name": "Open Stack",
+          "testid": "open-stack"
+        },
+        "Closing Time": {
+          "role": "textbox",
+          "name": "Closing Time",
+          "testid": "closing-time"
+        },
+        "Berangkat (ETD)": {
+          "role": "textbox",
+          "name": "Berangkat (ETD)",
+          "testid": "berangkat-etd"
+        },
+        "Tiba (ETA)": {
+          "role": "textbox",
+          "name": "Tiba (ETA)",
+          "testid": "tiba-eta"
+        },
+        "Simpan": {
+          "role": "button",
+          "name": "Simpan",
+          "testid": "simpan"
+        },
+        "Toast": {
+          "role": "status",
+          "name": "Toast",
+          "testid": "toast"
+        }
+      }
+    },
+    {
+      "id": "AMS006-TAMBAH-JADWAL-VENDOR-POS-014",
+      "title": "Simpan connecting dengan beberapa transit unik",
+      "category": "positive",
+      "priority": "high",
+      "requirement": "REQ-014",
+      "screen": "Tambah Jadwal",
+      "preconditions": [
+        "Form Tambah Jadwal untuk rute Tanjung Perak ke Makassar terbuka"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Tambah Jadwal",
+          "value": ""
+        },
+        {
+          "action": "select",
+          "target": "Jenis Jadwal Kapal",
+          "value": "Connecting"
+        },
+        {
+          "action": "fill",
+          "target": "Nama Kapal",
+          "value": "KM Utama"
+        },
+        {
+          "action": "fill",
+          "target": "Voyage",
+          "value": "U001"
+        },
+        {
+          "action": "fill",
+          "target": "Closing Time",
+          "value": "24/09/2026 10:00"
+        },
+        {
+          "action": "fill",
+          "target": "Berangkat (ETD)",
+          "value": "25/09/2026 10:00"
+        },
+        {
+          "action": "fill",
+          "target": "Tiba (ETA)",
+          "value": "30/09/2026 10:00"
+        },
+        {
+          "action": "select",
+          "target": "Pelabuhan Connecting",
+          "value": "Benoa"
+        },
+        {
+          "action": "fill",
+          "target": "Kapal Connecting",
+          "value": "KM Bali"
+        },
+        {
+          "action": "fill",
+          "target": "Voyage Connecting",
+          "value": "B001"
+        },
+        {
+          "action": "fill",
+          "target": "ETD Connecting",
+          "value": "26/09/2026 10:00"
+        },
+        {
+          "action": "click",
+          "target": "Tambah Kapal Connecting",
+          "value": ""
+        },
+        {
+          "action": "select",
+          "target": "Pelabuhan Connecting 2",
+          "value": "Ende"
+        },
+        {
+          "action": "fill",
+          "target": "Kapal Connecting 2",
+          "value": "KM Ende"
+        },
+        {
+          "action": "fill",
+          "target": "Voyage Connecting 2",
+          "value": "E001"
+        },
+        {
+          "action": "fill",
+          "target": "ETD Connecting 2",
+          "value": "28/09/2026 10:00"
+        },
+        {
+          "action": "expect",
+          "target": "Hapus Kapal Connecting",
+          "value": "tampil saat baris lebih dari satu"
+        },
+        {
+          "action": "click",
+          "target": "Simpan",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Tabel Jadwal",
+          "value": "2x Connecting"
+        }
+      ],
+      "expected": [
+        "Urutan transit tersimpan dan badge berjumlah dua"
+      ],
+      "testData": {},
+      "selectorHints": {
+        "Tambah Jadwal": {
+          "role": "document",
+          "name": "Tambah Jadwal",
+          "testid": "tambah-jadwal"
+        },
+        "Jenis Jadwal Kapal": {
+          "role": "combobox",
+          "name": "Jenis Jadwal Kapal",
+          "testid": "jenis-jadwal-kapal"
+        },
+        "Nama Kapal": {
+          "role": "textbox",
+          "name": "Nama Kapal",
+          "testid": "nama-kapal"
+        },
+        "Voyage": {
+          "role": "textbox",
+          "name": "Voyage",
+          "testid": "voyage"
+        },
+        "Closing Time": {
+          "role": "textbox",
+          "name": "Closing Time",
+          "testid": "closing-time"
+        },
+        "Berangkat (ETD)": {
+          "role": "textbox",
+          "name": "Berangkat (ETD)",
+          "testid": "berangkat-etd"
+        },
+        "Tiba (ETA)": {
+          "role": "textbox",
+          "name": "Tiba (ETA)",
+          "testid": "tiba-eta"
+        },
+        "Pelabuhan Connecting": {
+          "role": "combobox",
+          "name": "Pelabuhan Connecting",
+          "testid": "pelabuhan-connecting"
+        },
+        "Kapal Connecting": {
+          "role": "textbox",
+          "name": "Kapal Connecting",
+          "testid": "kapal-connecting"
+        },
+        "Voyage Connecting": {
+          "role": "textbox",
+          "name": "Voyage Connecting",
+          "testid": "voyage-connecting"
+        },
+        "ETD Connecting": {
+          "role": "textbox",
+          "name": "ETD Connecting",
+          "testid": "etd-connecting"
+        },
+        "Tambah Kapal Connecting": {
+          "role": "link",
+          "name": "Tambah Kapal Connecting",
+          "testid": "tambah-kapal-connecting"
+        },
+        "Pelabuhan Connecting 2": {
+          "role": "combobox",
+          "name": "Pelabuhan Connecting 2",
+          "testid": "pelabuhan-connecting-2"
+        },
+        "Kapal Connecting 2": {
+          "role": "textbox",
+          "name": "Kapal Connecting 2",
+          "testid": "kapal-connecting-2"
+        },
+        "Voyage Connecting 2": {
+          "role": "textbox",
+          "name": "Voyage Connecting 2",
+          "testid": "voyage-connecting-2"
+        },
+        "ETD Connecting 2": {
+          "role": "textbox",
+          "name": "ETD Connecting 2",
+          "testid": "etd-connecting-2"
+        },
+        "Simpan": {
+          "role": "button",
+          "name": "Simpan",
+          "testid": "simpan"
+        },
+        "Tabel Jadwal": {
+          "role": "table",
+          "name": "Tabel Jadwal",
+          "testid": "tabel-jadwal"
+        },
+        "Hapus Kapal Connecting": {
+          "role": "button",
+          "name": "Hapus Kapal Connecting",
+          "testid": "hapus-kapal-connecting"
+        }
+      }
+    },
+    {
+      "id": "AMS006-TAMBAH-JADWAL-VENDOR-POS-015",
+      "title": "Koreksi field error sampai penyimpanan berhasil",
+      "category": "positive",
+      "priority": "high",
+      "requirement": "REQ-015",
+      "screen": "Tambah Jadwal",
+      "preconditions": [
+        "Form Tambah Jadwal terbuka"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Tambah Jadwal",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Simpan",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Field Error Pertama",
+          "value": "terlihat dan menjadi posisi scroll"
+        },
+        {
+          "action": "expect",
+          "target": "Helper Error",
+          "value": "field wajib harus diisi"
+        },
+        {
+          "action": "fill",
+          "target": "Nama Kapal",
+          "value": "KM Koreksi"
+        },
+        {
+          "action": "fill",
+          "target": "Voyage",
+          "value": "K001"
+        },
+        {
+          "action": "fill",
+          "target": "Closing Time",
+          "value": "24/09/2026 10:00"
+        },
+        {
+          "action": "fill",
+          "target": "Berangkat (ETD)",
+          "value": "25/09/2026 10:00"
+        },
+        {
+          "action": "fill",
+          "target": "Tiba (ETA)",
+          "value": "26/09/2026 10:00"
+        },
+        {
+          "action": "select",
+          "target": "Jenis Jadwal Kapal",
+          "value": "Direct"
+        },
+        {
+          "action": "click",
+          "target": "Simpan",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Toast",
+          "value": "Jadwal berhasil disimpan"
+        }
+      ],
+      "expected": [
+        "Helper/border error muncul, fokus ke error pertama, lalu hilang setelah koreksi"
+      ],
+      "testData": {},
+      "selectorHints": {
+        "Tambah Jadwal": {
+          "role": "document",
+          "name": "Tambah Jadwal",
+          "testid": "tambah-jadwal"
+        },
+        "Simpan": {
+          "role": "button",
+          "name": "Simpan",
+          "testid": "simpan"
+        },
+        "Field Error Pertama": {
+          "role": "status",
+          "name": "Field Error Pertama",
+          "testid": "field-error-pertama"
+        },
+        "Helper Error": {
+          "role": "status",
+          "name": "Helper Error",
+          "testid": "helper-error"
+        },
+        "Nama Kapal": {
+          "role": "textbox",
+          "name": "Nama Kapal",
+          "testid": "nama-kapal"
+        },
+        "Voyage": {
+          "role": "textbox",
+          "name": "Voyage",
+          "testid": "voyage"
+        },
+        "Closing Time": {
+          "role": "textbox",
+          "name": "Closing Time",
+          "testid": "closing-time"
+        },
+        "Berangkat (ETD)": {
+          "role": "textbox",
+          "name": "Berangkat (ETD)",
+          "testid": "berangkat-etd"
+        },
+        "Tiba (ETA)": {
+          "role": "textbox",
+          "name": "Tiba (ETA)",
+          "testid": "tiba-eta"
+        },
+        "Jenis Jadwal Kapal": {
+          "role": "combobox",
+          "name": "Jenis Jadwal Kapal",
+          "testid": "jenis-jadwal-kapal"
+        },
+        "Toast": {
+          "role": "status",
+          "name": "Toast",
+          "testid": "toast"
+        }
+      }
+    },
+    {
+      "id": "AMS006-TAMBAH-JADWAL-VENDOR-POS-016",
+      "title": "Batal terkonfirmasi membuang perubahan",
+      "category": "positive",
+      "priority": "medium",
+      "requirement": "REQ-016",
+      "screen": "Tambah Jadwal",
+      "preconditions": [
+        "Vendor mengubah form dari Detail Jadwal"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Tambah Jadwal",
+          "value": ""
+        },
+        {
+          "action": "fill",
+          "target": "Nama Kapal",
+          "value": "KM Tidak Jadi"
+        },
+        {
+          "action": "click",
+          "target": "Batal",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Dialog Konfirmasi Batal",
+          "value": "perubahan tidak akan disimpan"
+        },
+        {
+          "action": "click",
+          "target": "Ya, Batal",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Heading",
+          "value": "Detail Jadwal"
+        },
+        {
+          "action": "expect",
+          "target": "Tabel Jadwal",
+          "value": "KM Tidak Jadi tidak tampil"
+        }
+      ],
+      "expected": [
+        "Kembali ke halaman asal tanpa menyimpan"
+      ],
+      "testData": {},
+      "selectorHints": {
+        "Tambah Jadwal": {
+          "role": "document",
+          "name": "Tambah Jadwal",
+          "testid": "tambah-jadwal"
+        },
+        "Nama Kapal": {
+          "role": "textbox",
+          "name": "Nama Kapal",
+          "testid": "nama-kapal"
+        },
+        "Batal": {
+          "role": "button",
+          "name": "Batal",
+          "testid": "batal"
+        },
+        "Dialog Konfirmasi Batal": {
+          "role": "alertdialog",
+          "name": "Dialog Konfirmasi Batal",
+          "testid": "dialog-konfirmasi-batal"
+        },
+        "Ya, Batal": {
+          "role": "button",
+          "name": "Ya, Batal",
+          "testid": "ya-batal"
+        },
+        "Heading": {
+          "role": "heading",
+          "name": "Heading",
+          "testid": "heading"
+        },
+        "Tabel Jadwal": {
+          "role": "table",
+          "name": "Tabel Jadwal",
+          "testid": "tabel-jadwal"
+        }
+      }
+    },
+    {
+      "id": "AMS006-TAMBAH-JADWAL-VENDOR-POS-017",
+      "title": "Simpan unik mencatat tanggal buat dan toast",
+      "category": "positive",
+      "priority": "high",
+      "requirement": "REQ-017",
+      "screen": "Tambah Jadwal",
+      "preconditions": [
+        "Belum ada kombinasi kapal, voyage, ETD, ETA yang sama pada harga"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Tambah Jadwal",
+          "value": ""
+        },
+        {
+          "action": "select",
+          "target": "Jenis Jadwal Kapal",
+          "value": "Direct"
+        },
+        {
+          "action": "fill",
+          "target": "Nama Kapal",
+          "value": "KM Unik"
+        },
+        {
+          "action": "fill",
+          "target": "Voyage",
+          "value": "UNQ-01"
+        },
+        {
+          "action": "fill",
+          "target": "Closing Time",
+          "value": "24/09/2026 10:00"
+        },
+        {
+          "action": "fill",
+          "target": "Berangkat (ETD)",
+          "value": "25/09/2026 10:00"
+        },
+        {
+          "action": "fill",
+          "target": "Tiba (ETA)",
+          "value": "27/09/2026 10:00"
+        },
+        {
+          "action": "click",
+          "target": "Simpan",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Toast",
+          "value": "Jadwal berhasil disimpan"
+        },
+        {
+          "action": "expect",
+          "target": "Tabel Jadwal",
+          "value": "KM Unik, UNQ-01, dan Tanggal Buat saat ini"
+        }
+      ],
+      "expected": [
+        "Data unik tersimpan, toast tampil, dan Tanggal Buat tercatat"
+      ],
+      "testData": {},
+      "selectorHints": {
+        "Tambah Jadwal": {
+          "role": "document",
+          "name": "Tambah Jadwal",
+          "testid": "tambah-jadwal"
+        },
+        "Jenis Jadwal Kapal": {
+          "role": "combobox",
+          "name": "Jenis Jadwal Kapal",
+          "testid": "jenis-jadwal-kapal"
+        },
+        "Nama Kapal": {
+          "role": "textbox",
+          "name": "Nama Kapal",
+          "testid": "nama-kapal"
+        },
+        "Voyage": {
+          "role": "textbox",
+          "name": "Voyage",
+          "testid": "voyage"
+        },
+        "Closing Time": {
+          "role": "textbox",
+          "name": "Closing Time",
+          "testid": "closing-time"
+        },
+        "Berangkat (ETD)": {
+          "role": "textbox",
+          "name": "Berangkat (ETD)",
+          "testid": "berangkat-etd"
+        },
+        "Tiba (ETA)": {
+          "role": "textbox",
+          "name": "Tiba (ETA)",
+          "testid": "tiba-eta"
+        },
+        "Simpan": {
+          "role": "button",
+          "name": "Simpan",
+          "testid": "simpan"
+        },
+        "Toast": {
+          "role": "status",
+          "name": "Toast",
+          "testid": "toast"
+        },
+        "Tabel Jadwal": {
+          "role": "table",
+          "name": "Tabel Jadwal",
+          "testid": "tabel-jadwal"
+        }
+      }
+    },
+    {
+      "id": "AMS006-TAMBAH-JADWAL-VENDOR-POS-018",
+      "title": "Edit jadwal memuat data existing dan menyimpan perubahan",
+      "category": "positive",
+      "priority": "high",
+      "requirement": "REQ-018",
+      "screen": "Edit Jadwal",
+      "preconditions": [
+        "Jadwal Direct valid dan dapat diedit"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Detail Jadwal",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Edit Jadwal",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Dialog Edit Jadwal",
+          "value": "data existing terisi"
+        },
+        {
+          "action": "expect",
+          "target": "Jenis Jadwal Kapal",
+          "value": "Direct terpilih"
+        },
+        {
+          "action": "fill",
+          "target": "Voyage",
+          "value": "088-REV"
+        },
+        {
+          "action": "click",
+          "target": "Kirim",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Tabel Jadwal",
+          "value": "Voyage 088-REV"
+        }
+      ],
+      "expected": [
+        "Dialog prefilled dan perubahan valid tersimpan"
+      ],
+      "testData": {},
+      "selectorHints": {
+        "Detail Jadwal": {
+          "role": "document",
+          "name": "Detail Jadwal",
+          "testid": "detail-jadwal"
+        },
+        "Edit Jadwal": {
+          "role": "button",
+          "name": "Edit Jadwal",
+          "testid": "edit-jadwal"
+        },
+        "Dialog Edit Jadwal": {
+          "role": "alertdialog",
+          "name": "Dialog Edit Jadwal",
+          "testid": "dialog-edit-jadwal"
+        },
+        "Jenis Jadwal Kapal": {
+          "role": "status",
+          "name": "Jenis Jadwal Kapal",
+          "testid": "jenis-jadwal-kapal"
+        },
+        "Voyage": {
+          "role": "textbox",
+          "name": "Voyage",
+          "testid": "voyage"
+        },
+        "Kirim": {
+          "role": "button",
+          "name": "Kirim",
+          "testid": "kirim"
+        },
+        "Tabel Jadwal": {
+          "role": "table",
+          "name": "Tabel Jadwal",
+          "testid": "tabel-jadwal"
+        }
+      }
+    },
+    {
+      "id": "AMS006-TAMBAH-JADWAL-VENDOR-POS-019",
+      "title": "Hapus jadwal aktif terakhir mengembalikan status harga",
+      "category": "positive",
+      "priority": "high",
+      "requirement": "REQ-019",
+      "screen": "Detail Jadwal",
+      "preconditions": [
+        "Harga FCL hanya memiliki satu jadwal aktif dan belum berorder"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Detail Jadwal",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Hapus Jadwal",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Dialog Konfirmasi Hapus",
+          "value": "konfirmasi penghapusan"
+        },
+        {
+          "action": "click",
+          "target": "Konfirmasi Hapus",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Tabel Jadwal",
+          "value": "kosong"
+        },
+        {
+          "action": "navigate",
+          "target": "Daftar Penawaran",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Card Harga",
+          "value": "badge Belum Input Jadwal dan status Input Harga"
+        },
+        {
+          "action": "navigate",
+          "target": "Detail Harga Penawaran Shipper",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Tombol Pesan",
+          "value": "nonaktif"
+        }
+      ],
+      "expected": [
+        "Jadwal terhapus dan status harga/vendor/shipper kembali belum berjadwal"
+      ],
+      "testData": {},
+      "selectorHints": {
+        "Detail Jadwal": {
+          "role": "document",
+          "name": "Detail Jadwal",
+          "testid": "detail-jadwal"
+        },
+        "Hapus Jadwal": {
+          "role": "button",
+          "name": "Hapus Jadwal",
+          "testid": "hapus-jadwal"
+        },
+        "Dialog Konfirmasi Hapus": {
+          "role": "alertdialog",
+          "name": "Dialog Konfirmasi Hapus",
+          "testid": "dialog-konfirmasi-hapus"
+        },
+        "Konfirmasi Hapus": {
+          "role": "button",
+          "name": "Konfirmasi Hapus",
+          "testid": "konfirmasi-hapus"
+        },
+        "Tabel Jadwal": {
+          "role": "table",
+          "name": "Tabel Jadwal",
+          "testid": "tabel-jadwal"
+        },
+        "Daftar Penawaran": {
+          "role": "document",
+          "name": "Daftar Penawaran",
+          "testid": "daftar-penawaran"
+        },
+        "Card Harga": {
+          "role": "status",
+          "name": "Card Harga",
+          "testid": "card-harga"
+        },
+        "Detail Harga Penawaran Shipper": {
+          "role": "document",
+          "name": "Detail Harga Penawaran Shipper",
+          "testid": "detail-harga-penawaran-shipper"
+        },
+        "Tombol Pesan": {
+          "role": "status",
+          "name": "Tombol Pesan",
+          "testid": "tombol-pesan"
+        }
+      }
+    },
+    {
+      "id": "AMS006-TAMBAH-JADWAL-VENDOR-POS-020",
+      "title": "Tambah edit hapus tercatat lengkap di riwayat",
+      "category": "positive",
+      "priority": "medium",
+      "requirement": "REQ-020",
+      "screen": "Riwayat Perubahan",
+      "preconditions": [
+        "Vendor telah melakukan tambah, edit, dan hapus jadwal"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Riwayat Perubahan",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Filter Riwayat Perubahan",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Tabel Riwayat",
+          "value": "entri Tambah Jadwal"
+        },
+        {
+          "action": "expect",
+          "target": "Tabel Riwayat",
+          "value": "entri Edit Jadwal dengan nilai lama dan baru"
+        },
+        {
+          "action": "expect",
+          "target": "Tabel Riwayat",
+          "value": "entri Hapus Jadwal"
+        },
+        {
+          "action": "expect",
+          "target": "Tabel Riwayat",
+          "value": "user dan waktu pada setiap entri"
+        }
+      ],
+      "expected": [
+        "Audit mencakup aksi, field, nilai lama/baru, user, dan waktu"
+      ],
+      "testData": {},
+      "selectorHints": {
+        "Riwayat Perubahan": {
+          "role": "document",
+          "name": "Riwayat Perubahan",
+          "testid": "riwayat-perubahan"
+        },
+        "Tabel Riwayat": {
+          "role": "table",
+          "name": "Tabel Riwayat",
+          "testid": "tabel-riwayat"
+        },
+        "Filter Riwayat Perubahan": {
+          "role": "button",
+          "name": "Filter Riwayat Perubahan",
+          "testid": "filter-riwayat-perubahan"
+        }
+      }
+    },
+    {
+      "id": "AMS006-TAMBAH-JADWAL-VENDOR-POS-021",
+      "title": "Perubahan pascalelang langsung terlihat oleh shipper",
+      "category": "positive",
+      "priority": "high",
+      "requirement": "REQ-021",
+      "screen": "Detail Harga Penawaran Shipper",
+      "preconditions": [
+        "Lelang tutup, belum melewati akhir kirim, jadwal belum berorder"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Detail Jadwal",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Edit Jadwal",
+          "value": ""
+        },
+        {
+          "action": "fill",
+          "target": "Closing Time",
+          "value": "25/09/2026 12:00"
+        },
+        {
+          "action": "fill",
+          "target": "Berangkat (ETD)",
+          "value": "26/09/2026 12:00"
+        },
+        {
+          "action": "fill",
+          "target": "Tiba (ETA)",
+          "value": "28/09/2026 12:00"
+        },
+        {
+          "action": "click",
+          "target": "Kirim",
+          "value": ""
+        },
+        {
+          "action": "navigate",
+          "target": "Detail Harga Penawaran Shipper",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Detail Jadwal Shipper",
+          "value": "Closing Time 25/09/2026 12:00, ETD 26/09/2026 12:00, ETA 28/09/2026 12:00"
+        },
+        {
+          "action": "expect",
+          "target": "Tab Detail Kapal",
+          "value": "data terbaru"
+        },
+        {
+          "action": "expect",
+          "target": "Tombol Pesan",
+          "value": "sesuai ketersediaan jadwal"
+        }
+      ],
+      "expected": [
+        "Perubahan vendor langsung konsisten di sisi shipper"
+      ],
+      "testData": {},
+      "selectorHints": {
+        "Detail Jadwal": {
+          "role": "document",
+          "name": "Detail Jadwal",
+          "testid": "detail-jadwal"
+        },
+        "Edit Jadwal": {
+          "role": "button",
+          "name": "Edit Jadwal",
+          "testid": "edit-jadwal"
+        },
+        "Closing Time": {
+          "role": "textbox",
+          "name": "Closing Time",
+          "testid": "closing-time"
+        },
+        "Berangkat (ETD)": {
+          "role": "textbox",
+          "name": "Berangkat (ETD)",
+          "testid": "berangkat-etd"
+        },
+        "Tiba (ETA)": {
+          "role": "textbox",
+          "name": "Tiba (ETA)",
+          "testid": "tiba-eta"
+        },
+        "Kirim": {
+          "role": "button",
+          "name": "Kirim",
+          "testid": "kirim"
+        },
+        "Detail Harga Penawaran Shipper": {
+          "role": "document",
+          "name": "Detail Harga Penawaran Shipper",
+          "testid": "detail-harga-penawaran-shipper"
+        },
+        "Detail Jadwal Shipper": {
+          "role": "status",
+          "name": "Detail Jadwal Shipper",
+          "testid": "detail-jadwal-shipper"
+        },
+        "Tab Detail Kapal": {
+          "role": "status",
+          "name": "Tab Detail Kapal",
+          "testid": "tab-detail-kapal"
+        },
+        "Tombol Pesan": {
+          "role": "status",
+          "name": "Tombol Pesan",
+          "testid": "tombol-pesan"
+        }
+      }
+    },
+    {
+      "id": "AMS006-TAMBAH-JADWAL-VENDOR-POS-022",
+      "title": "Unduh template dan import jadwal Direct valid",
+      "category": "positive",
+      "priority": "medium",
+      "requirement": "REQ-022",
+      "screen": "Tambah Jadwal",
+      "preconditions": [
+        "File Excel mengikuti Template Jadwal Kapal Direct"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Tambah Jadwal",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Download Template",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Unduhan",
+          "value": "Template Jadwal Kapal Direct.xlsx"
+        },
+        {
+          "action": "click",
+          "target": "Import Jadwal",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Detail Kapal Utama",
+          "value": "data Excel valid terisi"
+        },
+        {
+          "action": "click",
+          "target": "Simpan",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Toast",
+          "value": "Jadwal berhasil disimpan"
+        }
+      ],
+      "expected": [
+        "Template terunduh dan data import valid dapat disimpan"
+      ],
+      "testData": {
+        "file": "jadwal-direct-valid.xlsx"
+      },
+      "selectorHints": {
+        "Tambah Jadwal": {
+          "role": "document",
+          "name": "Tambah Jadwal",
+          "testid": "tambah-jadwal"
+        },
+        "Download Template": {
+          "role": "link",
+          "name": "Download Template",
+          "testid": "download-template"
+        },
+        "Unduhan": {
+          "role": "status",
+          "name": "Unduhan",
+          "testid": "unduhan"
+        },
+        "Import Jadwal": {
+          "role": "button",
+          "name": "Import Jadwal",
+          "testid": "import-jadwal"
+        },
+        "Detail Kapal Utama": {
+          "role": "status",
+          "name": "Detail Kapal Utama",
+          "testid": "detail-kapal-utama"
+        },
+        "Simpan": {
+          "role": "button",
+          "name": "Simpan",
+          "testid": "simpan"
+        },
+        "Toast": {
+          "role": "status",
+          "name": "Toast",
+          "testid": "toast"
+        }
+      }
+    },
+    {
+      "id": "AMS006-TAMBAH-JADWAL-VENDOR-NEG-001",
+      "title": "FTL tidak mengekspos pengelolaan jadwal",
+      "category": "negative",
+      "priority": "high",
+      "requirement": "REQ-001",
+      "screen": "Daftar Penawaran",
+      "preconditions": [
+        "Vendor memiliki card harga FTL"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Daftar Penawaran",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Menu Aksi harga FTL",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Menu Aksi",
+          "value": "Tambah Jadwal dan Lihat Jadwal tidak tersedia"
+        }
+      ],
+      "expected": [
+        "Vendor tidak dapat memulai pengelolaan jadwal untuk FTL"
+      ],
+      "testData": {},
+      "selectorHints": {
+        "Daftar Penawaran": {
+          "role": "document",
+          "name": "Daftar Penawaran",
+          "testid": "daftar-penawaran"
+        },
+        "Menu Aksi harga FTL": {
+          "role": "button",
+          "name": "Menu Aksi harga FTL",
+          "testid": "menu-aksi-harga-ftl"
+        },
+        "Menu Aksi": {
+          "role": "status",
+          "name": "Menu Aksi",
+          "testid": "menu-aksi"
+        }
+      }
+    },
+    {
+      "id": "AMS006-TAMBAH-JADWAL-VENDOR-NEG-002",
+      "title": "Jadwal tidak dapat dipindahkan ke harga lain",
+      "category": "negative",
+      "priority": "high",
+      "requirement": "REQ-002",
+      "screen": "Detail Jadwal",
+      "preconditions": [
+        "Jadwal tersimpan pada Harga A dan tersedia Harga B"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Detail Jadwal",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Edit Jadwal",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "No. Lelang",
+          "value": "Harga A dan nonaktif"
+        },
+        {
+          "action": "expect",
+          "target": "Dialog Edit Jadwal",
+          "value": "tidak memiliki kontrol pindah harga"
+        },
+        {
+          "action": "click",
+          "target": "Kirim",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Tabel Jadwal",
+          "value": "jadwal tetap pada Harga A"
+        }
+      ],
+      "expected": [
+        "Tidak ada jalur UI untuk mengubah keterikatan harga"
+      ],
+      "testData": {},
+      "selectorHints": {
+        "Detail Jadwal": {
+          "role": "document",
+          "name": "Detail Jadwal",
+          "testid": "detail-jadwal"
+        },
+        "Edit Jadwal": {
+          "role": "button",
+          "name": "Edit Jadwal",
+          "testid": "edit-jadwal"
+        },
+        "No. Lelang": {
+          "role": "status",
+          "name": "No. Lelang",
+          "testid": "no-lelang"
+        },
+        "Dialog Edit Jadwal": {
+          "role": "alertdialog",
+          "name": "Dialog Edit Jadwal",
+          "testid": "dialog-edit-jadwal"
+        },
+        "Kirim": {
+          "role": "button",
+          "name": "Kirim",
+          "testid": "kirim"
+        },
+        "Tabel Jadwal": {
+          "role": "table",
+          "name": "Tabel Jadwal",
+          "testid": "tabel-jadwal"
+        }
+      }
+    },
+    {
+      "id": "AMS006-TAMBAH-JADWAL-VENDOR-NEG-003",
+      "title": "Harga tanpa jadwal tidak dapat dipesan",
+      "category": "negative",
+      "priority": "high",
+      "requirement": "REQ-003",
+      "screen": "Daftar Penawaran",
+      "preconditions": [
+        "Harga FCL belum memiliki jadwal aktif"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Daftar Penawaran",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Card Harga",
+          "value": "badge Belum Input Jadwal dan status Input Harga"
+        },
+        {
+          "action": "click",
+          "target": "Tab Penawaran Lengkap",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Daftar Penawaran",
+          "value": "harga tidak tampil"
+        },
+        {
+          "action": "navigate",
+          "target": "Detail Harga Penawaran Shipper",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Tombol Pesan",
+          "value": "nonaktif"
+        }
+      ],
+      "expected": [
+        "Harga belum lengkap dan pemesanan diblokir"
+      ],
+      "testData": {},
+      "selectorHints": {
+        "Daftar Penawaran": {
+          "role": "status",
+          "name": "Daftar Penawaran",
+          "testid": "daftar-penawaran"
+        },
+        "Card Harga": {
+          "role": "status",
+          "name": "Card Harga",
+          "testid": "card-harga"
+        },
+        "Tab Penawaran Lengkap": {
+          "role": "tab",
+          "name": "Tab Penawaran Lengkap",
+          "testid": "tab-penawaran-lengkap"
+        },
+        "Detail Harga Penawaran Shipper": {
+          "role": "document",
+          "name": "Detail Harga Penawaran Shipper",
+          "testid": "detail-harga-penawaran-shipper"
+        },
+        "Tombol Pesan": {
+          "role": "status",
+          "name": "Tombol Pesan",
+          "testid": "tombol-pesan"
+        }
+      }
+    },
+    {
+      "id": "AMS006-TAMBAH-JADWAL-VENDOR-NEG-004",
+      "title": "Simpan ditolak setelah rencana akhir kirim",
+      "category": "negative",
+      "priority": "high",
+      "requirement": "REQ-004",
+      "screen": "Tambah Jadwal",
+      "preconditions": [
+        "Form dibuka sebelum batas tetapi waktu melewati Rencana Akhir Kirim sebelum Simpan"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Tambah Jadwal",
+          "value": ""
+        },
+        {
+          "action": "fill",
+          "target": "Nama Kapal",
+          "value": "KM Terlambat"
+        },
+        {
+          "action": "fill",
+          "target": "Voyage",
+          "value": "LATE-01"
+        },
+        {
+          "action": "click",
+          "target": "Simpan",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Alert",
+          "value": "Lelang sudah melewati rencana akhir kirim. Tidak bisa tambah jadwal"
+        },
+        {
+          "action": "click",
+          "target": "Mengerti",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Tabel Jadwal",
+          "value": "data tidak tersimpan"
+        }
+      ],
+      "expected": [
+        "Alert tampil dan tidak ada jadwal baru"
+      ],
+      "testData": {},
+      "selectorHints": {
+        "Tambah Jadwal": {
+          "role": "document",
+          "name": "Tambah Jadwal",
+          "testid": "tambah-jadwal"
+        },
+        "Nama Kapal": {
+          "role": "textbox",
+          "name": "Nama Kapal",
+          "testid": "nama-kapal"
+        },
+        "Voyage": {
+          "role": "textbox",
+          "name": "Voyage",
+          "testid": "voyage"
+        },
+        "Simpan": {
+          "role": "button",
+          "name": "Simpan",
+          "testid": "simpan"
+        },
+        "Alert": {
+          "role": "alertdialog",
+          "name": "Alert",
+          "testid": "alert"
+        },
+        "Mengerti": {
+          "role": "button",
+          "name": "Mengerti",
+          "testid": "mengerti"
+        },
+        "Tabel Jadwal": {
+          "role": "table",
+          "name": "Tabel Jadwal",
+          "testid": "tabel-jadwal"
+        }
+      }
+    },
+    {
+      "id": "AMS006-TAMBAH-JADWAL-VENDOR-NEG-005",
+      "title": "Edit dan hapus ditolak setelah akhir kirim",
+      "category": "negative",
+      "priority": "high",
+      "requirement": "REQ-005",
+      "screen": "Detail Jadwal",
+      "preconditions": [
+        "Jadwal ada dan Rencana Akhir Kirim telah lewat"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Detail Jadwal",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Edit Jadwal",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Alert",
+          "value": "Tidak Dapat Edit dan Hapus Jadwal – Sudah melewati rencana akhir kirim"
+        },
+        {
+          "action": "click",
+          "target": "Mengerti",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Hapus Jadwal",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Alert",
+          "value": "Tidak Dapat Edit dan Hapus Jadwal – Sudah melewati rencana akhir kirim"
+        },
+        {
+          "action": "expect",
+          "target": "Tabel Jadwal",
+          "value": "data tidak berubah"
+        }
+      ],
+      "expected": [
+        "Kedua aksi tetap tampil tetapi ditolak"
+      ],
+      "testData": {},
+      "selectorHints": {
+        "Detail Jadwal": {
+          "role": "document",
+          "name": "Detail Jadwal",
+          "testid": "detail-jadwal"
+        },
+        "Edit Jadwal": {
+          "role": "button",
+          "name": "Edit Jadwal",
+          "testid": "edit-jadwal"
+        },
+        "Alert": {
+          "role": "alertdialog",
+          "name": "Alert",
+          "testid": "alert"
+        },
+        "Mengerti": {
+          "role": "button",
+          "name": "Mengerti",
+          "testid": "mengerti"
+        },
+        "Hapus Jadwal": {
+          "role": "button",
+          "name": "Hapus Jadwal",
+          "testid": "hapus-jadwal"
+        },
+        "Tabel Jadwal": {
+          "role": "table",
+          "name": "Tabel Jadwal",
+          "testid": "tabel-jadwal"
+        }
+      }
+    },
+    {
+      "id": "AMS006-TAMBAH-JADWAL-VENDOR-NEG-006",
+      "title": "Akses detail tanpa konteks harga tidak mencampur data",
+      "category": "negative",
+      "priority": "medium",
+      "requirement": "REQ-006",
+      "screen": "Detail Jadwal",
+      "preconditions": [
+        "Vendor membuka URL detail tanpa ID harga yang valid"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Detail Jadwal tanpa Harga",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Muat Ulang",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Halaman Error",
+          "value": "harga penawaran tidak ditemukan"
+        },
+        {
+          "action": "expect",
+          "target": "Tabel Jadwal",
+          "value": "tidak menampilkan jadwal harga lain"
+        }
+      ],
+      "expected": [
+        "Sistem tidak membuka detail harga yang salah"
+      ],
+      "testData": {},
+      "selectorHints": {
+        "Detail Jadwal tanpa Harga": {
+          "role": "document",
+          "name": "Detail Jadwal tanpa Harga",
+          "testid": "detail-jadwal-tanpa-harga"
+        },
+        "Halaman Error": {
+          "role": "status",
+          "name": "Halaman Error",
+          "testid": "halaman-error"
+        },
+        "Tabel Jadwal": {
+          "role": "table",
+          "name": "Tabel Jadwal",
+          "testid": "tabel-jadwal"
+        },
+        "Muat Ulang": {
+          "role": "button",
+          "name": "Muat Ulang",
+          "testid": "muat-ulang"
+        }
+      }
+    },
+    {
+      "id": "AMS006-TAMBAH-JADWAL-VENDOR-NEG-007",
+      "title": "Informasi read-only tidak dapat dimodifikasi",
+      "category": "negative",
+      "priority": "medium",
+      "requirement": "REQ-007",
+      "screen": "Detail Jadwal",
+      "preconditions": [
+        "Detail Jadwal terbuka"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Detail Jadwal",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Informasi Lelang dan Harga",
+          "value": ""
+        },
+        {
+          "action": "fill",
+          "target": "Harga",
+          "value": "Rp1"
+        },
+        {
+          "action": "expect",
+          "target": "Harga",
+          "value": "tetap sesuai harga penawaran"
+        },
+        {
+          "action": "expect",
+          "target": "Informasi Lelang dan Harga",
+          "value": "tidak menyediakan tombol Simpan"
+        }
+      ],
+      "expected": [
+        "Upaya modifikasi tidak mengubah informasi sumber"
+      ],
+      "testData": {},
+      "selectorHints": {
+        "Detail Jadwal": {
+          "role": "document",
+          "name": "Detail Jadwal",
+          "testid": "detail-jadwal"
+        },
+        "Informasi Lelang dan Harga": {
+          "role": "status",
+          "name": "Informasi Lelang dan Harga",
+          "testid": "informasi-lelang-dan-harga"
+        },
+        "Harga": {
+          "role": "status",
+          "name": "Harga",
+          "testid": "harga"
+        }
+      }
+    },
+    {
+      "id": "AMS006-TAMBAH-JADWAL-VENDOR-NEG-008",
+      "title": "Interaksi tabel tidak mengubah data sel",
+      "category": "negative",
+      "priority": "medium",
+      "requirement": "REQ-008",
+      "screen": "Detail Jadwal",
+      "preconditions": [
+        "Tabel berisi jadwal"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Detail Jadwal",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Sel Nama Kapal",
+          "value": ""
+        },
+        {
+          "action": "fill",
+          "target": "Nama Kapal pada Tabel",
+          "value": "Manipulasi"
+        },
+        {
+          "action": "expect",
+          "target": "Tabel Jadwal",
+          "value": "nilai asli tetap tampil"
+        },
+        {
+          "action": "expect",
+          "target": "Tabel Jadwal",
+          "value": "tidak memiliki kontrol simpan inline"
+        }
+      ],
+      "expected": [
+        "Tabel hanya dapat diurutkan dan tidak editable"
+      ],
+      "testData": {},
+      "selectorHints": {
+        "Detail Jadwal": {
+          "role": "document",
+          "name": "Detail Jadwal",
+          "testid": "detail-jadwal"
+        },
+        "Sel Nama Kapal": {
+          "role": "button",
+          "name": "Sel Nama Kapal",
+          "testid": "sel-nama-kapal"
+        },
+        "Nama Kapal pada Tabel": {
+          "role": "textbox",
+          "name": "Nama Kapal pada Tabel",
+          "testid": "nama-kapal-pada-tabel"
+        },
+        "Tabel Jadwal": {
+          "role": "table",
+          "name": "Tabel Jadwal",
+          "testid": "tabel-jadwal"
+        }
+      }
+    },
+    {
+      "id": "AMS006-TAMBAH-JADWAL-VENDOR-NEG-009",
+      "title": "Filter tanpa kecocokan menghasilkan empty state",
+      "category": "negative",
+      "priority": "medium",
+      "requirement": "REQ-009",
+      "screen": "Detail Jadwal",
+      "preconditions": [
+        "Tabel tidak memiliki kapal bernama KM TIDAK ADA"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Detail Jadwal",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Filter",
+          "value": ""
+        },
+        {
+          "action": "fill",
+          "target": "Nama Kapal",
+          "value": "KM TIDAK ADA"
+        },
+        {
+          "action": "click",
+          "target": "Terapkan",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Empty State Tabel",
+          "value": "Data jadwal tidak ditemukan"
+        },
+        {
+          "action": "click",
+          "target": "Reset",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Tabel Jadwal",
+          "value": "data kembali tampil"
+        }
+      ],
+      "expected": [
+        "Tidak ada data asing ditampilkan untuk filter tanpa hasil"
+      ],
+      "testData": {},
+      "selectorHints": {
+        "Detail Jadwal": {
+          "role": "document",
+          "name": "Detail Jadwal",
+          "testid": "detail-jadwal"
+        },
+        "Filter": {
+          "role": "button",
+          "name": "Filter",
+          "testid": "filter"
+        },
+        "Nama Kapal": {
+          "role": "textbox",
+          "name": "Nama Kapal",
+          "testid": "nama-kapal"
+        },
+        "Terapkan": {
+          "role": "button",
+          "name": "Terapkan",
+          "testid": "terapkan"
+        },
+        "Empty State Tabel": {
+          "role": "table",
+          "name": "Empty State Tabel",
+          "testid": "empty-state-tabel"
+        },
+        "Reset": {
+          "role": "button",
+          "name": "Reset",
+          "testid": "reset"
+        },
+        "Tabel Jadwal": {
+          "role": "table",
+          "name": "Tabel Jadwal",
+          "testid": "tabel-jadwal"
+        }
+      }
+    },
+    {
+      "id": "AMS006-TAMBAH-JADWAL-VENDOR-NEG-010",
+      "title": "Jadwal Direct tidak menampilkan badge connecting",
+      "category": "negative",
+      "priority": "medium",
+      "requirement": "REQ-010",
+      "screen": "Detail Jadwal",
+      "preconditions": [
+        "Tabel berisi satu jadwal Direct"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Detail Jadwal",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Baris Jadwal Direct",
+          "value": "badge nx Connecting tidak tampil"
+        },
+        {
+          "action": "click",
+          "target": "Baris Jadwal Direct",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Dialog Detail Kapal Connecting",
+          "value": "tidak terbuka"
+        }
+      ],
+      "expected": [
+        "Detail connecting tidak tersedia untuk Direct"
+      ],
+      "testData": {},
+      "selectorHints": {
+        "Detail Jadwal": {
+          "role": "document",
+          "name": "Detail Jadwal",
+          "testid": "detail-jadwal"
+        },
+        "Baris Jadwal Direct": {
+          "role": "button",
+          "name": "Baris Jadwal Direct",
+          "testid": "baris-jadwal-direct"
+        },
+        "Dialog Detail Kapal Connecting": {
+          "role": "alertdialog",
+          "name": "Dialog Detail Kapal Connecting",
+          "testid": "dialog-detail-kapal-connecting"
+        }
+      }
+    },
+    {
+      "id": "AMS006-TAMBAH-JADWAL-VENDOR-NEG-011",
+      "title": "No. Lelang dan informasi umum tidak dapat diganti",
+      "category": "negative",
+      "priority": "high",
+      "requirement": "REQ-011",
+      "screen": "Tambah Jadwal",
+      "preconditions": [
+        "Form dibuka dari Harga A"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Tambah Jadwal",
+          "value": ""
+        },
+        {
+          "action": "select",
+          "target": "No. Lelang",
+          "value": "Harga B"
+        },
+        {
+          "action": "fill",
+          "target": "Jenis Pengiriman",
+          "value": "FTL"
+        },
+        {
+          "action": "expect",
+          "target": "No. Lelang",
+          "value": "tetap Harga A"
+        },
+        {
+          "action": "expect",
+          "target": "Jenis Pengiriman",
+          "value": "tetap FCL"
+        },
+        {
+          "action": "expect",
+          "target": "Informasi Umum",
+          "value": "nonaktif/read-only"
+        }
+      ],
+      "expected": [
+        "Form tetap terikat pada harga asal"
+      ],
+      "testData": {},
+      "selectorHints": {
+        "Tambah Jadwal": {
+          "role": "document",
+          "name": "Tambah Jadwal",
+          "testid": "tambah-jadwal"
+        },
+        "No. Lelang": {
+          "role": "status",
+          "name": "No. Lelang",
+          "testid": "no-lelang"
+        },
+        "Jenis Pengiriman": {
+          "role": "status",
+          "name": "Jenis Pengiriman",
+          "testid": "jenis-pengiriman"
+        },
+        "Informasi Umum": {
+          "role": "status",
+          "name": "Informasi Umum",
+          "testid": "informasi-umum"
+        }
+      }
+    },
+    {
+      "id": "AMS006-TAMBAH-JADWAL-VENDOR-NEG-012",
+      "title": "Simpan tanpa memilih jenis jadwal ditolak",
+      "category": "negative",
+      "priority": "high",
+      "requirement": "REQ-012",
+      "screen": "Tambah Jadwal",
+      "preconditions": [
+        "Form belum memiliki pilihan jenis jadwal"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Tambah Jadwal",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Simpan",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Jenis Jadwal Kapal",
+          "value": "border error"
+        },
+        {
+          "action": "expect",
+          "target": "Helper Error",
+          "value": "Jenis Jadwal Kapal wajib dipilih"
+        },
+        {
+          "action": "expect",
+          "target": "Toast",
+          "value": "sukses tidak tampil"
+        }
+      ],
+      "expected": [
+        "Data tidak tersimpan tanpa satu pilihan jenis"
+      ],
+      "testData": {},
+      "selectorHints": {
+        "Tambah Jadwal": {
+          "role": "document",
+          "name": "Tambah Jadwal",
+          "testid": "tambah-jadwal"
+        },
+        "Simpan": {
+          "role": "button",
+          "name": "Simpan",
+          "testid": "simpan"
+        },
+        "Jenis Jadwal Kapal": {
+          "role": "status",
+          "name": "Jenis Jadwal Kapal",
+          "testid": "jenis-jadwal-kapal"
+        },
+        "Helper Error": {
+          "role": "status",
+          "name": "Helper Error",
+          "testid": "helper-error"
+        },
+        "Toast": {
+          "role": "status",
+          "name": "Toast",
+          "testid": "toast"
+        }
+      }
+    },
+    {
+      "id": "AMS006-TAMBAH-JADWAL-VENDOR-NEG-013",
+      "title": "Validasi field wajib dan kronologi kapal utama",
+      "category": "negative",
+      "priority": "high",
+      "requirement": "REQ-013",
+      "screen": "Tambah Jadwal",
+      "preconditions": [
+        "Waktu sekarang 23/09/2026 10:00 dan harga mulai berlaku 23/09/2026 08:00"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Tambah Jadwal",
+          "value": ""
+        },
+        {
+          "action": "select",
+          "target": "Jenis Jadwal Kapal",
+          "value": "Direct"
+        },
+        {
+          "action": "fill",
+          "target": "Closing Time",
+          "value": "23/09/2026 09:00"
+        },
+        {
+          "action": "fill",
+          "target": "Berangkat (ETD)",
+          "value": "23/09/2026 08:00"
+        },
+        {
+          "action": "fill",
+          "target": "Tiba (ETA)",
+          "value": "23/09/2026 07:00"
+        },
+        {
+          "action": "click",
+          "target": "Simpan",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Nama Kapal",
+          "value": "wajib diisi"
+        },
+        {
+          "action": "expect",
+          "target": "Voyage",
+          "value": "wajib diisi"
+        },
+        {
+          "action": "expect",
+          "target": "Closing Time",
+          "value": "tidak boleh lebih kecil dari waktu saat ini"
+        },
+        {
+          "action": "expect",
+          "target": "Berangkat (ETD)",
+          "value": "harus lebih besar dari Closing Time"
+        },
+        {
+          "action": "expect",
+          "target": "Tiba (ETA)",
+          "value": "harus lebih besar dari ETD"
+        }
+      ],
+      "expected": [
+        "Semua pelanggaran ditandai dan data tidak tersimpan"
+      ],
+      "testData": {},
+      "selectorHints": {
+        "Tambah Jadwal": {
+          "role": "document",
+          "name": "Tambah Jadwal",
+          "testid": "tambah-jadwal"
+        },
+        "Jenis Jadwal Kapal": {
+          "role": "combobox",
+          "name": "Jenis Jadwal Kapal",
+          "testid": "jenis-jadwal-kapal"
+        },
+        "Closing Time": {
+          "role": "status",
+          "name": "Closing Time",
+          "testid": "closing-time"
+        },
+        "Berangkat (ETD)": {
+          "role": "status",
+          "name": "Berangkat (ETD)",
+          "testid": "berangkat-etd"
+        },
+        "Tiba (ETA)": {
+          "role": "status",
+          "name": "Tiba (ETA)",
+          "testid": "tiba-eta"
+        },
+        "Simpan": {
+          "role": "button",
+          "name": "Simpan",
+          "testid": "simpan"
+        },
+        "Nama Kapal": {
+          "role": "status",
+          "name": "Nama Kapal",
+          "testid": "nama-kapal"
+        },
+        "Voyage": {
+          "role": "status",
+          "name": "Voyage",
+          "testid": "voyage"
+        }
+      }
+    },
+    {
+      "id": "AMS006-TAMBAH-JADWAL-VENDOR-NEG-014",
+      "title": "Connecting menolak pelabuhan dan waktu transit invalid",
+      "category": "negative",
+      "priority": "high",
+      "requirement": "REQ-014",
+      "screen": "Tambah Jadwal",
+      "preconditions": [
+        "Rute asal Tanjung Perak, tujuan Makassar, ETD utama 25/09/2026, ETA 30/09/2026"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Tambah Jadwal",
+          "value": ""
+        },
+        {
+          "action": "select",
+          "target": "Jenis Jadwal Kapal",
+          "value": "Connecting"
+        },
+        {
+          "action": "select",
+          "target": "Pelabuhan Connecting",
+          "value": "Tanjung Perak"
+        },
+        {
+          "action": "fill",
+          "target": "ETD Connecting",
+          "value": "24/09/2026 10:00"
+        },
+        {
+          "action": "click",
+          "target": "Tambah Kapal Connecting",
+          "value": ""
+        },
+        {
+          "action": "select",
+          "target": "Pelabuhan Connecting 2",
+          "value": "Tanjung Perak"
+        },
+        {
+          "action": "fill",
+          "target": "ETD Connecting 2",
+          "value": "01/10/2026 10:00"
+        },
+        {
+          "action": "click",
+          "target": "Simpan",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Pelabuhan Connecting",
+          "value": "tidak boleh sama dengan asal, tujuan, atau transit lain"
+        },
+        {
+          "action": "expect",
+          "target": "ETD Connecting",
+          "value": "harus setelah ETD sebelumnya dan tidak melebihi ETA"
+        },
+        {
+          "action": "expect",
+          "target": "Toast",
+          "value": "sukses tidak tampil"
+        }
+      ],
+      "expected": [
+        "Baris connecting invalid tidak disimpan"
+      ],
+      "testData": {},
+      "selectorHints": {
+        "Tambah Jadwal": {
+          "role": "document",
+          "name": "Tambah Jadwal",
+          "testid": "tambah-jadwal"
+        },
+        "Jenis Jadwal Kapal": {
+          "role": "combobox",
+          "name": "Jenis Jadwal Kapal",
+          "testid": "jenis-jadwal-kapal"
+        },
+        "Pelabuhan Connecting": {
+          "role": "status",
+          "name": "Pelabuhan Connecting",
+          "testid": "pelabuhan-connecting"
+        },
+        "ETD Connecting": {
+          "role": "status",
+          "name": "ETD Connecting",
+          "testid": "etd-connecting"
+        },
+        "Tambah Kapal Connecting": {
+          "role": "link",
+          "name": "Tambah Kapal Connecting",
+          "testid": "tambah-kapal-connecting"
+        },
+        "Pelabuhan Connecting 2": {
+          "role": "combobox",
+          "name": "Pelabuhan Connecting 2",
+          "testid": "pelabuhan-connecting-2"
+        },
+        "ETD Connecting 2": {
+          "role": "textbox",
+          "name": "ETD Connecting 2",
+          "testid": "etd-connecting-2"
+        },
+        "Simpan": {
+          "role": "button",
+          "name": "Simpan",
+          "testid": "simpan"
+        },
+        "Toast": {
+          "role": "status",
+          "name": "Toast",
+          "testid": "toast"
+        }
+      }
+    },
+    {
+      "id": "AMS006-TAMBAH-JADWAL-VENDOR-NEG-015",
+      "title": "Simpan tidak melewati field error yang belum dikoreksi",
+      "category": "negative",
+      "priority": "high",
+      "requirement": "REQ-015",
+      "screen": "Tambah Jadwal",
+      "preconditions": [
+        "Form memiliki beberapa error dan hanya error pertama diperbaiki"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Tambah Jadwal",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Simpan",
+          "value": ""
+        },
+        {
+          "action": "fill",
+          "target": "Nama Kapal",
+          "value": "KM Parsial"
+        },
+        {
+          "action": "click",
+          "target": "Simpan",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Voyage",
+          "value": "border dan helper error tetap tampil"
+        },
+        {
+          "action": "expect",
+          "target": "Field Error Pertama",
+          "value": "Voyage menjadi posisi scroll"
+        },
+        {
+          "action": "expect",
+          "target": "Tabel Jadwal",
+          "value": "data tidak tersimpan"
+        }
+      ],
+      "expected": [
+        "Validasi seluruh form tetap berlaku setelah koreksi parsial"
+      ],
+      "testData": {},
+      "selectorHints": {
+        "Tambah Jadwal": {
+          "role": "document",
+          "name": "Tambah Jadwal",
+          "testid": "tambah-jadwal"
+        },
+        "Simpan": {
+          "role": "button",
+          "name": "Simpan",
+          "testid": "simpan"
+        },
+        "Nama Kapal": {
+          "role": "textbox",
+          "name": "Nama Kapal",
+          "testid": "nama-kapal"
+        },
+        "Voyage": {
+          "role": "status",
+          "name": "Voyage",
+          "testid": "voyage"
+        },
+        "Field Error Pertama": {
+          "role": "status",
+          "name": "Field Error Pertama",
+          "testid": "field-error-pertama"
+        },
+        "Tabel Jadwal": {
+          "role": "table",
+          "name": "Tabel Jadwal",
+          "testid": "tabel-jadwal"
+        }
+      }
+    },
+    {
+      "id": "AMS006-TAMBAH-JADWAL-VENDOR-NEG-016",
+      "title": "Menutup konfirmasi Batal mempertahankan form",
+      "category": "negative",
+      "priority": "medium",
+      "requirement": "REQ-016",
+      "screen": "Tambah Jadwal",
+      "preconditions": [
+        "Form berisi perubahan belum tersimpan"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Tambah Jadwal",
+          "value": ""
+        },
+        {
+          "action": "fill",
+          "target": "Nama Kapal",
+          "value": "KM Pertahankan"
+        },
+        {
+          "action": "click",
+          "target": "Batal",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Tidak, Kembali",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Heading",
+          "value": "Tambah Jadwal"
+        },
+        {
+          "action": "expect",
+          "target": "Nama Kapal",
+          "value": "KM Pertahankan"
+        }
+      ],
+      "expected": [
+        "Pembatalan konfirmasi tidak membuang input"
+      ],
+      "testData": {},
+      "selectorHints": {
+        "Tambah Jadwal": {
+          "role": "document",
+          "name": "Tambah Jadwal",
+          "testid": "tambah-jadwal"
+        },
+        "Nama Kapal": {
+          "role": "status",
+          "name": "Nama Kapal",
+          "testid": "nama-kapal"
+        },
+        "Batal": {
+          "role": "button",
+          "name": "Batal",
+          "testid": "batal"
+        },
+        "Tidak, Kembali": {
+          "role": "button",
+          "name": "Tidak, Kembali",
+          "testid": "tidak-kembali"
+        },
+        "Heading": {
+          "role": "heading",
+          "name": "Heading",
+          "testid": "heading"
+        }
+      }
+    },
+    {
+      "id": "AMS006-TAMBAH-JADWAL-VENDOR-NEG-017",
+      "title": "Kombinasi jadwal duplikat ditolak",
+      "category": "negative",
+      "priority": "high",
+      "requirement": "REQ-017",
+      "screen": "Tambah Jadwal",
+      "preconditions": [
+        "Harga memiliki KM Sama, voyage DUP-01, ETD dan ETA yang sama"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Tambah Jadwal",
+          "value": ""
+        },
+        {
+          "action": "select",
+          "target": "Jenis Jadwal Kapal",
+          "value": "Direct"
+        },
+        {
+          "action": "fill",
+          "target": "Nama Kapal",
+          "value": "KM Sama"
+        },
+        {
+          "action": "fill",
+          "target": "Voyage",
+          "value": "DUP-01"
+        },
+        {
+          "action": "fill",
+          "target": "Closing Time",
+          "value": "24/09/2026 10:00"
+        },
+        {
+          "action": "fill",
+          "target": "Berangkat (ETD)",
+          "value": "25/09/2026 10:00"
+        },
+        {
+          "action": "fill",
+          "target": "Tiba (ETA)",
+          "value": "27/09/2026 10:00"
+        },
+        {
+          "action": "click",
+          "target": "Simpan",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Alert",
+          "value": "kombinasi Nama Kapal, Voyage, ETD, dan ETA sudah terdaftar"
+        },
+        {
+          "action": "expect",
+          "target": "Tabel Jadwal",
+          "value": "tidak menambah duplikat"
+        }
+      ],
+      "expected": [
+        "Alert duplikasi tampil dan jumlah jadwal tidak berubah"
+      ],
+      "testData": {},
+      "selectorHints": {
+        "Tambah Jadwal": {
+          "role": "document",
+          "name": "Tambah Jadwal",
+          "testid": "tambah-jadwal"
+        },
+        "Jenis Jadwal Kapal": {
+          "role": "combobox",
+          "name": "Jenis Jadwal Kapal",
+          "testid": "jenis-jadwal-kapal"
+        },
+        "Nama Kapal": {
+          "role": "textbox",
+          "name": "Nama Kapal",
+          "testid": "nama-kapal"
+        },
+        "Voyage": {
+          "role": "textbox",
+          "name": "Voyage",
+          "testid": "voyage"
+        },
+        "Closing Time": {
+          "role": "textbox",
+          "name": "Closing Time",
+          "testid": "closing-time"
+        },
+        "Berangkat (ETD)": {
+          "role": "textbox",
+          "name": "Berangkat (ETD)",
+          "testid": "berangkat-etd"
+        },
+        "Tiba (ETA)": {
+          "role": "textbox",
+          "name": "Tiba (ETA)",
+          "testid": "tiba-eta"
+        },
+        "Simpan": {
+          "role": "button",
+          "name": "Simpan",
+          "testid": "simpan"
+        },
+        "Alert": {
+          "role": "alertdialog",
+          "name": "Alert",
+          "testid": "alert"
+        },
+        "Tabel Jadwal": {
+          "role": "table",
+          "name": "Tabel Jadwal",
+          "testid": "tabel-jadwal"
+        }
+      }
+    },
+    {
+      "id": "AMS006-TAMBAH-JADWAL-VENDOR-NEG-018",
+      "title": "Edit dengan kronologi invalid tidak tersimpan",
+      "category": "negative",
+      "priority": "high",
+      "requirement": "REQ-018",
+      "screen": "Edit Jadwal",
+      "preconditions": [
+        "Dialog Edit Jadwal terbuka dengan data existing"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Detail Jadwal",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Edit Jadwal",
+          "value": ""
+        },
+        {
+          "action": "fill",
+          "target": "Closing Time",
+          "value": "28/09/2026 10:00"
+        },
+        {
+          "action": "fill",
+          "target": "Berangkat (ETD)",
+          "value": "27/09/2026 10:00"
+        },
+        {
+          "action": "click",
+          "target": "Kirim",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Berangkat (ETD)",
+          "value": "harus lebih besar dari Closing Time"
+        },
+        {
+          "action": "click",
+          "target": "Batal",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Tabel Jadwal",
+          "value": "data existing tidak berubah"
+        }
+      ],
+      "expected": [
+        "Validasi tambah juga berlaku pada edit"
+      ],
+      "testData": {},
+      "selectorHints": {
+        "Detail Jadwal": {
+          "role": "document",
+          "name": "Detail Jadwal",
+          "testid": "detail-jadwal"
+        },
+        "Edit Jadwal": {
+          "role": "button",
+          "name": "Edit Jadwal",
+          "testid": "edit-jadwal"
+        },
+        "Closing Time": {
+          "role": "textbox",
+          "name": "Closing Time",
+          "testid": "closing-time"
+        },
+        "Berangkat (ETD)": {
+          "role": "status",
+          "name": "Berangkat (ETD)",
+          "testid": "berangkat-etd"
+        },
+        "Kirim": {
+          "role": "button",
+          "name": "Kirim",
+          "testid": "kirim"
+        },
+        "Batal": {
+          "role": "button",
+          "name": "Batal",
+          "testid": "batal"
+        },
+        "Tabel Jadwal": {
+          "role": "table",
+          "name": "Tabel Jadwal",
+          "testid": "tabel-jadwal"
+        }
+      }
+    },
+    {
+      "id": "AMS006-TAMBAH-JADWAL-VENDOR-NEG-019",
+      "title": "Batal pada konfirmasi hapus mempertahankan jadwal",
+      "category": "negative",
+      "priority": "high",
+      "requirement": "REQ-019",
+      "screen": "Detail Jadwal",
+      "preconditions": [
+        "Jadwal dapat dihapus"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Detail Jadwal",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Hapus Jadwal",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Dialog Konfirmasi Hapus",
+          "value": "tampil"
+        },
+        {
+          "action": "click",
+          "target": "Batal Hapus",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Tabel Jadwal",
+          "value": "jadwal tetap tampil"
+        }
+      ],
+      "expected": [
+        "Tidak ada penghapusan tanpa konfirmasi"
+      ],
+      "testData": {},
+      "selectorHints": {
+        "Detail Jadwal": {
+          "role": "document",
+          "name": "Detail Jadwal",
+          "testid": "detail-jadwal"
+        },
+        "Hapus Jadwal": {
+          "role": "button",
+          "name": "Hapus Jadwal",
+          "testid": "hapus-jadwal"
+        },
+        "Dialog Konfirmasi Hapus": {
+          "role": "alertdialog",
+          "name": "Dialog Konfirmasi Hapus",
+          "testid": "dialog-konfirmasi-hapus"
+        },
+        "Batal Hapus": {
+          "role": "button",
+          "name": "Batal Hapus",
+          "testid": "batal-hapus"
+        },
+        "Tabel Jadwal": {
+          "role": "table",
+          "name": "Tabel Jadwal",
+          "testid": "tabel-jadwal"
+        }
+      }
+    },
+    {
+      "id": "AMS006-TAMBAH-JADWAL-VENDOR-NEG-020",
+      "title": "Aksi gagal tidak membuat audit perubahan sukses",
+      "category": "negative",
+      "priority": "medium",
+      "requirement": "REQ-020",
+      "screen": "Riwayat Perubahan",
+      "preconditions": [
+        "Simpan jadwal ditolak karena validasi"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Tambah Jadwal",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Simpan",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Helper Error",
+          "value": "field wajib harus diisi"
+        },
+        {
+          "action": "navigate",
+          "target": "Riwayat Perubahan",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Tabel Riwayat",
+          "value": "tidak ada entri Tambah Jadwal untuk percobaan gagal"
+        }
+      ],
+      "expected": [
+        "Riwayat tidak mencatat perubahan data yang tidak terjadi"
+      ],
+      "testData": {},
+      "selectorHints": {
+        "Tambah Jadwal": {
+          "role": "document",
+          "name": "Tambah Jadwal",
+          "testid": "tambah-jadwal"
+        },
+        "Simpan": {
+          "role": "button",
+          "name": "Simpan",
+          "testid": "simpan"
+        },
+        "Helper Error": {
+          "role": "status",
+          "name": "Helper Error",
+          "testid": "helper-error"
+        },
+        "Riwayat Perubahan": {
+          "role": "document",
+          "name": "Riwayat Perubahan",
+          "testid": "riwayat-perubahan"
+        },
+        "Tabel Riwayat": {
+          "role": "table",
+          "name": "Tabel Riwayat",
+          "testid": "tabel-riwayat"
+        }
+      }
+    },
+    {
+      "id": "AMS006-TAMBAH-JADWAL-VENDOR-NEG-021",
+      "title": "Perubahan yang ditolak tidak bocor ke sisi shipper",
+      "category": "negative",
+      "priority": "high",
+      "requirement": "REQ-021",
+      "screen": "Detail Harga Penawaran Shipper",
+      "preconditions": [
+        "Rencana Akhir Kirim lewat dan nilai jadwal shipper telah dicatat"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Detail Jadwal",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Edit Jadwal",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Alert",
+          "value": "Tidak Dapat Edit dan Hapus Jadwal – Sudah melewati rencana akhir kirim"
+        },
+        {
+          "action": "navigate",
+          "target": "Detail Harga Penawaran Shipper",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Detail Jadwal Shipper",
+          "value": "nilai lama tetap tampil"
+        }
+      ],
+      "expected": [
+        "Sisi shipper tidak berubah ketika edit vendor ditolak"
+      ],
+      "testData": {},
+      "selectorHints": {
+        "Detail Jadwal": {
+          "role": "document",
+          "name": "Detail Jadwal",
+          "testid": "detail-jadwal"
+        },
+        "Edit Jadwal": {
+          "role": "button",
+          "name": "Edit Jadwal",
+          "testid": "edit-jadwal"
+        },
+        "Alert": {
+          "role": "alertdialog",
+          "name": "Alert",
+          "testid": "alert"
+        },
+        "Detail Harga Penawaran Shipper": {
+          "role": "document",
+          "name": "Detail Harga Penawaran Shipper",
+          "testid": "detail-harga-penawaran-shipper"
+        },
+        "Detail Jadwal Shipper": {
+          "role": "status",
+          "name": "Detail Jadwal Shipper",
+          "testid": "detail-jadwal-shipper"
+        }
+      }
+    },
+    {
+      "id": "AMS006-TAMBAH-JADWAL-VENDOR-NEG-022",
+      "title": "Import format invalid mengosongkan field terkait",
+      "category": "negative",
+      "priority": "medium",
+      "requirement": "REQ-022",
+      "screen": "Tambah Jadwal",
+      "preconditions": [
+        "File Excel memiliki tanggal dan jenis jadwal berformat salah"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Tambah Jadwal",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Import Jadwal",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Jenis Jadwal Kapal",
+          "value": "kosong"
+        },
+        {
+          "action": "expect",
+          "target": "Closing Time",
+          "value": "kosong"
+        },
+        {
+          "action": "expect",
+          "target": "Berangkat (ETD)",
+          "value": "kosong"
+        },
+        {
+          "action": "expect",
+          "target": "Tiba (ETA)",
+          "value": "kosong"
+        },
+        {
+          "action": "click",
+          "target": "Simpan",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Helper Error",
+          "value": "field wajib harus diisi"
+        }
+      ],
+      "expected": [
+        "Nilai invalid tidak dipaksakan ke field dan tidak dapat langsung disimpan"
+      ],
+      "testData": {
+        "file": "jadwal-direct-invalid-format.xlsx"
+      },
+      "selectorHints": {
+        "Tambah Jadwal": {
+          "role": "document",
+          "name": "Tambah Jadwal",
+          "testid": "tambah-jadwal"
+        },
+        "Import Jadwal": {
+          "role": "button",
+          "name": "Import Jadwal",
+          "testid": "import-jadwal"
+        },
+        "Jenis Jadwal Kapal": {
+          "role": "status",
+          "name": "Jenis Jadwal Kapal",
+          "testid": "jenis-jadwal-kapal"
+        },
+        "Closing Time": {
+          "role": "status",
+          "name": "Closing Time",
+          "testid": "closing-time"
+        },
+        "Berangkat (ETD)": {
+          "role": "status",
+          "name": "Berangkat (ETD)",
+          "testid": "berangkat-etd"
+        },
+        "Tiba (ETA)": {
+          "role": "status",
+          "name": "Tiba (ETA)",
+          "testid": "tiba-eta"
+        },
+        "Simpan": {
+          "role": "button",
+          "name": "Simpan",
+          "testid": "simpan"
+        },
+        "Helper Error": {
+          "role": "status",
+          "name": "Helper Error",
+          "testid": "helper-error"
+        }
+      }
+    },
+    {
+      "id": "AMS006-TAMBAH-JADWAL-VENDOR-NEG-023",
+      "title": "Edit dan hapus ditolak ketika jadwal sudah digunakan order",
+      "category": "negative",
+      "priority": "high",
+      "requirement": "REQ-005",
+      "screen": "Detail Jadwal",
+      "preconditions": [
+        "Jadwal sudah memiliki order"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Detail Jadwal",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Edit Jadwal",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Alert",
+          "value": "Tidak Dapat Edit dan Hapus Jadwal – Jadwal sudah digunakan pada order"
+        },
+        {
+          "action": "click",
+          "target": "Mengerti",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Hapus Jadwal",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Alert",
+          "value": "Tidak Dapat Edit dan Hapus Jadwal – Jadwal sudah digunakan pada order"
+        },
+        {
+          "action": "expect",
+          "target": "Tabel Jadwal",
+          "value": "data tetap tampil"
+        }
+      ],
+      "expected": [
+        "Edit dan hapus diblokir tanpa perubahan data"
+      ],
+      "testData": {},
+      "selectorHints": {
+        "Detail Jadwal": {
+          "role": "document",
+          "name": "Detail Jadwal",
+          "testid": "detail-jadwal"
+        },
+        "Edit Jadwal": {
+          "role": "button",
+          "name": "Edit Jadwal",
+          "testid": "edit-jadwal"
+        },
+        "Alert": {
+          "role": "alertdialog",
+          "name": "Alert",
+          "testid": "alert"
+        },
+        "Mengerti": {
+          "role": "button",
+          "name": "Mengerti",
+          "testid": "mengerti"
+        },
+        "Hapus Jadwal": {
+          "role": "button",
+          "name": "Hapus Jadwal",
+          "testid": "hapus-jadwal"
+        },
+        "Tabel Jadwal": {
+          "role": "table",
+          "name": "Tabel Jadwal",
+          "testid": "tabel-jadwal"
+        }
+      }
+    },
+    {
+      "id": "AMS006-TAMBAH-JADWAL-VENDOR-NEG-024",
+      "title": "Edit ditolak untuk harga N/A",
+      "category": "negative",
+      "priority": "high",
+      "requirement": "REQ-005",
+      "screen": "Detail Jadwal",
+      "preconditions": [
+        "Harga penawaran berstatus N/A"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Detail Jadwal",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Edit Jadwal",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Alert",
+          "value": "Tidak Dapat Edit dan Hapus Jadwal – Harga N/A"
+        },
+        {
+          "action": "click",
+          "target": "Mengerti",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Tabel Jadwal",
+          "value": "data tidak berubah"
+        }
+      ],
+      "expected": [
+        "Aksi tetap terlihat tetapi edit tidak dibuka"
+      ],
+      "testData": {},
+      "selectorHints": {
+        "Detail Jadwal": {
+          "role": "document",
+          "name": "Detail Jadwal",
+          "testid": "detail-jadwal"
+        },
+        "Edit Jadwal": {
+          "role": "button",
+          "name": "Edit Jadwal",
+          "testid": "edit-jadwal"
+        },
+        "Alert": {
+          "role": "alertdialog",
+          "name": "Alert",
+          "testid": "alert"
+        },
+        "Mengerti": {
+          "role": "button",
+          "name": "Mengerti",
+          "testid": "mengerti"
+        },
+        "Tabel Jadwal": {
+          "role": "table",
+          "name": "Tabel Jadwal",
+          "testid": "tabel-jadwal"
+        }
+      }
+    },
+    {
+      "id": "AMS006-TAMBAH-JADWAL-VENDOR-NEG-025",
+      "title": "Hapus ditolak untuk harga kadaluwarsa",
+      "category": "negative",
+      "priority": "high",
+      "requirement": "REQ-005",
+      "screen": "Detail Jadwal",
+      "preconditions": [
+        "Harga penawaran berstatus Kadaluwarsa"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Detail Jadwal",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Hapus Jadwal",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Alert",
+          "value": "Tidak Dapat Edit dan Hapus Jadwal – Harga kadaluwarsa"
+        },
+        {
+          "action": "click",
+          "target": "Mengerti",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Tabel Jadwal",
+          "value": "jadwal tidak terhapus"
+        }
+      ],
+      "expected": [
+        "Harga kadaluwarsa tidak dapat menghapus jadwal"
+      ],
+      "testData": {},
+      "selectorHints": {
+        "Detail Jadwal": {
+          "role": "document",
+          "name": "Detail Jadwal",
+          "testid": "detail-jadwal"
+        },
+        "Hapus Jadwal": {
+          "role": "button",
+          "name": "Hapus Jadwal",
+          "testid": "hapus-jadwal"
+        },
+        "Alert": {
+          "role": "alertdialog",
+          "name": "Alert",
+          "testid": "alert"
+        },
+        "Mengerti": {
+          "role": "button",
+          "name": "Mengerti",
+          "testid": "mengerti"
+        },
+        "Tabel Jadwal": {
+          "role": "table",
+          "name": "Tabel Jadwal",
+          "testid": "tabel-jadwal"
+        }
+      }
+    },
+    {
+      "id": "AMS006-TAMBAH-JADWAL-VENDOR-NEG-026",
+      "title": "Edit dan hapus ditolak untuk harga Tidak Berlaku",
+      "category": "negative",
+      "priority": "high",
+      "requirement": "REQ-005",
+      "screen": "Detail Jadwal",
+      "preconditions": [
+        "Harga penawaran berstatus Tidak Berlaku"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Detail Jadwal",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Edit Jadwal",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Alert",
+          "value": "harga Tidak Berlaku tidak dapat diedit atau dihapus"
+        },
+        {
+          "action": "click",
+          "target": "Mengerti",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Hapus Jadwal",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Alert",
+          "value": "harga Tidak Berlaku tidak dapat diedit atau dihapus"
+        },
+        {
+          "action": "expect",
+          "target": "Tabel Jadwal",
+          "value": "data tidak berubah"
+        }
+      ],
+      "expected": [
+        "Kedua aksi ditolak dengan pesan semantik status harga"
+      ],
+      "testData": {},
+      "selectorHints": {
+        "Detail Jadwal": {
+          "role": "document",
+          "name": "Detail Jadwal",
+          "testid": "detail-jadwal"
+        },
+        "Edit Jadwal": {
+          "role": "button",
+          "name": "Edit Jadwal",
+          "testid": "edit-jadwal"
+        },
+        "Alert": {
+          "role": "alertdialog",
+          "name": "Alert",
+          "testid": "alert"
+        },
+        "Mengerti": {
+          "role": "button",
+          "name": "Mengerti",
+          "testid": "mengerti"
+        },
+        "Hapus Jadwal": {
+          "role": "button",
+          "name": "Hapus Jadwal",
+          "testid": "hapus-jadwal"
+        },
+        "Tabel Jadwal": {
+          "role": "table",
+          "name": "Tabel Jadwal",
+          "testid": "tabel-jadwal"
+        }
+      }
+    },
+    {
+      "id": "AMS006-TAMBAH-JADWAL-VENDOR-NEG-027",
+      "title": "Closing Time sebelum mulai berlaku harga ditolak",
+      "category": "negative",
+      "priority": "high",
+      "requirement": "REQ-013",
+      "screen": "Tambah Jadwal",
+      "preconditions": [
+        "Tanggal Mulai Berlaku harga 25/09/2026 00:00 dan waktu sekarang lebih awal"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Tambah Jadwal",
+          "value": ""
+        },
+        {
+          "action": "select",
+          "target": "Jenis Jadwal Kapal",
+          "value": "Direct"
+        },
+        {
+          "action": "fill",
+          "target": "Closing Time",
+          "value": "24/09/2026 23:59"
+        },
+        {
+          "action": "fill",
+          "target": "Berangkat (ETD)",
+          "value": "26/09/2026 10:00"
+        },
+        {
+          "action": "fill",
+          "target": "Tiba (ETA)",
+          "value": "27/09/2026 10:00"
+        },
+        {
+          "action": "click",
+          "target": "Simpan",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Closing Time",
+          "value": "tidak boleh lebih kecil dari Tanggal Mulai Berlaku"
+        },
+        {
+          "action": "expect",
+          "target": "Tabel Jadwal",
+          "value": "data tidak tersimpan"
+        }
+      ],
+      "expected": [
+        "Validasi tanggal mulai berlaku diterapkan"
+      ],
+      "testData": {},
+      "selectorHints": {
+        "Tambah Jadwal": {
+          "role": "document",
+          "name": "Tambah Jadwal",
+          "testid": "tambah-jadwal"
+        },
+        "Jenis Jadwal Kapal": {
+          "role": "combobox",
+          "name": "Jenis Jadwal Kapal",
+          "testid": "jenis-jadwal-kapal"
+        },
+        "Closing Time": {
+          "role": "status",
+          "name": "Closing Time",
+          "testid": "closing-time"
+        },
+        "Berangkat (ETD)": {
+          "role": "textbox",
+          "name": "Berangkat (ETD)",
+          "testid": "berangkat-etd"
+        },
+        "Tiba (ETA)": {
+          "role": "textbox",
+          "name": "Tiba (ETA)",
+          "testid": "tiba-eta"
+        },
+        "Simpan": {
+          "role": "button",
+          "name": "Simpan",
+          "testid": "simpan"
+        },
+        "Tabel Jadwal": {
+          "role": "table",
+          "name": "Tabel Jadwal",
+          "testid": "tabel-jadwal"
+        }
+      }
+    },
+    {
+      "id": "AMS006-TAMBAH-JADWAL-VENDOR-NEG-028",
+      "title": "Closing Time harus setelah Open Stack",
+      "category": "negative",
+      "priority": "high",
+      "requirement": "REQ-013",
+      "screen": "Tambah Jadwal",
+      "preconditions": [
+        "Open Stack diisi"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Tambah Jadwal",
+          "value": ""
+        },
+        {
+          "action": "select",
+          "target": "Jenis Jadwal Kapal",
+          "value": "Direct"
+        },
+        {
+          "action": "fill",
+          "target": "Open Stack",
+          "value": "25/09/2026 10:00"
+        },
+        {
+          "action": "fill",
+          "target": "Closing Time",
+          "value": "25/09/2026 09:59"
+        },
+        {
+          "action": "fill",
+          "target": "Berangkat (ETD)",
+          "value": "26/09/2026 10:00"
+        },
+        {
+          "action": "fill",
+          "target": "Tiba (ETA)",
+          "value": "27/09/2026 10:00"
+        },
+        {
+          "action": "click",
+          "target": "Simpan",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Closing Time",
+          "value": "harus lebih besar dari Open Stack"
+        },
+        {
+          "action": "expect",
+          "target": "Tabel Jadwal",
+          "value": "data tidak tersimpan"
+        }
+      ],
+      "expected": [
+        "Urutan Open Stack dan Closing Time divalidasi"
+      ],
+      "testData": {},
+      "selectorHints": {
+        "Tambah Jadwal": {
+          "role": "document",
+          "name": "Tambah Jadwal",
+          "testid": "tambah-jadwal"
+        },
+        "Jenis Jadwal Kapal": {
+          "role": "combobox",
+          "name": "Jenis Jadwal Kapal",
+          "testid": "jenis-jadwal-kapal"
+        },
+        "Open Stack": {
+          "role": "textbox",
+          "name": "Open Stack",
+          "testid": "open-stack"
+        },
+        "Closing Time": {
+          "role": "status",
+          "name": "Closing Time",
+          "testid": "closing-time"
+        },
+        "Berangkat (ETD)": {
+          "role": "textbox",
+          "name": "Berangkat (ETD)",
+          "testid": "berangkat-etd"
+        },
+        "Tiba (ETA)": {
+          "role": "textbox",
+          "name": "Tiba (ETA)",
+          "testid": "tiba-eta"
+        },
+        "Simpan": {
+          "role": "button",
+          "name": "Simpan",
+          "testid": "simpan"
+        },
+        "Tabel Jadwal": {
+          "role": "table",
+          "name": "Tabel Jadwal",
+          "testid": "tabel-jadwal"
+        }
+      }
+    },
+    {
+      "id": "AMS006-TAMBAH-JADWAL-VENDOR-NEG-029",
+      "title": "Connecting tidak dapat disimpan dengan baris transit kosong",
+      "category": "negative",
+      "priority": "high",
+      "requirement": "REQ-014",
+      "screen": "Tambah Jadwal",
+      "preconditions": [
+        "Jenis Connecting dipilih dan satu baris transit awal tersedia"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Tambah Jadwal",
+          "value": ""
+        },
+        {
+          "action": "select",
+          "target": "Jenis Jadwal Kapal",
+          "value": "Connecting"
+        },
+        {
+          "action": "click",
+          "target": "Simpan",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Pelabuhan Connecting",
+          "value": "wajib diisi"
+        },
+        {
+          "action": "expect",
+          "target": "Kapal Connecting",
+          "value": "wajib diisi"
+        },
+        {
+          "action": "expect",
+          "target": "Voyage Connecting",
+          "value": "wajib diisi"
+        },
+        {
+          "action": "expect",
+          "target": "ETD Connecting",
+          "value": "wajib diisi"
+        },
+        {
+          "action": "expect",
+          "target": "Hapus Kapal Connecting",
+          "value": "tidak tampil pada satu baris"
+        }
+      ],
+      "expected": [
+        "Minimal satu baris lengkap diwajibkan dan baris terakhir tidak dapat dihapus"
+      ],
+      "testData": {},
+      "selectorHints": {
+        "Tambah Jadwal": {
+          "role": "document",
+          "name": "Tambah Jadwal",
+          "testid": "tambah-jadwal"
+        },
+        "Jenis Jadwal Kapal": {
+          "role": "combobox",
+          "name": "Jenis Jadwal Kapal",
+          "testid": "jenis-jadwal-kapal"
+        },
+        "Simpan": {
+          "role": "button",
+          "name": "Simpan",
+          "testid": "simpan"
+        },
+        "Pelabuhan Connecting": {
+          "role": "status",
+          "name": "Pelabuhan Connecting",
+          "testid": "pelabuhan-connecting"
+        },
+        "Kapal Connecting": {
+          "role": "status",
+          "name": "Kapal Connecting",
+          "testid": "kapal-connecting"
+        },
+        "Voyage Connecting": {
+          "role": "status",
+          "name": "Voyage Connecting",
+          "testid": "voyage-connecting"
+        },
+        "ETD Connecting": {
+          "role": "status",
+          "name": "ETD Connecting",
+          "testid": "etd-connecting"
+        },
+        "Hapus Kapal Connecting": {
+          "role": "status",
+          "name": "Hapus Kapal Connecting",
+          "testid": "hapus-kapal-connecting"
+        }
+      }
+    },
+    {
+      "id": "AMS006-TAMBAH-JADWAL-VENDOR-EDG-001",
+      "title": "Batas awal tepat pada Tanggal Buka Lelang",
+      "category": "edge",
+      "priority": "medium",
+      "requirement": "REQ-004",
+      "screen": "Tambah Jadwal",
+      "preconditions": [
+        "Waktu sistem tepat sama dengan Tanggal Buka Lelang dan sebelum akhir kirim"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Tambah Jadwal",
+          "value": ""
+        },
+        {
+          "action": "fill",
+          "target": "Nama Kapal",
+          "value": "KM Boundary"
+        },
+        {
+          "action": "fill",
+          "target": "Voyage",
+          "value": "BND-OPEN"
+        },
+        {
+          "action": "click",
+          "target": "Simpan",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Toast",
+          "value": "Jadwal berhasil disimpan"
+        }
+      ],
+      "expected": [
+        "Batas inklusif Tanggal Buka Lelang diterima"
+      ],
+      "testData": {},
+      "selectorHints": {
+        "Tambah Jadwal": {
+          "role": "document",
+          "name": "Tambah Jadwal",
+          "testid": "tambah-jadwal"
+        },
+        "Nama Kapal": {
+          "role": "textbox",
+          "name": "Nama Kapal",
+          "testid": "nama-kapal"
+        },
+        "Voyage": {
+          "role": "textbox",
+          "name": "Voyage",
+          "testid": "voyage"
+        },
+        "Simpan": {
+          "role": "button",
+          "name": "Simpan",
+          "testid": "simpan"
+        },
+        "Toast": {
+          "role": "status",
+          "name": "Toast",
+          "testid": "toast"
+        }
+      }
+    },
+    {
+      "id": "AMS006-TAMBAH-JADWAL-VENDOR-EDG-002",
+      "title": "Timestamp sama pada batas kronologi ditolak",
+      "category": "edge",
+      "priority": "high",
+      "requirement": "REQ-013",
+      "screen": "Tambah Jadwal",
+      "preconditions": [
+        "Open Stack 25/09/2026 10:00"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Tambah Jadwal",
+          "value": ""
+        },
+        {
+          "action": "fill",
+          "target": "Open Stack",
+          "value": "25/09/2026 10:00"
+        },
+        {
+          "action": "fill",
+          "target": "Closing Time",
+          "value": "25/09/2026 10:00"
+        },
+        {
+          "action": "fill",
+          "target": "Berangkat (ETD)",
+          "value": "25/09/2026 10:00"
+        },
+        {
+          "action": "fill",
+          "target": "Tiba (ETA)",
+          "value": "25/09/2026 10:00"
+        },
+        {
+          "action": "click",
+          "target": "Simpan",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Helper Error",
+          "value": "setiap waktu yang mensyaratkan lebih besar menolak nilai sama"
+        }
+      ],
+      "expected": [
+        "Operator lebih besar diterapkan secara ketat"
+      ],
+      "testData": {},
+      "selectorHints": {
+        "Tambah Jadwal": {
+          "role": "document",
+          "name": "Tambah Jadwal",
+          "testid": "tambah-jadwal"
+        },
+        "Open Stack": {
+          "role": "textbox",
+          "name": "Open Stack",
+          "testid": "open-stack"
+        },
+        "Closing Time": {
+          "role": "textbox",
+          "name": "Closing Time",
+          "testid": "closing-time"
+        },
+        "Berangkat (ETD)": {
+          "role": "textbox",
+          "name": "Berangkat (ETD)",
+          "testid": "berangkat-etd"
+        },
+        "Tiba (ETA)": {
+          "role": "textbox",
+          "name": "Tiba (ETA)",
+          "testid": "tiba-eta"
+        },
+        "Simpan": {
+          "role": "button",
+          "name": "Simpan",
+          "testid": "simpan"
+        },
+        "Helper Error": {
+          "role": "status",
+          "name": "Helper Error",
+          "testid": "helper-error"
+        }
+      }
+    },
+    {
+      "id": "AMS006-TAMBAH-JADWAL-VENDOR-EDG-003",
+      "title": "ETD connecting tepat sama dengan ETA diterima",
+      "category": "edge",
+      "priority": "medium",
+      "requirement": "REQ-014",
+      "screen": "Tambah Jadwal",
+      "preconditions": [
+        "ETD transit setelah ETD utama dan spesifikasi mengizinkan tidak melebihi ETA"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Tambah Jadwal",
+          "value": ""
+        },
+        {
+          "action": "select",
+          "target": "Jenis Jadwal Kapal",
+          "value": "Connecting"
+        },
+        {
+          "action": "fill",
+          "target": "ETD Connecting",
+          "value": "30/09/2026 10:00"
+        },
+        {
+          "action": "fill",
+          "target": "Tiba (ETA)",
+          "value": "30/09/2026 10:00"
+        },
+        {
+          "action": "click",
+          "target": "Simpan",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Toast",
+          "value": "Jadwal berhasil disimpan"
+        }
+      ],
+      "expected": [
+        "Nilai batas ETD Connecting sama dengan ETA diterima"
+      ],
+      "testData": {},
+      "selectorHints": {
+        "Tambah Jadwal": {
+          "role": "document",
+          "name": "Tambah Jadwal",
+          "testid": "tambah-jadwal"
+        },
+        "Jenis Jadwal Kapal": {
+          "role": "combobox",
+          "name": "Jenis Jadwal Kapal",
+          "testid": "jenis-jadwal-kapal"
+        },
+        "ETD Connecting": {
+          "role": "textbox",
+          "name": "ETD Connecting",
+          "testid": "etd-connecting"
+        },
+        "Tiba (ETA)": {
+          "role": "textbox",
+          "name": "Tiba (ETA)",
+          "testid": "tiba-eta"
+        },
+        "Simpan": {
+          "role": "button",
+          "name": "Simpan",
+          "testid": "simpan"
+        },
+        "Toast": {
+          "role": "status",
+          "name": "Toast",
+          "testid": "toast"
+        }
+      }
+    },
+    {
+      "id": "AMS006-TAMBAH-JADWAL-VENDOR-EDG-004",
+      "title": "Hapus satu dari banyak jadwal tidak menurunkan status",
+      "category": "edge",
+      "priority": "medium",
+      "requirement": "REQ-019",
+      "screen": "Detail Jadwal",
+      "preconditions": [
+        "Harga memiliki dua jadwal aktif"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Detail Jadwal",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Hapus Jadwal",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Konfirmasi Hapus",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Tabel Jadwal",
+          "value": "satu jadwal aktif tersisa"
+        },
+        {
+          "action": "navigate",
+          "target": "Daftar Penawaran",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Card Harga",
+          "value": "tetap Input Penawaran tanpa badge Belum Input Jadwal"
+        }
+      ],
+      "expected": [
+        "Status lengkap dipertahankan selama masih ada jadwal aktif"
+      ],
+      "testData": {},
+      "selectorHints": {
+        "Detail Jadwal": {
+          "role": "document",
+          "name": "Detail Jadwal",
+          "testid": "detail-jadwal"
+        },
+        "Hapus Jadwal": {
+          "role": "button",
+          "name": "Hapus Jadwal",
+          "testid": "hapus-jadwal"
+        },
+        "Konfirmasi Hapus": {
+          "role": "button",
+          "name": "Konfirmasi Hapus",
+          "testid": "konfirmasi-hapus"
+        },
+        "Tabel Jadwal": {
+          "role": "table",
+          "name": "Tabel Jadwal",
+          "testid": "tabel-jadwal"
+        },
+        "Daftar Penawaran": {
+          "role": "document",
+          "name": "Daftar Penawaran",
+          "testid": "daftar-penawaran"
+        },
+        "Card Harga": {
+          "role": "status",
+          "name": "Card Harga",
+          "testid": "card-harga"
+        }
+      }
+    },
+    {
+      "id": "AMS006-TAMBAH-JADWAL-VENDOR-EDG-005",
+      "title": "Tambah lalu hapus baris input Direct mempertahankan baris pertama",
+      "category": "edge",
+      "priority": "medium",
+      "requirement": "REQ-002",
+      "screen": "Tambah Jadwal",
+      "preconditions": [
+        "Form Direct memiliki satu baris Jadwal 1 berisi data"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Tambah Jadwal",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Tambah Baris Input",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Jadwal 2",
+          "value": "tampil dengan field kosong"
+        },
+        {
+          "action": "click",
+          "target": "Hapus Baris Input 2",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Jadwal 2",
+          "value": "tidak tampil"
+        },
+        {
+          "action": "expect",
+          "target": "Jadwal 1",
+          "value": "data awal tetap terisi"
+        }
+      ],
+      "expected": [
+        "Kontrol multi-baris bekerja tanpa menghapus jadwal pertama"
+      ],
+      "testData": {},
+      "selectorHints": {
+        "Tambah Jadwal": {
+          "role": "document",
+          "name": "Tambah Jadwal",
+          "testid": "tambah-jadwal"
+        },
+        "Tambah Baris Input": {
+          "role": "button",
+          "name": "Tambah Baris Input",
+          "testid": "tambah-baris-input"
+        },
+        "Jadwal 2": {
+          "role": "status",
+          "name": "Jadwal 2",
+          "testid": "jadwal-2"
+        },
+        "Hapus Baris Input 2": {
+          "role": "button",
+          "name": "Hapus Baris Input 2",
+          "testid": "hapus-baris-input-2"
+        },
+        "Jadwal 1": {
+          "role": "status",
+          "name": "Jadwal 1",
+          "testid": "jadwal-1"
+        }
+      }
+    },
+    {
+      "id": "AMS006-TAMBAH-JADWAL-VENDOR-EDG-006",
+      "title": "Setiap kolom sortable menjaga pasangan data baris",
+      "category": "edge",
+      "priority": "medium",
+      "requirement": "REQ-008",
+      "screen": "Detail Jadwal",
+      "preconditions": [
+        "Tabel memiliki variasi nilai di semua kolom sortable"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Detail Jadwal",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Header Tanggal Buat",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Tabel Jadwal",
+          "value": "terurut Tanggal Buat"
+        },
+        {
+          "action": "click",
+          "target": "Header Nama Kapal",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Tabel Jadwal",
+          "value": "terurut Nama Kapal"
+        },
+        {
+          "action": "click",
+          "target": "Header Voyage",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Tabel Jadwal",
+          "value": "terurut Voyage"
+        },
+        {
+          "action": "click",
+          "target": "Header Open Stack",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Tabel Jadwal",
+          "value": "terurut Open Stack"
+        },
+        {
+          "action": "click",
+          "target": "Header Closing Time",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Tabel Jadwal",
+          "value": "terurut Closing Time"
+        },
+        {
+          "action": "click",
+          "target": "Header Berangkat (ETD)",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Tabel Jadwal",
+          "value": "terurut ETD"
+        },
+        {
+          "action": "click",
+          "target": "Header Tiba (ETA)",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Tabel Jadwal",
+          "value": "terurut ETA tanpa memisahkan pasangan data baris"
+        }
+      ],
+      "expected": [
+        "Semua sort bekerja dan integritas baris terjaga"
+      ],
+      "testData": {},
+      "selectorHints": {
+        "Detail Jadwal": {
+          "role": "document",
+          "name": "Detail Jadwal",
+          "testid": "detail-jadwal"
+        },
+        "Header Tanggal Buat": {
+          "role": "button",
+          "name": "Header Tanggal Buat",
+          "testid": "header-tanggal-buat"
+        },
+        "Tabel Jadwal": {
+          "role": "table",
+          "name": "Tabel Jadwal",
+          "testid": "tabel-jadwal"
+        },
+        "Header Nama Kapal": {
+          "role": "button",
+          "name": "Header Nama Kapal",
+          "testid": "header-nama-kapal"
+        },
+        "Header Voyage": {
+          "role": "button",
+          "name": "Header Voyage",
+          "testid": "header-voyage"
+        },
+        "Header Open Stack": {
+          "role": "button",
+          "name": "Header Open Stack",
+          "testid": "header-open-stack"
+        },
+        "Header Closing Time": {
+          "role": "button",
+          "name": "Header Closing Time",
+          "testid": "header-closing-time"
+        },
+        "Header Berangkat (ETD)": {
+          "role": "button",
+          "name": "Header Berangkat (ETD)",
+          "testid": "header-berangkat-etd"
+        },
+        "Header Tiba (ETA)": {
+          "role": "button",
+          "name": "Header Tiba (ETA)",
+          "testid": "header-tiba-eta"
+        }
+      }
+    },
+    {
+      "id": "AMS006-TAMBAH-JADWAL-VENDOR-EDG-007",
+      "title": "Filter rentang waktu mencakup nilai batas",
+      "category": "edge",
+      "priority": "medium",
+      "requirement": "REQ-009",
+      "screen": "Detail Jadwal",
+      "preconditions": [
+        "Tabel memiliki jadwal tepat pada batas setiap filter tanggal"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Detail Jadwal",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Filter",
+          "value": ""
+        },
+        {
+          "action": "fill",
+          "target": "Tanggal Buat",
+          "value": "25/09/2026 10:00"
+        },
+        {
+          "action": "fill",
+          "target": "Open Stack",
+          "value": "26/09/2026 10:00"
+        },
+        {
+          "action": "fill",
+          "target": "Closing Time",
+          "value": "27/09/2026 10:00"
+        },
+        {
+          "action": "fill",
+          "target": "Berangkat (ETD)",
+          "value": "28/09/2026 10:00"
+        },
+        {
+          "action": "fill",
+          "target": "Tiba (ETA)",
+          "value": "30/09/2026 10:00"
+        },
+        {
+          "action": "click",
+          "target": "Terapkan",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Tabel Jadwal",
+          "value": "baris pada seluruh batas filter tampil"
+        },
+        {
+          "action": "click",
+          "target": "Reset",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Filter Jadwal",
+          "value": "seluruh tanggal kosong"
+        }
+      ],
+      "expected": [
+        "Filter waktu menerima nilai batas dan dapat direset"
+      ],
+      "testData": {},
+      "selectorHints": {
+        "Detail Jadwal": {
+          "role": "document",
+          "name": "Detail Jadwal",
+          "testid": "detail-jadwal"
+        },
+        "Filter": {
+          "role": "button",
+          "name": "Filter",
+          "testid": "filter"
+        },
+        "Tanggal Buat": {
+          "role": "textbox",
+          "name": "Tanggal Buat",
+          "testid": "tanggal-buat"
+        },
+        "Open Stack": {
+          "role": "textbox",
+          "name": "Open Stack",
+          "testid": "open-stack"
+        },
+        "Closing Time": {
+          "role": "textbox",
+          "name": "Closing Time",
+          "testid": "closing-time"
+        },
+        "Berangkat (ETD)": {
+          "role": "textbox",
+          "name": "Berangkat (ETD)",
+          "testid": "berangkat-etd"
+        },
+        "Tiba (ETA)": {
+          "role": "textbox",
+          "name": "Tiba (ETA)",
+          "testid": "tiba-eta"
+        },
+        "Terapkan": {
+          "role": "button",
+          "name": "Terapkan",
+          "testid": "terapkan"
+        },
+        "Tabel Jadwal": {
+          "role": "table",
+          "name": "Tabel Jadwal",
+          "testid": "tabel-jadwal"
+        },
+        "Reset": {
+          "role": "button",
+          "name": "Reset",
+          "testid": "reset"
+        },
+        "Filter Jadwal": {
+          "role": "status",
+          "name": "Filter Jadwal",
+          "testid": "filter-jadwal"
+        }
+      }
+    },
+    {
+      "id": "AMS006-TAMBAH-JADWAL-VENDOR-STR-001",
+      "title": "Seratus jadwal pada satu harga tetap terikat dan dapat dinavigasi",
+      "category": "stress",
+      "priority": "low",
+      "requirement": "REQ-002",
+      "screen": "Detail Jadwal",
+      "preconditions": [
+        "Harga memiliki 100 jadwal valid"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Detail Jadwal",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Ringkasan Pagination",
+          "value": "100 data"
+        },
+        {
+          "action": "click",
+          "target": "Halaman Terakhir",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Tabel Jadwal",
+          "value": "seluruh baris tetap memakai No. Lelang yang sama"
+        },
+        {
+          "action": "expect",
+          "target": "Respons UI",
+          "value": "navigasi selesai tanpa error atau duplikasi"
+        }
+      ],
+      "expected": [
+        "Volume jadwal besar tidak memutus keterikatan harga"
+      ],
+      "testData": {},
+      "selectorHints": {
+        "Detail Jadwal": {
+          "role": "document",
+          "name": "Detail Jadwal",
+          "testid": "detail-jadwal"
+        },
+        "Ringkasan Pagination": {
+          "role": "status",
+          "name": "Ringkasan Pagination",
+          "testid": "ringkasan-pagination"
+        },
+        "Halaman Terakhir": {
+          "role": "button",
+          "name": "Halaman Terakhir",
+          "testid": "halaman-terakhir"
+        },
+        "Tabel Jadwal": {
+          "role": "table",
+          "name": "Tabel Jadwal",
+          "testid": "tabel-jadwal"
+        },
+        "Respons UI": {
+          "role": "status",
+          "name": "Respons UI",
+          "testid": "respons-ui"
+        }
+      }
+    },
+    {
+      "id": "AMS006-TAMBAH-JADWAL-VENDOR-STR-002",
+      "title": "Lima puluh baris connecting tetap tervalidasi berurutan",
+      "category": "stress",
+      "priority": "low",
+      "requirement": "REQ-014",
+      "screen": "Tambah Jadwal",
+      "preconditions": [
+        "Form Connecting berisi 50 transit unik dan kronologis"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Tambah Jadwal",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Data Kapal Connecting",
+          "value": "50 baris"
+        },
+        {
+          "action": "click",
+          "target": "Simpan",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Toast",
+          "value": "Jadwal berhasil disimpan"
+        },
+        {
+          "action": "expect",
+          "target": "Tabel Jadwal",
+          "value": "50x Connecting"
+        },
+        {
+          "action": "click",
+          "target": "50x Connecting",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Dialog Detail Kapal Connecting",
+          "value": "50 transit berurutan"
+        }
+      ],
+      "expected": [
+        "Semua transit tersimpan dan dapat ditampilkan tanpa timeout"
+      ],
+      "testData": {
+        "connectingRows": 50
+      },
+      "selectorHints": {
+        "Tambah Jadwal": {
+          "role": "document",
+          "name": "Tambah Jadwal",
+          "testid": "tambah-jadwal"
+        },
+        "Data Kapal Connecting": {
+          "role": "status",
+          "name": "Data Kapal Connecting",
+          "testid": "data-kapal-connecting"
+        },
+        "Simpan": {
+          "role": "button",
+          "name": "Simpan",
+          "testid": "simpan"
+        },
+        "Toast": {
+          "role": "status",
+          "name": "Toast",
+          "testid": "toast"
+        },
+        "Tabel Jadwal": {
+          "role": "table",
+          "name": "Tabel Jadwal",
+          "testid": "tabel-jadwal"
+        },
+        "50x Connecting": {
+          "role": "button",
+          "name": "50x Connecting",
+          "testid": "50x-connecting"
+        },
+        "Dialog Detail Kapal Connecting": {
+          "role": "alertdialog",
+          "name": "Dialog Detail Kapal Connecting",
+          "testid": "dialog-detail-kapal-connecting"
+        }
+      }
+    },
+    {
+      "id": "AMS006-TAMBAH-JADWAL-VENDOR-STR-003",
+      "title": "Sorting filtering dan pagination pada seribu jadwal",
+      "category": "stress",
+      "priority": "low",
+      "requirement": "REQ-008",
+      "screen": "Detail Jadwal",
+      "preconditions": [
+        "Harga memiliki 1000 jadwal"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Detail Jadwal",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Header Tanggal Buat",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Filter",
+          "value": ""
+        },
+        {
+          "action": "fill",
+          "target": "Nama Kapal",
+          "value": "KM-0999"
+        },
+        {
+          "action": "click",
+          "target": "Terapkan",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Tabel Jadwal",
+          "value": "hasil benar tanpa baris duplikat"
+        },
+        {
+          "action": "click",
+          "target": "Reset",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Halaman Terakhir",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Respons UI",
+          "value": "operasi selesai tanpa timeout"
+        }
+      ],
+      "expected": [
+        "Tabel volume besar tetap konsisten dan responsif"
+      ],
+      "testData": {
+        "scheduleRows": 1000
+      },
+      "selectorHints": {
+        "Detail Jadwal": {
+          "role": "document",
+          "name": "Detail Jadwal",
+          "testid": "detail-jadwal"
+        },
+        "Header Tanggal Buat": {
+          "role": "button",
+          "name": "Header Tanggal Buat",
+          "testid": "header-tanggal-buat"
+        },
+        "Filter": {
+          "role": "button",
+          "name": "Filter",
+          "testid": "filter"
+        },
+        "Nama Kapal": {
+          "role": "textbox",
+          "name": "Nama Kapal",
+          "testid": "nama-kapal"
+        },
+        "Terapkan": {
+          "role": "button",
+          "name": "Terapkan",
+          "testid": "terapkan"
+        },
+        "Tabel Jadwal": {
+          "role": "table",
+          "name": "Tabel Jadwal",
+          "testid": "tabel-jadwal"
+        },
+        "Reset": {
+          "role": "button",
+          "name": "Reset",
+          "testid": "reset"
+        },
+        "Halaman Terakhir": {
+          "role": "button",
+          "name": "Halaman Terakhir",
+          "testid": "halaman-terakhir"
+        },
+        "Respons UI": {
+          "role": "status",
+          "name": "Respons UI",
+          "testid": "respons-ui"
+        }
+      }
+    },
+    {
+      "id": "AMS006-TAMBAH-JADWAL-VENDOR-STR-004",
+      "title": "Audit konsisten untuk aksi paralel beberapa sesi",
+      "category": "stress",
+      "priority": "low",
+      "requirement": "REQ-020",
+      "screen": "Riwayat Perubahan",
+      "preconditions": [
+        "Dua sesi vendor mengedit jadwal berbeda secara hampir bersamaan"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Riwayat Perubahan",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Refresh Riwayat",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Tabel Riwayat",
+          "value": "setiap aksi paralel memiliki entri unik"
+        },
+        {
+          "action": "expect",
+          "target": "Tabel Riwayat",
+          "value": "user dan timestamp sesuai sesi"
+        },
+        {
+          "action": "expect",
+          "target": "Tabel Riwayat",
+          "value": "nilai lama dan baru tidak tertukar"
+        }
+      ],
+      "expected": [
+        "Audit tidak hilang, ganda, atau tercampur saat concurrency"
+      ],
+      "testData": {
+        "parallelSessions": 10
+      },
+      "selectorHints": {
+        "Riwayat Perubahan": {
+          "role": "document",
+          "name": "Riwayat Perubahan",
+          "testid": "riwayat-perubahan"
+        },
+        "Tabel Riwayat": {
+          "role": "table",
+          "name": "Tabel Riwayat",
+          "testid": "tabel-riwayat"
+        },
+        "Refresh Riwayat": {
+          "role": "button",
+          "name": "Refresh Riwayat",
+          "testid": "refresh-riwayat"
+        }
+      }
+    }
+  ]
+}

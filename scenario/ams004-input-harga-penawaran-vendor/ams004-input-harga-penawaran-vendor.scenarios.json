@@ -1,0 +1,2981 @@
+{
+  "summary": {
+    "total": 38,
+    "byCategory": {
+      "positive": 14,
+      "negative": 14,
+      "edge": 6,
+      "stress": 4
+    }
+  },
+  "source": {
+    "spec": "inputs/ams004-input-harga-penawaran-vendor/spec.txt",
+    "designs": [
+      "inputs/ams004-input-harga-penawaran-vendor/designs/054.png",
+      "inputs/ams004-input-harga-penawaran-vendor/designs/055.png",
+      "inputs/ams004-input-harga-penawaran-vendor/designs/056.png",
+      "inputs/ams004-input-harga-penawaran-vendor/designs/057.png",
+      "inputs/ams004-input-harga-penawaran-vendor/designs/058.png",
+      "inputs/ams004-input-harga-penawaran-vendor/designs/059.png",
+      "inputs/ams004-input-harga-penawaran-vendor/designs/060.png",
+      "inputs/ams004-input-harga-penawaran-vendor/designs/061.png",
+      "inputs/ams004-input-harga-penawaran-vendor/designs/062.png",
+      "inputs/ams004-input-harga-penawaran-vendor/designs/063.png",
+      "inputs/ams004-input-harga-penawaran-vendor/designs/064.png",
+      "inputs/ams004-input-harga-penawaran-vendor/designs/064a.png",
+      "inputs/ams004-input-harga-penawaran-vendor/designs/065.png",
+      "inputs/ams004-input-harga-penawaran-vendor/designs/066.png",
+      "inputs/ams004-input-harga-penawaran-vendor/designs/067-ftl.png",
+      "inputs/ams004-input-harga-penawaran-vendor/designs/068.png",
+      "inputs/ams004-input-harga-penawaran-vendor/designs/069.png",
+      "inputs/ams004-input-harga-penawaran-vendor/designs/070.png"
+    ],
+    "extras": [
+      "inputs/ams004-input-harga-penawaran-vendor/extras/laporan-lelang-spot-rate-11092026.xlsx"
+    ]
+  },
+  "scenarios": [
+    {
+      "category": "positive",
+      "priority": "high",
+      "requirement": "REQ-001",
+      "screen": "Daftar Lelang",
+      "title": "Vendor hanya melihat lelang undangan dan harga miliknya",
+      "preconditions": [
+        "Vendor A sudah login",
+        "Vendor A diundang ke FCL-NRM-01/200526",
+        "Vendor B mempunyai penawaran pada lelang yang sama"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Daftar Lelang",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Daftar Lelang",
+          "value": "FCL-NRM-01/200526"
+        },
+        {
+          "action": "click",
+          "target": "Detail",
+          "value": "FCL-NRM-01/200526"
+        },
+        {
+          "action": "expect",
+          "target": "Harga Penawaran",
+          "value": "harga milik Vendor A"
+        }
+      ],
+      "expected": [
+        "Lelang undangan terlihat",
+        "Harga Vendor B dan identitas peserta lain tidak terlihat"
+      ],
+      "testData": {
+        "vendor": "Vendor A",
+        "auction": "FCL-NRM-01/200526"
+      },
+      "selectorHints": {
+        "auctionCard": {
+          "role": "article",
+          "name": "FCL-NRM-01/200526",
+          "testid": "auction-card-fcl-nrm-01-200526"
+        },
+        "detail": {
+          "role": "menuitem",
+          "name": "Detail",
+          "testid": "auction-detail-action"
+        },
+        "offerSection": {
+          "role": "region",
+          "name": "Harga Penawaran",
+          "testid": "own-offers"
+        }
+      },
+      "id": "AMS004-POS-001"
+    },
+    {
+      "category": "negative",
+      "priority": "high",
+      "requirement": "REQ-001",
+      "screen": "Detail Lelang Spot Rate",
+      "title": "Vendor tidak dapat membuka lelang yang tidak mengundangnya melalui URL langsung",
+      "preconditions": [
+        "Vendor A sudah login",
+        "FCL-PRIVATE-02 tidak mengundang Vendor A"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "URL Detail FCL-PRIVATE-02",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Akses ditolak",
+          "value": "Lelang tidak ditemukan atau Anda tidak memiliki akses"
+        },
+        {
+          "action": "expect",
+          "target": "Data vendor",
+          "value": "tidak tampil"
+        }
+      ],
+      "expected": [
+        "Respons tidak membocorkan detail lelang atau penawaran vendor lain",
+        "Tidak ada perubahan data"
+      ],
+      "testData": {
+        "auction": "FCL-PRIVATE-02",
+        "vendor": "Vendor A"
+      },
+      "selectorHints": {
+        "accessDenied": {
+          "role": "alert",
+          "name": "Akses ditolak",
+          "testid": "auction-access-denied"
+        },
+        "detailRegion": {
+          "role": "region",
+          "name": "Detail Lelang Spot Rate",
+          "testid": "auction-detail"
+        }
+      },
+      "id": "AMS004-NEG-001"
+    },
+    {
+      "category": "positive",
+      "priority": "medium",
+      "requirement": "REQ-002",
+      "screen": "Daftar Lelang",
+      "title": "Tab, filter, legend, counter, dan pagination Daftar Lelang berfungsi",
+      "preconditions": [
+        "Vendor memiliki lelang pada beberapa status dan kategori"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Daftar Lelang",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Filter",
+          "value": ""
+        },
+        {
+          "action": "select",
+          "target": "Status",
+          "value": "Sedang Buka"
+        },
+        {
+          "action": "click",
+          "target": "Terapkan",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Card lelang",
+          "value": "status Sedang Buka"
+        },
+        {
+          "action": "click",
+          "target": "Lelang Ulang",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Counter Lelang Ulang",
+          "value": "sesuai jumlah data"
+        },
+        {
+          "action": "select",
+          "target": "Tampilkan",
+          "value": "20"
+        },
+        {
+          "action": "expect",
+          "target": "Pagination",
+          "value": "1 - 20 data"
+        }
+      ],
+      "expected": [
+        "Filter hanya menampilkan status terpilih",
+        "Legend dan border Perlu Input Harga, Request Jadwal, Proses Nego, Lelang Ulang konsisten",
+        "Counter dan pagination akurat"
+      ],
+      "testData": {
+        "status": "Sedang Buka",
+        "pageSize": "20"
+      },
+      "selectorHints": {
+        "filter": {
+          "role": "button",
+          "name": "Filter",
+          "testid": "auction-filter-toggle"
+        },
+        "status": {
+          "role": "combobox",
+          "name": "Status",
+          "testid": "auction-status-filter"
+        },
+        "apply": {
+          "role": "button",
+          "name": "Terapkan",
+          "testid": "auction-filter-apply"
+        },
+        "repeatTab": {
+          "role": "tab",
+          "name": "Lelang Ulang",
+          "testid": "auction-tab-lelang-ulang"
+        },
+        "pageSize": {
+          "role": "combobox",
+          "name": "Tampilkan",
+          "testid": "auction-page-size"
+        }
+      },
+      "id": "AMS004-POS-002"
+    },
+    {
+      "category": "negative",
+      "priority": "medium",
+      "requirement": "REQ-002",
+      "screen": "Daftar Lelang",
+      "title": "Tab Request Jadwal tidak memasukkan lelang FTL atau data tanpa request",
+      "preconditions": [
+        "Vendor memiliki FTL Sedang Buka dan FCL tanpa request jadwal"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Daftar Lelang",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Request Jadwal",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Daftar Request Jadwal",
+          "value": "tidak memuat FTL dan FCL tanpa request"
+        }
+      ],
+      "expected": [
+        "Counter tidak menghitung data yang tidak eligible",
+        "Tidak ada card FTL pada tab Request Jadwal"
+      ],
+      "testData": {
+        "ftlAuction": "FTL-NRM-01/200526",
+        "fclAuction": "FCL-NRM-01/200526"
+      },
+      "selectorHints": {
+        "requestTab": {
+          "role": "tab",
+          "name": "Request Jadwal",
+          "testid": "auction-tab-request-jadwal"
+        },
+        "cards": {
+          "role": "list",
+          "name": "Daftar Request Jadwal",
+          "testid": "auction-list"
+        }
+      },
+      "id": "AMS004-NEG-002"
+    },
+    {
+      "category": "positive",
+      "priority": "medium",
+      "requirement": "REQ-003",
+      "screen": "Detail Lelang Spot Rate",
+      "title": "Detail FCL menampilkan data read-only dan fitur daftar harga vendor",
+      "preconditions": [
+        "Vendor diundang dan mempunyai penawaran FCL"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Detail Lelang Spot Rate",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Syarat & Ketentuan",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Data Pengirim",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Data Penerima",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Filter",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Urutkan",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Detail Biaya",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Info Connecting",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Detail Lelang Spot Rate",
+          "value": "data lelang read-only dan harga vendor"
+        }
+      ],
+      "expected": [
+        "Seluruh section dan dokumen lelang dapat dibaca",
+        "Filter, urutkan, tab detail, dan pagination harga tersedia",
+        "Tidak ada kontrol edit pada data lelang"
+      ],
+      "testData": {
+        "auction": "FCL-NRM-01/200526"
+      },
+      "selectorHints": {
+        "terms": {
+          "role": "button",
+          "name": "Syarat & Ketentuan",
+          "testid": "auction-terms"
+        },
+        "sender": {
+          "role": "button",
+          "name": "Data Pengirim",
+          "testid": "auction-sender"
+        },
+        "receiver": {
+          "role": "button",
+          "name": "Data Penerima",
+          "testid": "auction-receiver"
+        },
+        "filter": {
+          "role": "button",
+          "name": "Filter",
+          "testid": "offer-filter"
+        },
+        "sort": {
+          "role": "button",
+          "name": "Urutkan",
+          "testid": "offer-sort"
+        },
+        "connecting": {
+          "role": "tab",
+          "name": "Info Connecting",
+          "testid": "offer-detail-tab-info-connecting"
+        }
+      },
+      "id": "AMS004-POS-003"
+    },
+    {
+      "category": "negative",
+      "priority": "high",
+      "requirement": "REQ-003",
+      "screen": "Detail Lelang Spot Rate",
+      "title": "Manipulasi filter detail tidak dapat menampilkan harga vendor lain",
+      "preconditions": [
+        "Vendor A dan Vendor B mempunyai harga pada lelang yang sama",
+        "Vendor A sudah login"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Detail Lelang Spot Rate",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Filter",
+          "value": ""
+        },
+        {
+          "action": "fill",
+          "target": "Vendor",
+          "value": "Vendor B"
+        },
+        {
+          "action": "click",
+          "target": "Terapkan",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Harga Penawaran",
+          "value": "tidak ada harga Vendor B"
+        }
+      ],
+      "expected": [
+        "Filter tidak menyediakan atau mengabaikan vendor lain",
+        "Data Vendor B tidak pernah dirender"
+      ],
+      "testData": {
+        "attemptedVendor": "Vendor B"
+      },
+      "selectorHints": {
+        "filter": {
+          "role": "button",
+          "name": "Filter",
+          "testid": "offer-filter"
+        },
+        "vendor": {
+          "role": "textbox",
+          "name": "Vendor",
+          "testid": "offer-vendor-filter"
+        },
+        "apply": {
+          "role": "button",
+          "name": "Terapkan",
+          "testid": "offer-filter-apply"
+        },
+        "offers": {
+          "role": "region",
+          "name": "Harga Penawaran",
+          "testid": "own-offers"
+        }
+      },
+      "id": "AMS004-NEG-003"
+    },
+    {
+      "category": "positive",
+      "priority": "high",
+      "requirement": "REQ-004",
+      "screen": "Input Harga Penawaran FCL",
+      "title": "Dua jalur membuka form menghasilkan konteks No. Lelang yang benar",
+      "preconditions": [
+        "Lelang FCL sedang buka dan mengundang vendor"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Detail Lelang Spot Rate",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Input Harga",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "No. Lelang",
+          "value": "FCL-NRM-01/200526; disabled"
+        },
+        {
+          "action": "navigate",
+          "target": "Daftar Penawaran",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Input Harga",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "No. Lelang",
+          "value": "kosong; enabled"
+        }
+      ],
+      "expected": [
+        "Dari detail, No. Lelang otomatis terisi dan terkunci",
+        "Dari Daftar Penawaran, vendor dapat memilih No. Lelang",
+        "Breadcrumb mengikuti halaman asal"
+      ],
+      "testData": {
+        "auction": "FCL-NRM-01/200526"
+      },
+      "selectorHints": {
+        "detailInput": {
+          "role": "button",
+          "name": "Input Harga",
+          "testid": "detail-input-price"
+        },
+        "listInput": {
+          "role": "button",
+          "name": "Input Harga",
+          "testid": "offer-list-input-price"
+        },
+        "auctionNumber": {
+          "role": "combobox",
+          "name": "No. Lelang",
+          "testid": "auction-number"
+        },
+        "breadcrumb": {
+          "role": "navigation",
+          "name": "Breadcrumb",
+          "testid": "breadcrumb"
+        }
+      },
+      "id": "AMS004-POS-004"
+    },
+    {
+      "category": "negative",
+      "priority": "high",
+      "requirement": "REQ-004",
+      "screen": "Daftar Lelang",
+      "title": "Input Harga pada lelang di luar Sedang Buka ditolak",
+      "preconditions": [
+        "Lelang FCL berstatus Tutup"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Daftar Lelang",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Aksi FCL-NRM-CLOSED",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Input Harga Penawaran",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Alert",
+          "value": "Harga penawaran sudah melewati tanggal tutup lelang"
+        },
+        {
+          "action": "click",
+          "target": "Mengerti",
+          "value": ""
+        }
+      ],
+      "expected": [
+        "Form input tidak terbuka",
+        "Data tidak berubah"
+      ],
+      "testData": {
+        "auction": "FCL-NRM-CLOSED",
+        "status": "Tutup"
+      },
+      "selectorHints": {
+        "action": {
+          "role": "button",
+          "name": "Aksi FCL-NRM-CLOSED",
+          "testid": "auction-action"
+        },
+        "input": {
+          "role": "menuitem",
+          "name": "Input Harga Penawaran",
+          "testid": "auction-input-price"
+        },
+        "alert": {
+          "role": "alertdialog",
+          "name": "Tidak Dapat Menginput Data",
+          "testid": "input-offer-expired-alert"
+        },
+        "understand": {
+          "role": "button",
+          "name": "Mengerti",
+          "testid": "alert-understand"
+        }
+      },
+      "id": "AMS004-NEG-004"
+    },
+    {
+      "category": "positive",
+      "priority": "medium",
+      "requirement": "REQ-005",
+      "screen": "Input Harga Penawaran FCL",
+      "title": "Pemilihan lelang menampilkan informasi FCL dan detail multipoint",
+      "preconditions": [
+        "Vendor membuka form dari Daftar Penawaran",
+        "Lelang FCL multipickup dan multidrop sedang buka"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Input Harga Penawaran FCL",
+          "value": ""
+        },
+        {
+          "action": "select",
+          "target": "No. Lelang",
+          "value": "FCL-MULTI-01"
+        },
+        {
+          "action": "expect",
+          "target": "Informasi Umum",
+          "value": "FCL, jumlah kontainer, jenis, asuransi, biaya, POL dan POD"
+        },
+        {
+          "action": "click",
+          "target": "Multipickup",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Detail Multipickup",
+          "value": "Muat 1 dan Muat 2 beserta kota, drop point, alamat"
+        },
+        {
+          "action": "click",
+          "target": "Tutup",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Multidrop",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Detail Multidrop",
+          "value": "daftar Bongkar"
+        }
+      ],
+      "expected": [
+        "Informasi lelang muncul read-only",
+        "Dialog multipoint memuat seluruh titik yang benar"
+      ],
+      "testData": {
+        "auction": "FCL-MULTI-01"
+      },
+      "selectorHints": {
+        "auctionNumber": {
+          "role": "combobox",
+          "name": "No. Lelang",
+          "testid": "auction-number"
+        },
+        "info": {
+          "role": "region",
+          "name": "Informasi Umum",
+          "testid": "auction-info"
+        },
+        "multipickup": {
+          "role": "link",
+          "name": "Multipickup",
+          "testid": "multipickup-link"
+        },
+        "multidrop": {
+          "role": "link",
+          "name": "Multidrop",
+          "testid": "multidrop-link"
+        },
+        "dialog": {
+          "role": "dialog",
+          "name": "Detail Multipickup",
+          "testid": "multipoint-detail-dialog"
+        },
+        "close": {
+          "role": "button",
+          "name": "Tutup",
+          "testid": "dialog-close"
+        }
+      },
+      "id": "AMS004-POS-005"
+    },
+    {
+      "category": "negative",
+      "priority": "high",
+      "requirement": "REQ-005",
+      "screen": "Input Harga Penawaran FCL",
+      "title": "Dropdown No. Lelang mengecualikan lelang tidak eligible",
+      "preconditions": [
+        "Vendor membuka form dari Daftar Penawaran",
+        "Tersedia lelang Belum Buka, Tutup, Dibatalkan, dan lelang tanpa undangan"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Input Harga Penawaran FCL",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "No. Lelang",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Pilihan No. Lelang",
+          "value": "hanya lelang Sedang Buka yang mengundang vendor"
+        }
+      ],
+      "expected": [
+        "Lelang Belum Buka, Tutup, Dibatalkan, dan tanpa undangan tidak tersedia",
+        "Tidak ada informasi lelang yang bocor"
+      ],
+      "testData": {
+        "excluded": "FCL-FUTURE,FCL-CLOSED,FCL-CANCELED,FCL-PRIVATE"
+      },
+      "selectorHints": {
+        "auctionNumber": {
+          "role": "combobox",
+          "name": "No. Lelang",
+          "testid": "auction-number"
+        },
+        "options": {
+          "role": "listbox",
+          "name": "Pilihan No. Lelang",
+          "testid": "auction-number-options"
+        }
+      },
+      "id": "AMS004-NEG-005"
+    },
+    {
+      "category": "positive",
+      "priority": "high",
+      "requirement": "REQ-006",
+      "screen": "Input Harga Penawaran FCL",
+      "title": "Vendor mengisi satu baris harga FCL valid",
+      "preconditions": [
+        "Lelang FCL dengan dua jenis kontainer sedang buka",
+        "Master pelayaran ASDP aktif"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Input Harga Penawaran FCL",
+          "value": ""
+        },
+        {
+          "action": "select",
+          "target": "No. Lelang",
+          "value": "FCL-NRM-01/200526"
+        },
+        {
+          "action": "select",
+          "target": "Pelayaran",
+          "value": "ASDP"
+        },
+        {
+          "action": "select",
+          "target": "Jenis Kontainer",
+          "value": "20 Feet Dry"
+        },
+        {
+          "action": "fill",
+          "target": "Harga",
+          "value": "12000000"
+        },
+        {
+          "action": "expect",
+          "target": "Harga",
+          "value": "Rp 12.000.000"
+        },
+        {
+          "action": "expect",
+          "target": "PPN dan PPh",
+          "value": "default master dan disabled"
+        },
+        {
+          "action": "fill",
+          "target": "Mulai Berlaku",
+          "value": "24/09/2026"
+        },
+        {
+          "action": "fill",
+          "target": "Deskripsi Harga",
+          "value": "Termasuk biaya operasional"
+        }
+      ],
+      "expected": [
+        "Seluruh field menerima data sesuai tipe",
+        "Banner harga sebelum PPN/PPh tampil",
+        "Deskripsi dapat dikosongkan atau diisi"
+      ],
+      "testData": {
+        "shippingLine": "ASDP",
+        "container": "20 Feet Dry",
+        "price": "12000000",
+        "effectiveDate": "24/09/2026"
+      },
+      "selectorHints": {
+        "shippingLine": {
+          "role": "combobox",
+          "name": "Pelayaran",
+          "testid": "offer-row-1-shipping-line"
+        },
+        "container": {
+          "role": "combobox",
+          "name": "Jenis Kontainer",
+          "testid": "offer-row-1-container-type"
+        },
+        "price": {
+          "role": "textbox",
+          "name": "Harga",
+          "testid": "offer-row-1-price"
+        },
+        "ppn": {
+          "role": "spinbutton",
+          "name": "PPN",
+          "testid": "offer-row-1-ppn"
+        },
+        "pph": {
+          "role": "spinbutton",
+          "name": "PPh",
+          "testid": "offer-row-1-pph"
+        },
+        "date": {
+          "role": "textbox",
+          "name": "Mulai Berlaku",
+          "testid": "offer-row-1-effective-date"
+        },
+        "description": {
+          "role": "textbox",
+          "name": "Deskripsi Harga",
+          "testid": "offer-row-1-description"
+        },
+        "banner": {
+          "role": "status",
+          "name": "Harga sebelum PPN dan PPh",
+          "testid": "pre-tax-price-note"
+        }
+      },
+      "id": "AMS004-POS-006"
+    },
+    {
+      "category": "negative",
+      "priority": "high",
+      "requirement": "REQ-006",
+      "screen": "Input Harga Penawaran FCL",
+      "title": "Baris FCL kosong, harga nol, dan tanggal lampau ditolak",
+      "preconditions": [
+        "Lelang FCL sedang buka"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Input Harga Penawaran FCL",
+          "value": ""
+        },
+        {
+          "action": "select",
+          "target": "No. Lelang",
+          "value": "FCL-NRM-01/200526"
+        },
+        {
+          "action": "fill",
+          "target": "Harga",
+          "value": "0"
+        },
+        {
+          "action": "fill",
+          "target": "Mulai Berlaku",
+          "value": "22/09/2026"
+        },
+        {
+          "action": "click",
+          "target": "Simpan",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Validasi form",
+          "value": "Pelayaran wajib; Jenis Kontainer wajib; Harga harus lebih dari 0; tanggal tidak boleh lampau"
+        }
+      ],
+      "expected": [
+        "Border/helper error tampil",
+        "Fokus atau scroll menuju field invalid pertama",
+        "Dialog konfirmasi tidak tampil dan data tidak tersimpan"
+      ],
+      "testData": {
+        "today": "23/09/2026",
+        "price": "0",
+        "effectiveDate": "22/09/2026"
+      },
+      "selectorHints": {
+        "shippingLine": {
+          "role": "combobox",
+          "name": "Pelayaran",
+          "testid": "offer-row-1-shipping-line"
+        },
+        "container": {
+          "role": "combobox",
+          "name": "Jenis Kontainer",
+          "testid": "offer-row-1-container-type"
+        },
+        "price": {
+          "role": "textbox",
+          "name": "Harga",
+          "testid": "offer-row-1-price"
+        },
+        "date": {
+          "role": "textbox",
+          "name": "Mulai Berlaku",
+          "testid": "offer-row-1-effective-date"
+        },
+        "save": {
+          "role": "button",
+          "name": "Simpan",
+          "testid": "save-offer"
+        },
+        "validation": {
+          "role": "alert",
+          "name": "Validasi form",
+          "testid": "offer-form-errors"
+        }
+      },
+      "id": "AMS004-NEG-006"
+    },
+    {
+      "category": "positive",
+      "priority": "high",
+      "requirement": "REQ-007",
+      "screen": "Input Harga Penawaran FTL",
+      "title": "Vendor mengisi satu baris harga FTL valid",
+      "preconditions": [
+        "Lelang FTL dengan satu jenis kendaraan sedang buka"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Input Harga Penawaran FTL",
+          "value": ""
+        },
+        {
+          "action": "select",
+          "target": "No. Lelang",
+          "value": "FTL-NRM-01/200526"
+        },
+        {
+          "action": "expect",
+          "target": "Jenis Kendaraan",
+          "value": "Tronton Box; disabled"
+        },
+        {
+          "action": "fill",
+          "target": "Harga",
+          "value": "12000000"
+        },
+        {
+          "action": "fill",
+          "target": "Mulai Berlaku",
+          "value": "24/09/2026"
+        },
+        {
+          "action": "fill",
+          "target": "Estimasi Pengiriman",
+          "value": "4"
+        },
+        {
+          "action": "fill",
+          "target": "Deskripsi Harga",
+          "value": "Muatan reguler"
+        }
+      ],
+      "expected": [
+        "Jenis tunggal terisi otomatis dan terkunci",
+        "Harga berformat Rupiah",
+        "Estimasi tampil dengan satuan Jam"
+      ],
+      "testData": {
+        "vehicle": "Tronton Box",
+        "price": "12000000",
+        "effectiveDate": "24/09/2026",
+        "deliveryHours": "4"
+      },
+      "selectorHints": {
+        "vehicle": {
+          "role": "combobox",
+          "name": "Jenis Kendaraan",
+          "testid": "offer-row-1-vehicle-type"
+        },
+        "price": {
+          "role": "textbox",
+          "name": "Harga",
+          "testid": "offer-row-1-price"
+        },
+        "date": {
+          "role": "textbox",
+          "name": "Mulai Berlaku",
+          "testid": "offer-row-1-effective-date"
+        },
+        "hours": {
+          "role": "spinbutton",
+          "name": "Estimasi Pengiriman",
+          "testid": "offer-row-1-delivery-hours"
+        },
+        "description": {
+          "role": "textbox",
+          "name": "Deskripsi Harga",
+          "testid": "offer-row-1-description"
+        }
+      },
+      "id": "AMS004-POS-007"
+    },
+    {
+      "category": "negative",
+      "priority": "high",
+      "requirement": "REQ-007",
+      "screen": "Input Harga Penawaran FTL",
+      "title": "Estimasi nol dan harga nonnumeric pada FTL ditolak",
+      "preconditions": [
+        "Lelang FTL sedang buka"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Input Harga Penawaran FTL",
+          "value": ""
+        },
+        {
+          "action": "select",
+          "target": "No. Lelang",
+          "value": "FTL-NRM-01/200526"
+        },
+        {
+          "action": "fill",
+          "target": "Harga",
+          "value": "dua belas juta"
+        },
+        {
+          "action": "fill",
+          "target": "Estimasi Pengiriman",
+          "value": "0"
+        },
+        {
+          "action": "click",
+          "target": "Simpan",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Validasi form",
+          "value": "Harga wajib numeric dan Estimasi Pengiriman minimal 1 jam"
+        }
+      ],
+      "expected": [
+        "Data tidak tersimpan",
+        "Helper error muncul pada kedua field"
+      ],
+      "testData": {
+        "price": "dua belas juta",
+        "deliveryHours": "0"
+      },
+      "selectorHints": {
+        "price": {
+          "role": "textbox",
+          "name": "Harga",
+          "testid": "offer-row-1-price"
+        },
+        "hours": {
+          "role": "spinbutton",
+          "name": "Estimasi Pengiriman",
+          "testid": "offer-row-1-delivery-hours"
+        },
+        "save": {
+          "role": "button",
+          "name": "Simpan",
+          "testid": "save-offer"
+        },
+        "validation": {
+          "role": "alert",
+          "name": "Validasi form",
+          "testid": "offer-form-errors"
+        }
+      },
+      "id": "AMS004-NEG-007"
+    },
+    {
+      "category": "positive",
+      "priority": "high",
+      "requirement": "REQ-008",
+      "screen": "Input Harga Penawaran FCL",
+      "title": "Dua baris dengan kombinasi sama dan tanggal berbeda tersimpan terpisah",
+      "preconditions": [
+        "Lelang FCL sedang buka"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Input Harga Penawaran FCL",
+          "value": ""
+        },
+        {
+          "action": "select",
+          "target": "No. Lelang",
+          "value": "FCL-NRM-01/200526"
+        },
+        {
+          "action": "click",
+          "target": "Tambah Baris Input",
+          "value": ""
+        },
+        {
+          "action": "select",
+          "target": "Pelayaran baris 1",
+          "value": "ASDP"
+        },
+        {
+          "action": "select",
+          "target": "Jenis Kontainer baris 1",
+          "value": "20 Feet Dry"
+        },
+        {
+          "action": "fill",
+          "target": "Harga baris 1",
+          "value": "12000000"
+        },
+        {
+          "action": "fill",
+          "target": "Mulai Berlaku baris 1",
+          "value": "24/09/2026"
+        },
+        {
+          "action": "select",
+          "target": "Pelayaran baris 2",
+          "value": "ASDP"
+        },
+        {
+          "action": "select",
+          "target": "Jenis Kontainer baris 2",
+          "value": "20 Feet Dry"
+        },
+        {
+          "action": "fill",
+          "target": "Harga baris 2",
+          "value": "12000000"
+        },
+        {
+          "action": "fill",
+          "target": "Mulai Berlaku baris 2",
+          "value": "30/09/2026"
+        },
+        {
+          "action": "click",
+          "target": "Simpan",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Ya",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Daftar Penawaran",
+          "value": "dua card harga terpisah"
+        }
+      ],
+      "expected": [
+        "Kombinasi sama diizinkan",
+        "Kedua baris disimpan sebagai record terpisah",
+        "Ikon hapus terlihat pada kedua baris selama form berisi lebih dari satu baris"
+      ],
+      "testData": {
+        "rows": "2",
+        "shippingLine": "ASDP",
+        "container": "20 Feet Dry",
+        "dates": "24/09/2026,30/09/2026"
+      },
+      "selectorHints": {
+        "addRow": {
+          "role": "button",
+          "name": "Tambah Baris Input",
+          "testid": "add-offer-row"
+        },
+        "remove1": {
+          "role": "button",
+          "name": "Hapus baris 1",
+          "testid": "offer-row-1-remove"
+        },
+        "remove2": {
+          "role": "button",
+          "name": "Hapus baris 2",
+          "testid": "offer-row-2-remove"
+        },
+        "save": {
+          "role": "button",
+          "name": "Simpan",
+          "testid": "save-offer"
+        },
+        "confirm": {
+          "role": "button",
+          "name": "Ya",
+          "testid": "confirm-save-offer"
+        }
+      },
+      "id": "AMS004-POS-008"
+    },
+    {
+      "category": "negative",
+      "priority": "high",
+      "requirement": "REQ-008",
+      "screen": "Input Harga Penawaran FCL",
+      "title": "Satu baris invalid menggagalkan penyimpanan seluruh batch",
+      "preconditions": [
+        "Form berisi dua baris; baris pertama valid dan baris kedua kosong"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Input Harga Penawaran FCL",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Simpan",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Validasi baris 2",
+          "value": "field wajib"
+        },
+        {
+          "action": "expect",
+          "target": "Daftar Penawaran",
+          "value": "tidak ada record baru dari baris 1 maupun baris 2"
+        }
+      ],
+      "expected": [
+        "Penyimpanan bersifat atomik",
+        "Scroll menuju field invalid pertama di baris 2"
+      ],
+      "testData": {
+        "validRows": "1",
+        "invalidRows": "1"
+      },
+      "selectorHints": {
+        "save": {
+          "role": "button",
+          "name": "Simpan",
+          "testid": "save-offer"
+        },
+        "row2Error": {
+          "role": "alert",
+          "name": "Validasi baris 2",
+          "testid": "offer-row-2-errors"
+        },
+        "offers": {
+          "role": "region",
+          "name": "Daftar Penawaran",
+          "testid": "offer-list"
+        }
+      },
+      "id": "AMS004-NEG-008"
+    },
+    {
+      "category": "positive",
+      "priority": "high",
+      "requirement": "REQ-009",
+      "screen": "Input Harga Penawaran FTL",
+      "title": "Simpan FTL menghitung pajak, memperbarui status, dan Live Bidding",
+      "preconditions": [
+        "Lelang FTL sedang buka",
+        "PPN master 1,1% dan PPh master 2%"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Input Harga Penawaran FTL",
+          "value": ""
+        },
+        {
+          "action": "fill",
+          "target": "Harga",
+          "value": "12000000"
+        },
+        {
+          "action": "fill",
+          "target": "Mulai Berlaku",
+          "value": "24/09/2026"
+        },
+        {
+          "action": "fill",
+          "target": "Estimasi Pengiriman",
+          "value": "4"
+        },
+        {
+          "action": "click",
+          "target": "Simpan",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Dialog konfirmasi",
+          "value": "Apakah Harga Telah Sesuai?"
+        },
+        {
+          "action": "click",
+          "target": "Ya",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Toast",
+          "value": "Harga penawaran berhasil disimpan"
+        },
+        {
+          "action": "expect",
+          "target": "Daftar Penawaran",
+          "value": "total termasuk PPN dan PPh serta status Input Penawaran"
+        },
+        {
+          "action": "navigate",
+          "target": "Live Bidding Spot Rate",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Peringkat vendor",
+          "value": "harga termurah per jenis kendaraan"
+        }
+      ],
+      "expected": [
+        "Harga DPP tersimpan dan total pajak dihitung",
+        "Vendor diarahkan ke Daftar Penawaran",
+        "Status dan urutan Live Bidding diperbarui"
+      ],
+      "testData": {
+        "dpp": "12000000",
+        "ppn": "1.1",
+        "pph": "2",
+        "vehicle": "Tronton Box"
+      },
+      "selectorHints": {
+        "price": {
+          "role": "textbox",
+          "name": "Harga",
+          "testid": "offer-row-1-price"
+        },
+        "save": {
+          "role": "button",
+          "name": "Simpan",
+          "testid": "save-offer"
+        },
+        "dialog": {
+          "role": "dialog",
+          "name": "Apakah Harga Telah Sesuai?",
+          "testid": "save-offer-confirmation"
+        },
+        "yes": {
+          "role": "button",
+          "name": "Ya",
+          "testid": "confirm-save-offer"
+        },
+        "toast": {
+          "role": "status",
+          "name": "Harga penawaran berhasil disimpan",
+          "testid": "save-success-toast"
+        },
+        "rank": {
+          "role": "listitem",
+          "name": "Peringkat vendor",
+          "testid": "rank-1"
+        }
+      },
+      "id": "AMS004-POS-009"
+    },
+    {
+      "category": "negative",
+      "priority": "high",
+      "requirement": "REQ-009",
+      "screen": "Input Harga Penawaran FCL",
+      "title": "Lelang yang tutup saat konfirmasi tidak menyimpan harga",
+      "preconditions": [
+        "Form valid dibuka sebelum Tgl Tutup",
+        "Jam sistem melewati Tgl Tutup saat dialog konfirmasi masih terbuka"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Input Harga Penawaran FCL",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Simpan",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Dialog konfirmasi",
+          "value": "Apakah Harga Telah Sesuai?"
+        },
+        {
+          "action": "click",
+          "target": "Ya",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Alert",
+          "value": "Harga penawaran sudah melewati tanggal tutup lelang"
+        }
+      ],
+      "expected": [
+        "Tidak ada record harga baru",
+        "Status vendor dan Live Bidding tidak berubah"
+      ],
+      "testData": {
+        "closeAt": "23/09/2026 15:00:00",
+        "confirmAt": "23/09/2026 15:00:01"
+      },
+      "selectorHints": {
+        "save": {
+          "role": "button",
+          "name": "Simpan",
+          "testid": "save-offer"
+        },
+        "dialog": {
+          "role": "dialog",
+          "name": "Apakah Harga Telah Sesuai?",
+          "testid": "save-offer-confirmation"
+        },
+        "yes": {
+          "role": "button",
+          "name": "Ya",
+          "testid": "confirm-save-offer"
+        },
+        "alert": {
+          "role": "alertdialog",
+          "name": "Harga penawaran sudah melewati tanggal tutup lelang",
+          "testid": "save-after-close-alert"
+        }
+      },
+      "id": "AMS004-NEG-009"
+    },
+    {
+      "category": "positive",
+      "priority": "high",
+      "requirement": "REQ-010",
+      "screen": "Input Harga Penawaran FCL",
+      "title": "Input pada lelang ulang mengkadaluwarsakan harga lama",
+      "preconditions": [
+        "Lelang ulang sedang buka",
+        "Vendor mempunyai harga dari putaran sebelumnya"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Input Harga Penawaran FCL",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Harga sebelumnya",
+          "value": "read-only"
+        },
+        {
+          "action": "fill",
+          "target": "Harga",
+          "value": "12500000"
+        },
+        {
+          "action": "fill",
+          "target": "Mulai Berlaku",
+          "value": "30/09/2026"
+        },
+        {
+          "action": "click",
+          "target": "Simpan",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Ya",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Daftar Penawaran",
+          "value": "harga baru aktif dan harga lama berbadge Kadaluwarsa"
+        }
+      ],
+      "expected": [
+        "Harga lama tetap tersedia sebagai riwayat read-only",
+        "Harga baru aktif",
+        "Tidak ada opsi gunakan harga sebelumnya"
+      ],
+      "testData": {
+        "oldPrice": "12000000",
+        "newPrice": "12500000"
+      },
+      "selectorHints": {
+        "oldOffer": {
+          "role": "region",
+          "name": "Harga sebelumnya",
+          "testid": "previous-offer-readonly"
+        },
+        "price": {
+          "role": "textbox",
+          "name": "Harga",
+          "testid": "offer-row-1-price"
+        },
+        "save": {
+          "role": "button",
+          "name": "Simpan",
+          "testid": "save-offer"
+        },
+        "expiredBadge": {
+          "role": "status",
+          "name": "Kadaluwarsa",
+          "testid": "expired-offer-badge"
+        }
+      },
+      "id": "AMS004-POS-010"
+    },
+    {
+      "category": "negative",
+      "priority": "medium",
+      "requirement": "REQ-010",
+      "screen": "Input Harga Penawaran FCL",
+      "title": "Harga lama lelang ulang tidak dapat diedit atau dipakai ulang",
+      "preconditions": [
+        "Lelang ulang sedang buka",
+        "Harga putaran lama tampil read-only"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Input Harga Penawaran FCL",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Harga sebelumnya",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Kontrol harga lama",
+          "value": "tidak dapat diubah dan tidak ada tombol Gunakan Harga Sebelumnya"
+        }
+      ],
+      "expected": [
+        "Tidak ada mutasi pada harga lama",
+        "Vendor harus mengisi baris harga baru"
+      ],
+      "testData": {
+        "oldOffer": "OFFER-OLD-01"
+      },
+      "selectorHints": {
+        "oldOffer": {
+          "role": "region",
+          "name": "Harga sebelumnya",
+          "testid": "previous-offer-readonly"
+        },
+        "reuse": {
+          "role": "button",
+          "name": "Gunakan Harga Sebelumnya",
+          "testid": "reuse-previous-offer"
+        }
+      },
+      "id": "AMS004-NEG-010"
+    },
+    {
+      "category": "positive",
+      "priority": "medium",
+      "requirement": "REQ-011",
+      "screen": "Input Harga Penawaran FCL",
+      "title": "Konfirmasi Batal mengembalikan vendor tanpa menyimpan",
+      "preconditions": [
+        "Vendor membuka form dari Detail Lelang dan telah mengisi harga"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Input Harga Penawaran FCL",
+          "value": ""
+        },
+        {
+          "action": "fill",
+          "target": "Harga",
+          "value": "12000000"
+        },
+        {
+          "action": "click",
+          "target": "Batal",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Dialog konfirmasi batal",
+          "value": "Batalkan input harga?"
+        },
+        {
+          "action": "click",
+          "target": "Ya",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Detail Lelang Spot Rate",
+          "value": "halaman asal"
+        }
+      ],
+      "expected": [
+        "Tidak ada harga baru",
+        "Vendor kembali ke halaman asal"
+      ],
+      "testData": {
+        "origin": "Detail Lelang Spot Rate",
+        "unsavedPrice": "12000000"
+      },
+      "selectorHints": {
+        "price": {
+          "role": "textbox",
+          "name": "Harga",
+          "testid": "offer-row-1-price"
+        },
+        "cancel": {
+          "role": "button",
+          "name": "Batal",
+          "testid": "cancel-offer"
+        },
+        "dialog": {
+          "role": "dialog",
+          "name": "Batalkan input harga?",
+          "testid": "cancel-offer-confirmation"
+        },
+        "yes": {
+          "role": "button",
+          "name": "Ya",
+          "testid": "confirm-cancel-offer"
+        }
+      },
+      "id": "AMS004-POS-011"
+    },
+    {
+      "category": "negative",
+      "priority": "medium",
+      "requirement": "REQ-011",
+      "screen": "Input Harga Penawaran FCL",
+      "title": "Menolak konfirmasi Batal mempertahankan data form",
+      "preconditions": [
+        "Vendor telah mengisi seluruh field valid"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Input Harga Penawaran FCL",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Batal",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Dialog konfirmasi batal",
+          "value": "Batalkan input harga?"
+        },
+        {
+          "action": "click",
+          "target": "Tidak",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Harga",
+          "value": "Rp 12.000.000"
+        },
+        {
+          "action": "expect",
+          "target": "Input Harga Penawaran",
+          "value": "form tetap terbuka"
+        }
+      ],
+      "expected": [
+        "Tidak ada data tersimpan atau hilang",
+        "Semua input pengguna tetap utuh"
+      ],
+      "testData": {
+        "price": "12000000",
+        "decision": "Tidak"
+      },
+      "selectorHints": {
+        "cancel": {
+          "role": "button",
+          "name": "Batal",
+          "testid": "cancel-offer"
+        },
+        "dialog": {
+          "role": "dialog",
+          "name": "Batalkan input harga?",
+          "testid": "cancel-offer-confirmation"
+        },
+        "no": {
+          "role": "button",
+          "name": "Tidak",
+          "testid": "dismiss-cancel-offer"
+        },
+        "price": {
+          "role": "textbox",
+          "name": "Harga",
+          "testid": "offer-row-1-price"
+        }
+      },
+      "id": "AMS004-NEG-011"
+    },
+    {
+      "category": "positive",
+      "priority": "high",
+      "requirement": "REQ-012",
+      "screen": "Edit Harga Penawaran",
+      "title": "Edit harga saat lelang buka membuat versi baru dan riwayat",
+      "preconditions": [
+        "Penawaran FCL aktif pada lelang Sedang Buka"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Daftar Penawaran",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Aksi penawaran",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Edit Harga",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Edit Harga Penawaran",
+          "value": "satu baris tanpa Tambah Baris Input"
+        },
+        {
+          "action": "fill",
+          "target": "Harga",
+          "value": "13000000"
+        },
+        {
+          "action": "click",
+          "target": "Simpan",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Ya",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Riwayat Perubahan",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Riwayat Perubahan",
+          "value": "harga lama dan harga baru"
+        },
+        {
+          "action": "expect",
+          "target": "Harga lama",
+          "value": "badge Tidak Berlaku"
+        }
+      ],
+      "expected": [
+        "Perubahan tersimpan",
+        "Harga lama tidak berlaku tetapi tercatat",
+        "Form edit tidak dapat menambah baris"
+      ],
+      "testData": {
+        "oldPrice": "12000000",
+        "newPrice": "13000000"
+      },
+      "selectorHints": {
+        "action": {
+          "role": "button",
+          "name": "Aksi penawaran",
+          "testid": "offer-action"
+        },
+        "edit": {
+          "role": "menuitem",
+          "name": "Edit Harga",
+          "testid": "offer-edit"
+        },
+        "form": {
+          "role": "form",
+          "name": "Edit Harga Penawaran",
+          "testid": "edit-offer-form"
+        },
+        "save": {
+          "role": "button",
+          "name": "Simpan",
+          "testid": "save-offer"
+        },
+        "history": {
+          "role": "menuitem",
+          "name": "Riwayat Perubahan",
+          "testid": "offer-history"
+        },
+        "invalidBadge": {
+          "role": "status",
+          "name": "Tidak Berlaku",
+          "testid": "invalid-offer-badge"
+        }
+      },
+      "id": "AMS004-POS-012"
+    },
+    {
+      "category": "negative",
+      "priority": "high",
+      "requirement": "REQ-012",
+      "screen": "Daftar Penawaran",
+      "title": "Edit Harga setelah lelang tutup menampilkan alert",
+      "preconditions": [
+        "Penawaran berada pada lelang Tutup"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Daftar Penawaran",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Aksi penawaran",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Edit Harga",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Tidak Dapat Mengedit Data",
+          "value": "Harga penawaran sudah melewati tanggal tutup lelang"
+        },
+        {
+          "action": "click",
+          "target": "Mengerti",
+          "value": ""
+        }
+      ],
+      "expected": [
+        "Halaman edit tidak terbuka",
+        "Harga dan riwayat tidak berubah"
+      ],
+      "testData": {
+        "status": "Tutup"
+      },
+      "selectorHints": {
+        "action": {
+          "role": "button",
+          "name": "Aksi penawaran",
+          "testid": "offer-action"
+        },
+        "edit": {
+          "role": "menuitem",
+          "name": "Edit Harga",
+          "testid": "offer-edit"
+        },
+        "alert": {
+          "role": "alertdialog",
+          "name": "Tidak Dapat Mengedit Data",
+          "testid": "edit-offer-expired-alert"
+        },
+        "understand": {
+          "role": "button",
+          "name": "Mengerti",
+          "testid": "alert-understand"
+        }
+      },
+      "id": "AMS004-NEG-012"
+    },
+    {
+      "category": "positive",
+      "priority": "high",
+      "requirement": "REQ-013",
+      "screen": "Daftar Penawaran",
+      "title": "Hapus harga FCL terakhir menghapus jadwal dan mengembalikan status",
+      "preconditions": [
+        "Vendor mempunyai satu harga FCL dengan jadwal pada lelang Sedang Buka"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Daftar Penawaran",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Aksi penawaran",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Hapus Harga",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Dialog konfirmasi hapus",
+          "value": "Hapus harga penawaran?"
+        },
+        {
+          "action": "click",
+          "target": "Ya",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Daftar Penawaran",
+          "value": "harga terpilih tidak tampil"
+        },
+        {
+          "action": "click",
+          "target": "Riwayat Perubahan",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Riwayat Perubahan",
+          "value": "soft delete"
+        },
+        {
+          "action": "expect",
+          "target": "Status vendor",
+          "value": "Belum Input"
+        }
+      ],
+      "expected": [
+        "Hanya harga terpilih dan jadwal terkait yang terhapus",
+        "Record audit tetap ada",
+        "Status kembali Belum Input"
+      ],
+      "testData": {
+        "offer": "OFFER-FCL-LAST",
+        "hasSchedule": "true"
+      },
+      "selectorHints": {
+        "action": {
+          "role": "button",
+          "name": "Aksi penawaran",
+          "testid": "offer-action"
+        },
+        "delete": {
+          "role": "menuitem",
+          "name": "Hapus Harga",
+          "testid": "offer-delete"
+        },
+        "dialog": {
+          "role": "dialog",
+          "name": "Hapus harga penawaran?",
+          "testid": "delete-offer-confirmation"
+        },
+        "yes": {
+          "role": "button",
+          "name": "Ya",
+          "testid": "confirm-delete-offer"
+        },
+        "history": {
+          "role": "menuitem",
+          "name": "Riwayat Perubahan",
+          "testid": "offer-history"
+        },
+        "status": {
+          "role": "status",
+          "name": "Belum Input",
+          "testid": "vendor-offer-status"
+        }
+      },
+      "id": "AMS004-POS-013"
+    },
+    {
+      "category": "negative",
+      "priority": "high",
+      "requirement": "REQ-013",
+      "screen": "Daftar Penawaran",
+      "title": "Hapus Harga setelah lelang tutup ditolak",
+      "preconditions": [
+        "Penawaran berada pada lelang Tutup"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Daftar Penawaran",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Aksi penawaran",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Hapus Harga",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Alert",
+          "value": "Harga penawaran sudah melewati tanggal tutup lelang"
+        }
+      ],
+      "expected": [
+        "Tidak ada soft delete",
+        "Jadwal terkait dan status vendor tetap"
+      ],
+      "testData": {
+        "offer": "OFFER-CLOSED-01",
+        "status": "Tutup"
+      },
+      "selectorHints": {
+        "action": {
+          "role": "button",
+          "name": "Aksi penawaran",
+          "testid": "offer-action"
+        },
+        "delete": {
+          "role": "menuitem",
+          "name": "Hapus Harga",
+          "testid": "offer-delete"
+        },
+        "alert": {
+          "role": "alertdialog",
+          "name": "Tidak Dapat Menghapus Data",
+          "testid": "delete-offer-expired-alert"
+        }
+      },
+      "id": "AMS004-NEG-013"
+    },
+    {
+      "category": "positive",
+      "priority": "medium",
+      "requirement": "REQ-014",
+      "screen": "Daftar Penawaran",
+      "title": "Daftar Penawaran memfilter, mengurutkan, dan menampilkan detail/action sesuai kondisi",
+      "preconditions": [
+        "Vendor mempunyai harga FCL/FTL lengkap, tanpa jadwal, request jadwal, dan kadaluwarsa"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Daftar Penawaran",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Filter",
+          "value": ""
+        },
+        {
+          "action": "select",
+          "target": "Jenis Pengiriman",
+          "value": "FCL"
+        },
+        {
+          "action": "click",
+          "target": "Terapkan",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Card penawaran",
+          "value": "hanya FCL; terbaru lebih dulu"
+        },
+        {
+          "action": "click",
+          "target": "Belum Input Jadwal",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Detail Harga",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Info Connecting",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Penawaran Lengkap",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Request Jadwal",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Kadaluwarsa",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Aksi penawaran",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Menu aksi",
+          "value": "Tambah Jadwal, Lihat Jadwal, Respon Request Jadwal, Riwayat Perubahan"
+        }
+      ],
+      "expected": [
+        "Satu card mewakili satu harga",
+        "Tab dan badge memuat subset yang benar",
+        "Detail total termasuk pajak, alamat, biaya, deskripsi, tanggal, dan connecting tampil",
+        "Action sesuai kondisi tersedia"
+      ],
+      "testData": {
+        "filter": "FCL",
+        "defaultPageSize": "20"
+      },
+      "selectorHints": {
+        "filter": {
+          "role": "button",
+          "name": "Filter",
+          "testid": "offer-filter-toggle"
+        },
+        "type": {
+          "role": "combobox",
+          "name": "Jenis Pengiriman",
+          "testid": "offer-shipping-type-filter"
+        },
+        "apply": {
+          "role": "button",
+          "name": "Terapkan",
+          "testid": "offer-filter-apply"
+        },
+        "tabs": {
+          "role": "tablist",
+          "name": "Tab Penawaran",
+          "testid": "offer-tabs"
+        },
+        "detail": {
+          "role": "button",
+          "name": "Detail Harga",
+          "testid": "offer-detail-toggle"
+        },
+        "connecting": {
+          "role": "tab",
+          "name": "Info Connecting",
+          "testid": "offer-detail-info-connecting"
+        },
+        "action": {
+          "role": "button",
+          "name": "Aksi penawaran",
+          "testid": "offer-action"
+        }
+      },
+      "id": "AMS004-POS-014"
+    },
+    {
+      "category": "negative",
+      "priority": "medium",
+      "requirement": "REQ-014",
+      "screen": "Daftar Penawaran",
+      "title": "Action jadwal di luar kondisi yang diizinkan tetap terlihat tetapi ditolak",
+      "preconditions": [
+        "Harga FCL melewati Rencana Akhir Kirim"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Daftar Penawaran",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Aksi penawaran",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Tambah Jadwal",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Alert",
+          "value": "Aksi jadwal tidak dapat dilakukan"
+        },
+        {
+          "action": "click",
+          "target": "Mengerti",
+          "value": ""
+        }
+      ],
+      "expected": [
+        "Handoff ke modul Jadwal Kapal tidak terjadi",
+        "Penawaran tidak berubah"
+      ],
+      "testData": {
+        "plannedFinalDelivery": "22/09/2026",
+        "today": "23/09/2026"
+      },
+      "selectorHints": {
+        "action": {
+          "role": "button",
+          "name": "Aksi penawaran",
+          "testid": "offer-action"
+        },
+        "schedule": {
+          "role": "menuitem",
+          "name": "Tambah Jadwal",
+          "testid": "offer-add-schedule"
+        },
+        "alert": {
+          "role": "alertdialog",
+          "name": "Aksi jadwal tidak dapat dilakukan",
+          "testid": "schedule-action-alert"
+        },
+        "understand": {
+          "role": "button",
+          "name": "Mengerti",
+          "testid": "alert-understand"
+        }
+      },
+      "id": "AMS004-NEG-014"
+    },
+    {
+      "category": "edge",
+      "priority": "high",
+      "requirement": "REQ-006",
+      "screen": "Input Harga Penawaran FCL",
+      "title": "Batas minimum harga satu Rupiah dan tanggal hari ini diterima",
+      "preconditions": [
+        "Lelang FCL sedang buka pada 23/09/2026"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Input Harga Penawaran FCL",
+          "value": ""
+        },
+        {
+          "action": "fill",
+          "target": "Harga",
+          "value": "1"
+        },
+        {
+          "action": "fill",
+          "target": "Mulai Berlaku",
+          "value": "23/09/2026"
+        },
+        {
+          "action": "click",
+          "target": "Simpan",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Ya",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Daftar Penawaran",
+          "value": "Rp 1 dan penawaran aktif"
+        }
+      ],
+      "expected": [
+        "Nilai lebih besar dari nol diterima",
+        "Tanggal hari ini diterima dan masih aktif"
+      ],
+      "testData": {
+        "price": "1",
+        "today": "23/09/2026"
+      },
+      "selectorHints": {
+        "price": {
+          "role": "textbox",
+          "name": "Harga",
+          "testid": "offer-row-1-price"
+        },
+        "date": {
+          "role": "textbox",
+          "name": "Mulai Berlaku",
+          "testid": "offer-row-1-effective-date"
+        },
+        "save": {
+          "role": "button",
+          "name": "Simpan",
+          "testid": "save-offer"
+        },
+        "yes": {
+          "role": "button",
+          "name": "Ya",
+          "testid": "confirm-save-offer"
+        }
+      },
+      "id": "AMS004-EDG-001"
+    },
+    {
+      "category": "edge",
+      "priority": "medium",
+      "requirement": "REQ-007",
+      "screen": "Input Harga Penawaran FTL",
+      "title": "Batas minimum estimasi satu jam diterima dan angka besar diformat",
+      "preconditions": [
+        "Lelang FTL sedang buka"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Input Harga Penawaran FTL",
+          "value": ""
+        },
+        {
+          "action": "fill",
+          "target": "Harga",
+          "value": "999999999999"
+        },
+        {
+          "action": "fill",
+          "target": "Estimasi Pengiriman",
+          "value": "1"
+        },
+        {
+          "action": "fill",
+          "target": "Mulai Berlaku",
+          "value": "23/09/2026"
+        },
+        {
+          "action": "expect",
+          "target": "Harga",
+          "value": "Rp 999.999.999.999"
+        },
+        {
+          "action": "click",
+          "target": "Simpan",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Ya",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Daftar Penawaran",
+          "value": "estimasi 1 jam"
+        }
+      ],
+      "expected": [
+        "Estimasi minimum diterima",
+        "Harga besar tidak kehilangan digit dan format ribuan benar"
+      ],
+      "testData": {
+        "price": "999999999999",
+        "deliveryHours": "1"
+      },
+      "selectorHints": {
+        "price": {
+          "role": "textbox",
+          "name": "Harga",
+          "testid": "offer-row-1-price"
+        },
+        "hours": {
+          "role": "spinbutton",
+          "name": "Estimasi Pengiriman",
+          "testid": "offer-row-1-delivery-hours"
+        },
+        "save": {
+          "role": "button",
+          "name": "Simpan",
+          "testid": "save-offer"
+        }
+      },
+      "id": "AMS004-EDG-002"
+    },
+    {
+      "category": "edge",
+      "priority": "medium",
+      "requirement": "REQ-008",
+      "screen": "Input Harga Penawaran FTL",
+      "title": "Ikon hapus mengikuti transisi jumlah baris satu dan dua",
+      "preconditions": [
+        "Form Input Harga FTL baru terbuka dengan satu baris"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Input Harga Penawaran FTL",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Hapus baris 1",
+          "value": "tidak tampil"
+        },
+        {
+          "action": "click",
+          "target": "Tambah Baris Input",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Hapus baris 1 dan 2",
+          "value": "tampil"
+        },
+        {
+          "action": "click",
+          "target": "Hapus baris 2",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Hapus baris 1",
+          "value": "tidak tampil"
+        }
+      ],
+      "expected": [
+        "Form tidak pernah memiliki nol baris",
+        "Aturan visibilitas ikon konsisten"
+      ],
+      "testData": {
+        "initialRows": "1",
+        "maxRowsInTest": "2"
+      },
+      "selectorHints": {
+        "addRow": {
+          "role": "button",
+          "name": "Tambah Baris Input",
+          "testid": "add-offer-row"
+        },
+        "remove1": {
+          "role": "button",
+          "name": "Hapus baris 1",
+          "testid": "offer-row-1-remove"
+        },
+        "remove2": {
+          "role": "button",
+          "name": "Hapus baris 2",
+          "testid": "offer-row-2-remove"
+        }
+      },
+      "id": "AMS004-EDG-003"
+    },
+    {
+      "category": "edge",
+      "priority": "high",
+      "requirement": "REQ-009",
+      "screen": "Live Bidding Spot Rate",
+      "title": "Live Bidding memakai harga termurah vendor untuk tiap jenis",
+      "preconditions": [
+        "Vendor mempunyai tiga penawaran Tronton Box: 13 juta, 12 juta, 14 juta",
+        "Semua penawaran aktif"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Live Bidding Spot Rate",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Filter",
+          "value": ""
+        },
+        {
+          "action": "fill",
+          "target": "No. Lelang",
+          "value": "FTL-NRM-01/200526"
+        },
+        {
+          "action": "click",
+          "target": "Terapkan",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Peringkat vendor",
+          "value": "hanya Rp 12.000.000 mewakili Vendor A untuk Tronton Box"
+        }
+      ],
+      "expected": [
+        "Penawaran vendor tidak dihitung lebih dari sekali per jenis",
+        "Harga jenis kendaraan lain dihitung secara terpisah"
+      ],
+      "testData": {
+        "offers": "13000000,12000000,14000000",
+        "vehicle": "Tronton Box"
+      },
+      "selectorHints": {
+        "filter": {
+          "role": "button",
+          "name": "Filter",
+          "testid": "live-bidding-filter"
+        },
+        "auction": {
+          "role": "textbox",
+          "name": "No. Lelang",
+          "testid": "live-bidding-auction-filter"
+        },
+        "apply": {
+          "role": "button",
+          "name": "Terapkan",
+          "testid": "live-bidding-filter-apply"
+        },
+        "rank": {
+          "role": "listitem",
+          "name": "Peringkat vendor",
+          "testid": "rank-1"
+        }
+      },
+      "id": "AMS004-EDG-004"
+    },
+    {
+      "category": "edge",
+      "priority": "high",
+      "requirement": "REQ-010",
+      "screen": "Daftar Penawaran",
+      "title": "Tanggal berlaku aktif secara inklusif lalu expired hari berikutnya",
+      "preconditions": [
+        "Penawaran bertanggal berlaku 23/09/2026"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Daftar Penawaran pada 23/09/2026",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Penawaran",
+          "value": "Aktif"
+        },
+        {
+          "action": "navigate",
+          "target": "Daftar Penawaran pada 24/09/2026",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Penawaran",
+          "value": "Expired atau Kadaluwarsa"
+        }
+      ],
+      "expected": [
+        "Penawaran tetap aktif sepanjang tanggal yang tercantum",
+        "Transisi terjadi setelah pergantian tanggal"
+      ],
+      "testData": {
+        "effectiveThrough": "23/09/2026",
+        "nextDay": "24/09/2026"
+      },
+      "selectorHints": {
+        "offer": {
+          "role": "article",
+          "name": "Penawaran",
+          "testid": "offer-card"
+        },
+        "active": {
+          "role": "status",
+          "name": "Aktif",
+          "testid": "offer-active-status"
+        },
+        "expired": {
+          "role": "status",
+          "name": "Kadaluwarsa",
+          "testid": "expired-offer-badge"
+        }
+      },
+      "id": "AMS004-EDG-005"
+    },
+    {
+      "category": "edge",
+      "priority": "medium",
+      "requirement": "REQ-014",
+      "screen": "Daftar Penawaran",
+      "title": "Data ke-21 muncul di halaman kedua dan urutan terbaru konsisten",
+      "preconditions": [
+        "Vendor mempunyai 21 penawaran dengan tanggal buat berbeda"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Daftar Penawaran",
+          "value": ""
+        },
+        {
+          "action": "select",
+          "target": "Tampilkan",
+          "value": "20"
+        },
+        {
+          "action": "expect",
+          "target": "Halaman 1",
+          "value": "20 card dengan tanggal terbaru lebih dulu"
+        },
+        {
+          "action": "click",
+          "target": "Halaman 2",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Halaman 2",
+          "value": "1 card tertua"
+        },
+        {
+          "action": "click",
+          "target": "Reset",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Filter",
+          "value": "kembali default"
+        }
+      ],
+      "expected": [
+        "Tidak ada card hilang atau duplikat antarhalaman",
+        "Informasi rentang dan total data akurat"
+      ],
+      "testData": {
+        "offers": "21",
+        "pageSize": "20"
+      },
+      "selectorHints": {
+        "pageSize": {
+          "role": "combobox",
+          "name": "Tampilkan",
+          "testid": "offer-page-size"
+        },
+        "page2": {
+          "role": "button",
+          "name": "Halaman 2",
+          "testid": "pagination-page-2"
+        },
+        "pagination": {
+          "role": "navigation",
+          "name": "Pagination",
+          "testid": "offer-pagination"
+        },
+        "reset": {
+          "role": "button",
+          "name": "Reset",
+          "testid": "offer-filter-reset"
+        }
+      },
+      "id": "AMS004-EDG-006"
+    },
+    {
+      "category": "stress",
+      "priority": "medium",
+      "requirement": "REQ-008",
+      "screen": "Input Harga Penawaran FCL",
+      "title": "Lima puluh baris harga tersimpan atomik dalam satu submit",
+      "preconditions": [
+        "Lelang FCL sedang buka",
+        "50 baris valid dengan kombinasi dan tanggal bervariasi telah disiapkan"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Input Harga Penawaran FCL",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Tambah Baris Input",
+          "value": "hingga 50 baris"
+        },
+        {
+          "action": "click",
+          "target": "Simpan",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Ya",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Daftar Penawaran",
+          "value": "50 card baru tanpa duplikat atau baris hilang"
+        }
+      ],
+      "expected": [
+        "UI tetap dapat dioperasikan",
+        "Seluruh baris tersimpan sebagai record terpisah atau seluruhnya gagal tanpa partial write",
+        "Summary/status tetap konsisten"
+      ],
+      "testData": {
+        "rows": "50"
+      },
+      "selectorHints": {
+        "addRow": {
+          "role": "button",
+          "name": "Tambah Baris Input",
+          "testid": "add-offer-row"
+        },
+        "save": {
+          "role": "button",
+          "name": "Simpan",
+          "testid": "save-offer"
+        },
+        "yes": {
+          "role": "button",
+          "name": "Ya",
+          "testid": "confirm-save-offer"
+        },
+        "offers": {
+          "role": "list",
+          "name": "Daftar Penawaran",
+          "testid": "offer-list"
+        }
+      },
+      "id": "AMS004-STR-001"
+    },
+    {
+      "category": "stress",
+      "priority": "high",
+      "requirement": "REQ-009",
+      "screen": "Live Bidding Spot Rate",
+      "title": "Dua puluh vendor menyimpan serentak tanpa kebocoran atau urutan salah",
+      "preconditions": [
+        "20 vendor diundang ke lelang yang sama",
+        "Setiap vendor memiliki satu harga valid berbeda"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Input Harga Penawaran pada 20 sesi paralel",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Simpan pada semua sesi",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Ya pada semua sesi",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Live Bidding Spot Rate",
+          "value": "20 penawaran terproses dan urutan termurah benar"
+        },
+        {
+          "action": "expect",
+          "target": "Sesi vendor",
+          "value": "masing-masing hanya melihat harga sendiri"
+        }
+      ],
+      "expected": [
+        "Tidak ada submission hilang",
+        "Peringkat deterministik berdasarkan harga",
+        "Isolasi tenant/vendor terjaga"
+      ],
+      "testData": {
+        "parallelSessions": "20",
+        "auction": "FCL-CONCURRENT-01"
+      },
+      "selectorHints": {
+        "save": {
+          "role": "button",
+          "name": "Simpan",
+          "testid": "save-offer"
+        },
+        "yes": {
+          "role": "button",
+          "name": "Ya",
+          "testid": "confirm-save-offer"
+        },
+        "ranking": {
+          "role": "list",
+          "name": "Peringkat Live Bidding",
+          "testid": "live-bidding-ranking"
+        },
+        "ownOffers": {
+          "role": "region",
+          "name": "Harga Penawaran",
+          "testid": "own-offers"
+        }
+      },
+      "id": "AMS004-STR-002"
+    },
+    {
+      "category": "stress",
+      "priority": "medium",
+      "requirement": "REQ-014",
+      "screen": "Daftar Penawaran",
+      "title": "Sepuluh ribu penawaran tetap dapat difilter dan dipaginasi konsisten",
+      "preconditions": [
+        "Vendor mempunyai 10.000 card penawaran lintas FCL/FTL dan status"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Daftar Penawaran",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Filter",
+          "value": ""
+        },
+        {
+          "action": "select",
+          "target": "Jenis Pengiriman",
+          "value": "FCL"
+        },
+        {
+          "action": "select",
+          "target": "Status Lelang",
+          "value": "Sedang Buka"
+        },
+        {
+          "action": "click",
+          "target": "Terapkan",
+          "value": ""
+        },
+        {
+          "action": "select",
+          "target": "Tampilkan",
+          "value": "20"
+        },
+        {
+          "action": "click",
+          "target": "Halaman terakhir",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Pagination",
+          "value": "total, rentang, dan data tanpa duplikat"
+        },
+        {
+          "action": "click",
+          "target": "Kadaluwarsa",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Daftar Penawaran",
+          "value": "hanya data kadaluwarsa"
+        }
+      ],
+      "expected": [
+        "Tidak terjadi crash atau timeout aplikasi",
+        "Filter, tab, sort terbaru, dan pagination konsisten di seluruh dataset"
+      ],
+      "testData": {
+        "offers": "10000",
+        "pageSize": "20"
+      },
+      "selectorHints": {
+        "filter": {
+          "role": "button",
+          "name": "Filter",
+          "testid": "offer-filter-toggle"
+        },
+        "type": {
+          "role": "combobox",
+          "name": "Jenis Pengiriman",
+          "testid": "offer-shipping-type-filter"
+        },
+        "status": {
+          "role": "combobox",
+          "name": "Status Lelang",
+          "testid": "offer-auction-status-filter"
+        },
+        "apply": {
+          "role": "button",
+          "name": "Terapkan",
+          "testid": "offer-filter-apply"
+        },
+        "last": {
+          "role": "button",
+          "name": "Halaman terakhir",
+          "testid": "pagination-last"
+        },
+        "expiredTab": {
+          "role": "tab",
+          "name": "Kadaluwarsa",
+          "testid": "offer-tab-kadaluwarsa"
+        }
+      },
+      "id": "AMS004-STR-003"
+    },
+    {
+      "category": "stress",
+      "priority": "low",
+      "requirement": "REQ-006",
+      "screen": "Input Harga Penawaran FCL",
+      "title": "Pencarian master pelayaran besar tidak menggandakan atau kehilangan opsi",
+      "preconditions": [
+        "Master berisi 1.000 pelayaran aktif dan 200 pelayaran nonaktif"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Input Harga Penawaran FCL",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Pelayaran",
+          "value": ""
+        },
+        {
+          "action": "fill",
+          "target": "Cari Pelayaran",
+          "value": "ASDP"
+        },
+        {
+          "action": "expect",
+          "target": "Hasil Pelayaran",
+          "value": "semua kecocokan aktif unik dan tanpa master nonaktif"
+        },
+        {
+          "action": "select",
+          "target": "Pelayaran",
+          "value": "ASDP"
+        }
+      ],
+      "expected": [
+        "Dropdown dapat dicari dan tetap responsif",
+        "Tidak ada opsi duplikat atau nonaktif",
+        "Pilihan terikat ke baris yang benar"
+      ],
+      "testData": {
+        "activeShippingLines": "1000",
+        "inactiveShippingLines": "200",
+        "query": "ASDP"
+      },
+      "selectorHints": {
+        "shippingLine": {
+          "role": "combobox",
+          "name": "Pelayaran",
+          "testid": "offer-row-1-shipping-line"
+        },
+        "search": {
+          "role": "textbox",
+          "name": "Cari Pelayaran",
+          "testid": "shipping-line-search"
+        },
+        "options": {
+          "role": "listbox",
+          "name": "Hasil Pelayaran",
+          "testid": "shipping-line-options"
+        }
+      },
+      "id": "AMS004-STR-004"
+    }
+  ]
+}
+

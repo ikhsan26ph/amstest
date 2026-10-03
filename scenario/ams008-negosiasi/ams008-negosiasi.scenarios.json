@@ -1,0 +1,3318 @@
+{
+  "summary": {
+    "total": 49,
+    "positive": 21,
+    "negative": 21,
+    "edge": 3,
+    "stress": 4
+  },
+  "source": {
+    "spec": "inputs/ams008-negosiasi/spec.txt",
+    "designs": [
+      "inputs/ams008-negosiasi/designs/089.png",
+      "inputs/ams008-negosiasi/designs/090.png",
+      "inputs/ams008-negosiasi/designs/091.png",
+      "inputs/ams008-negosiasi/designs/091a-alert.png",
+      "inputs/ams008-negosiasi/designs/092.png",
+      "inputs/ams008-negosiasi/designs/093.png",
+      "inputs/ams008-negosiasi/designs/094.png",
+      "inputs/ams008-negosiasi/designs/095.png",
+      "inputs/ams008-negosiasi/designs/096.png",
+      "inputs/ams008-negosiasi/designs/097.png",
+      "inputs/ams008-negosiasi/designs/098.png",
+      "inputs/ams008-negosiasi/designs/099.png",
+      "inputs/ams008-negosiasi/designs/100.png",
+      "inputs/ams008-negosiasi/designs/101.png",
+      "inputs/ams008-negosiasi/designs/102.png",
+      "inputs/ams008-negosiasi/designs/103.png",
+      "inputs/ams008-negosiasi/designs/104.png",
+      "inputs/ams008-negosiasi/designs/105.png",
+      "inputs/ams008-negosiasi/designs/106.png",
+      "inputs/ams008-negosiasi/designs/107.png",
+      "inputs/ams008-negosiasi/designs/108.png",
+      "inputs/ams008-negosiasi/designs/109.png",
+      "inputs/ams008-negosiasi/designs/110.png",
+      "inputs/ams008-negosiasi/designs/111.png",
+      "inputs/ams008-negosiasi/designs/112.png",
+      "inputs/ams008-negosiasi/designs/113.png",
+      "inputs/ams008-negosiasi/designs/114.png"
+    ],
+    "extras": []
+  },
+  "scenarios": [
+    {
+      "id": "AMS008-NEGOSIASI-POS-001",
+      "title": "Membuka Ajukan Nego dari lelang FCL yang memenuhi syarat",
+      "category": "positive",
+      "priority": "high",
+      "requirement": "REQ-001",
+      "screen": "Detail Harga Penawaran",
+      "preconditions": [
+        "Shipper telah login",
+        "Lelang FCL berstatus Tutup, memiliki penawaran aktif, dan belum melewati Rencana Akhir Kirim"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Detail Harga Penawaran",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Ajukan Nego",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Halaman Ajukan Nego",
+          "value": "Ajukan Nego"
+        }
+      ],
+      "expected": [
+        "Halaman Ajukan Nego terbuka",
+        "Informasi lelang tampil read-only"
+      ],
+      "testData": {
+        "auctionType": "FCL",
+        "auctionStatus": "Tutup"
+      },
+      "selectorHints": {
+        "Ajukan Nego": {
+          "role": "button",
+          "name": "Ajukan Nego",
+          "testid": "offer-negotiate"
+        },
+        "Ringkasan lelang": {
+          "role": "region",
+          "name": "Informasi lelang",
+          "testid": "auction-summary"
+        }
+      }
+    },
+    {
+      "id": "AMS008-NEGOSIASI-POS-002",
+      "title": "Hanya penawaran aktif dan belum melewati closing time yang tersedia",
+      "category": "positive",
+      "priority": "high",
+      "requirement": "REQ-002",
+      "screen": "Ajukan Nego",
+      "preconditions": [
+        "Shipper berada di Ajukan Nego FCL",
+        "Tersedia penawaran aktif, Tidak Berlaku, Kadaluwarsa, dan melewati Closing Time"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Ajukan Nego",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Daftar penawaran",
+          "value": "Penawaran Aktif FCL"
+        },
+        {
+          "action": "expect",
+          "target": "Penawaran tidak memenuhi syarat",
+          "value": "tidak tampil"
+        }
+      ],
+      "expected": [
+        "Hanya penawaran aktif dengan Closing Time mendatang dapat dipilih"
+      ],
+      "testData": {
+        "activeOffer": "OFF-AKTIF-01",
+        "invalidOffers": [
+          "OFF-TIDAK-BERLAKU",
+          "OFF-KADALUWARSA",
+          "OFF-PAST-CLOSING"
+        ]
+      },
+      "selectorHints": {
+        "Daftar penawaran": {
+          "role": "list",
+          "name": "Pilih Harga Penawaran",
+          "testid": "offer-list"
+        },
+        "Penawaran aktif": {
+          "role": "checkbox",
+          "name": "Pilih OFF-AKTIF-01",
+          "testid": "select-offer-OFF-AKTIF-01"
+        }
+      }
+    },
+    {
+      "id": "AMS008-NEGOSIASI-POS-003",
+      "title": "Pengajuan kelima menambah putaran tanpa menghitung balasan vendor",
+      "category": "positive",
+      "priority": "high",
+      "requirement": "REQ-003",
+      "screen": "Detail Negosiasi Shipper",
+      "preconditions": [
+        "Negosiasi berada di putaran keempat",
+        "Shipper berstatus Perlu Aksi",
+        "Vendor pernah mengajukan balasan pada putaran berjalan"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Detail Negosiasi Shipper",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Ajukan Nego",
+          "value": ""
+        },
+        {
+          "action": "fill",
+          "target": "Nominal Negosiasi",
+          "value": "Rp 12.500.000"
+        },
+        {
+          "action": "click",
+          "target": "Kirim",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Ajukan",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Jumlah Putaran",
+          "value": "Nego #5"
+        }
+      ],
+      "expected": [
+        "Putaran menjadi lima",
+        "Balasan vendor tidak dihitung sebagai putaran tambahan"
+      ],
+      "testData": {
+        "currentRound": 4,
+        "currentPrice": 14000000,
+        "firstNegotiation": 13500000,
+        "newAmount": 12500000
+      },
+      "selectorHints": {
+        "Ajukan Nego": {
+          "role": "button",
+          "name": "Ajukan Nego",
+          "testid": "renegotiate"
+        },
+        "Nominal Negosiasi": {
+          "role": "textbox",
+          "name": "Nominal Negosiasi",
+          "testid": "negotiation-amount"
+        },
+        "Jumlah Putaran": {
+          "role": "status",
+          "name": "Jumlah Putaran",
+          "testid": "latest-round"
+        }
+      }
+    },
+    {
+      "id": "AMS008-NEGOSIASI-POS-004",
+      "title": "Timer respons mengikuti pengaturan shipper dan waktu WIB",
+      "category": "positive",
+      "priority": "high",
+      "requirement": "REQ-004",
+      "screen": "Daftar Negosiasi Vendor",
+      "preconditions": [
+        "Pengaturan batas respons shipper adalah 3 hari",
+        "Shipper baru mengirim negosiasi pukul 10:20 WIB"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Daftar Negosiasi Vendor",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Status negosiasi",
+          "value": "Perlu Aksi"
+        },
+        {
+          "action": "expect",
+          "target": "Sisa waktu respons",
+          "value": "3 hari lagi"
+        },
+        {
+          "action": "click",
+          "target": "Detail Nego",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Zona waktu",
+          "value": "WIB"
+        }
+      ],
+      "expected": [
+        "Timer vendor dimulai dari waktu pengajuan dalam WIB",
+        "Sisa waktu sesuai pengaturan shipper"
+      ],
+      "testData": {
+        "responseLimitDays": 3,
+        "submittedAt": "2026-08-27T10:20:00+07:00"
+      },
+      "selectorHints": {
+        "Tab Perlu Aksi": {
+          "role": "tab",
+          "name": "Perlu Aksi",
+          "testid": "tab-perlu-aksi"
+        },
+        "Sisa waktu": {
+          "role": "status",
+          "name": "Sisa waktu respons",
+          "testid": "response-time-left"
+        },
+        "Detail Nego": {
+          "role": "menuitem",
+          "name": "Detail Nego",
+          "testid": "action-detail"
+        }
+      }
+    },
+    {
+      "id": "AMS008-NEGOSIASI-POS-005",
+      "title": "Label status dipetakan sesuai sudut pandang pihak yang bertindak",
+      "category": "positive",
+      "priority": "high",
+      "requirement": "REQ-005",
+      "screen": "Daftar Negosiasi",
+      "preconditions": [
+        "Satu negosiasi baru dikirim shipper dan satu negosiasi telah dibalas vendor"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Daftar Negosiasi Shipper",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Status pengajuan shipper",
+          "value": "Menunggu Vendor"
+        },
+        {
+          "action": "navigate",
+          "target": "Daftar Negosiasi Vendor",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Status pengajuan shipper",
+          "value": "Perlu Aksi"
+        },
+        {
+          "action": "expect",
+          "target": "Status balasan vendor",
+          "value": "Menunggu Shipper"
+        }
+      ],
+      "expected": [
+        "Label status mencerminkan pihak yang perlu bertindak",
+        "Status final tidak ditampilkan sebagai status berjalan"
+      ],
+      "testData": {
+        "negotiationIds": [
+          "NEG-NEW",
+          "NEG-COUNTERED"
+        ]
+      },
+      "selectorHints": {
+        "Status": {
+          "role": "status",
+          "name": "Status negosiasi",
+          "testid": "negotiation-status"
+        },
+        "Tabel": {
+          "role": "table",
+          "name": "Daftar Negosiasi",
+          "testid": "negotiation-table"
+        }
+      }
+    },
+    {
+      "id": "AMS008-NEGOSIASI-POS-006",
+      "title": "Penawaran otomatis menjadi Harga Tidak Berlaku akibat bid baru vendor",
+      "category": "positive",
+      "priority": "high",
+      "requirement": "REQ-006",
+      "screen": "Detail Negosiasi",
+      "preconditions": [
+        "Negosiasi sedang berjalan",
+        "Vendor mengirim bid harga baru di luar proses negosiasi"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Detail Negosiasi",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Status negosiasi",
+          "value": "Harga Tidak Berlaku"
+        },
+        {
+          "action": "expect",
+          "target": "Aksi negosiasi",
+          "value": "tidak tersedia"
+        },
+        {
+          "action": "expect",
+          "target": "Riwayat",
+          "value": "Harga Tidak Berlaku"
+        }
+      ],
+      "expected": [
+        "Proses negosiasi berhenti otomatis",
+        "Perubahan tercatat di riwayat"
+      ],
+      "testData": {
+        "externalEvent": "vendor_new_bid"
+      },
+      "selectorHints": {
+        "Status": {
+          "role": "status",
+          "name": "Status negosiasi",
+          "testid": "negotiation-status"
+        },
+        "Riwayat": {
+          "role": "table",
+          "name": "Riwayat",
+          "testid": "negotiation-history"
+        }
+      }
+    },
+    {
+      "id": "AMS008-NEGOSIASI-POS-007",
+      "title": "Memilih penawaran lintas halaman lalu membatalkan tanpa menyimpan",
+      "category": "positive",
+      "priority": "medium",
+      "requirement": "REQ-007",
+      "screen": "Ajukan Nego",
+      "preconditions": [
+        "Shipper berada di Ajukan Nego",
+        "Tersedia lebih dari 20 penawaran valid"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Ajukan Nego",
+          "value": ""
+        },
+        {
+          "action": "check",
+          "target": "Pilih OFF-001",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Halaman berikutnya",
+          "value": ""
+        },
+        {
+          "action": "check",
+          "target": "Pilih OFF-021",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Counter terpilih",
+          "value": "2 Terpilih"
+        },
+        {
+          "action": "click",
+          "target": "Batal",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Detail Harga Penawaran",
+          "value": "Detail Harga Penawaran"
+        }
+      ],
+      "expected": [
+        "Pilihan dihitung lintas halaman",
+        "Batal kembali tanpa membuat negosiasi"
+      ],
+      "testData": {
+        "selectedOffers": [
+          "OFF-001",
+          "OFF-021"
+        ]
+      },
+      "selectorHints": {
+        "Checkbox penawaran": {
+          "role": "checkbox",
+          "name": "Pilih penawaran",
+          "testid": "select-offer-<id>"
+        },
+        "Counter terpilih": {
+          "role": "status",
+          "name": "Jumlah penawaran terpilih",
+          "testid": "selected-offer-count"
+        },
+        "Batal": {
+          "role": "button",
+          "name": "Batal",
+          "testid": "cancel-negotiation"
+        },
+        "Halaman berikutnya": {
+          "role": "button",
+          "name": "Halaman berikutnya",
+          "testid": "pagination-next"
+        }
+      }
+    },
+    {
+      "id": "AMS008-NEGOSIASI-POS-008",
+      "title": "Memformat nominal rupiah valid dan menerapkannya ke semua pilihan",
+      "category": "positive",
+      "priority": "high",
+      "requirement": "REQ-008",
+      "screen": "Ajukan Nego",
+      "preconditions": [
+        "Dua penawaran aktif dipilih",
+        "Harga aktif keduanya di atas Rp 12.500.000"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Ajukan Nego",
+          "value": ""
+        },
+        {
+          "action": "fill",
+          "target": "Nominal Negosiasi",
+          "value": "12500000"
+        },
+        {
+          "action": "expect",
+          "target": "Nominal Negosiasi",
+          "value": "Rp 12.500.000"
+        },
+        {
+          "action": "click",
+          "target": "Kirim",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Konfirmasi pengajuan",
+          "value": "2 penawaran"
+        }
+      ],
+      "expected": [
+        "Input diformat sebagai rupiah ribuan",
+        "Satu nominal diterapkan pada kedua penawaran"
+      ],
+      "testData": {
+        "rawAmount": "12500000",
+        "formattedAmount": "Rp 12.500.000",
+        "selectedCount": 2
+      },
+      "selectorHints": {
+        "Nominal Negosiasi": {
+          "role": "textbox",
+          "name": "Nominal Negosiasi",
+          "testid": "negotiation-amount"
+        },
+        "Kirim": {
+          "role": "button",
+          "name": "Kirim",
+          "testid": "submit-negotiation"
+        },
+        "Konfirmasi": {
+          "role": "dialog",
+          "name": "Konfirmasi pengajuan nego",
+          "testid": "submit-negotiation-dialog"
+        }
+      }
+    },
+    {
+      "id": "AMS008-NEGOSIASI-POS-009",
+      "title": "Mengirim pengajuan tunggal lebih rendah dari harga aktif dan nego pertama",
+      "category": "positive",
+      "priority": "high",
+      "requirement": "REQ-009",
+      "screen": "Ajukan Nego",
+      "preconditions": [
+        "Satu penawaran dipilih",
+        "Harga aktif Rp 15.000.000",
+        "Nominal nego pertama Rp 13.500.000"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Ajukan Nego",
+          "value": ""
+        },
+        {
+          "action": "fill",
+          "target": "Nominal Negosiasi",
+          "value": "13000000"
+        },
+        {
+          "action": "click",
+          "target": "Kirim",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Konfirmasi pengajuan",
+          "value": "1 penawaran"
+        }
+      ],
+      "expected": [
+        "Nominal lolos validasi tunggal",
+        "Konfirmasi pengajuan tampil"
+      ],
+      "testData": {
+        "currentPrice": 15000000,
+        "firstNegotiation": 13500000,
+        "newAmount": 13000000
+      },
+      "selectorHints": {
+        "Nominal Negosiasi": {
+          "role": "textbox",
+          "name": "Nominal Negosiasi",
+          "testid": "negotiation-amount"
+        },
+        "Kirim": {
+          "role": "button",
+          "name": "Kirim",
+          "testid": "submit-negotiation"
+        }
+      }
+    },
+    {
+      "id": "AMS008-NEGOSIASI-POS-010",
+      "title": "Memproses hanya harga bulk yang sesuai",
+      "category": "positive",
+      "priority": "high",
+      "requirement": "REQ-010",
+      "screen": "Dialog Nominal Nego Belum Sesuai",
+      "preconditions": [
+        "Tiga penawaran dipilih dengan harga Rp 16.000.000, Rp 17.000.000, dan Rp 20.000.000"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Ajukan Nego",
+          "value": ""
+        },
+        {
+          "action": "fill",
+          "target": "Nominal Negosiasi",
+          "value": "18000000"
+        },
+        {
+          "action": "click",
+          "target": "Kirim",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Dialog",
+          "value": "Nominal Nego Belum Sesuai"
+        },
+        {
+          "action": "click",
+          "target": "Proses Harga yang Sesuai",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Konfirmasi pengajuan",
+          "value": "1 penawaran"
+        }
+      ],
+      "expected": [
+        "Dialog mencantumkan harga Rp 16.000.000 dan Rp 17.000.000",
+        "Dua penawaran dikeluarkan dan satu dilanjutkan"
+      ],
+      "testData": {
+        "amount": 18000000,
+        "offerPrices": [
+          16000000,
+          17000000,
+          20000000
+        ]
+      },
+      "selectorHints": {
+        "Dialog": {
+          "role": "dialog",
+          "name": "Nominal Nego Belum Sesuai",
+          "testid": "amount-mismatch-dialog"
+        },
+        "Proses Harga yang Sesuai": {
+          "role": "button",
+          "name": "Proses Harga yang Sesuai",
+          "testid": "process-valid-prices"
+        }
+      }
+    },
+    {
+      "id": "AMS008-NEGOSIASI-POS-011",
+      "title": "Memproses sisa penawaran setelah validasi nego pertama",
+      "category": "positive",
+      "priority": "high",
+      "requirement": "REQ-011",
+      "screen": "Dialog Nominal Melebihi Nego Sebelumnya",
+      "preconditions": [
+        "Tiga penawaran dipilih",
+        "Satu penawaran memiliki nego pertama lebih rendah dari nominal baru",
+        "Dua penawaran lain valid"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Ajukan Nego",
+          "value": ""
+        },
+        {
+          "action": "fill",
+          "target": "Nominal Negosiasi",
+          "value": "13000000"
+        },
+        {
+          "action": "click",
+          "target": "Kirim",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Dialog",
+          "value": "Nominal Melebihi Nego Sebelumnya"
+        },
+        {
+          "action": "click",
+          "target": "Proses Sisanya",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Konfirmasi pengajuan",
+          "value": "2 penawaran"
+        }
+      ],
+      "expected": [
+        "Dialog menampilkan vendor, unit, dan nominal nego pertama",
+        "Penawaran invalid dikeluarkan"
+      ],
+      "testData": {
+        "newAmount": 13000000,
+        "invalidFirstNegotiation": 12000000,
+        "remainingCount": 2
+      },
+      "selectorHints": {
+        "Dialog": {
+          "role": "dialog",
+          "name": "Nominal Melebihi Nego Sebelumnya",
+          "testid": "previous-negotiation-dialog"
+        },
+        "Proses Sisanya": {
+          "role": "button",
+          "name": "Proses Sisanya",
+          "testid": "process-remaining"
+        }
+      }
+    },
+    {
+      "id": "AMS008-NEGOSIASI-POS-012",
+      "title": "Mengonfirmasi pengajuan bulk dan membuat proses per penawaran",
+      "category": "positive",
+      "priority": "high",
+      "requirement": "REQ-012",
+      "screen": "Konfirmasi Pengajuan Nego",
+      "preconditions": [
+        "Tiga penawaran valid dipilih",
+        "Nominal negosiasi valid"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Ajukan Nego",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Kirim",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Konfirmasi pengajuan",
+          "value": "3 penawaran"
+        },
+        {
+          "action": "click",
+          "target": "Ajukan",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Toast",
+          "value": "Negosiasi berhasil diajukan"
+        },
+        {
+          "action": "expect",
+          "target": "Detail Harga Penawaran",
+          "value": "Proses Nego"
+        }
+      ],
+      "expected": [
+        "Tiga proses negosiasi dibuat",
+        "Status shipper Menunggu Vendor dan vendor Perlu Aksi",
+        "Timer dimulai dan putaran bertambah"
+      ],
+      "testData": {
+        "selectedCount": 3,
+        "amount": 12000000
+      },
+      "selectorHints": {
+        "Kirim": {
+          "role": "button",
+          "name": "Kirim",
+          "testid": "submit-negotiation"
+        },
+        "Ajukan": {
+          "role": "button",
+          "name": "Ajukan",
+          "testid": "confirm-submit-negotiation"
+        },
+        "Toast": {
+          "role": "status",
+          "name": "Negosiasi berhasil diajukan",
+          "testid": "negotiation-success-toast"
+        }
+      }
+    },
+    {
+      "id": "AMS008-NEGOSIASI-POS-013",
+      "title": "Memfilter, mengurutkan, dan membuka tab daftar shipper",
+      "category": "positive",
+      "priority": "medium",
+      "requirement": "REQ-013",
+      "screen": "Daftar Negosiasi Shipper",
+      "preconditions": [
+        "Shipper memiliki negosiasi FTL dan FCL dengan beragam status"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Daftar Negosiasi Shipper",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Filter",
+          "value": ""
+        },
+        {
+          "action": "fill",
+          "target": "ID Order",
+          "value": "FCL-NRM-01/200526"
+        },
+        {
+          "action": "select",
+          "target": "Status",
+          "value": "Perlu Aksi"
+        },
+        {
+          "action": "click",
+          "target": "Terapkan",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Perlu Aksi",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Tabel negosiasi",
+          "value": "FCL-NRM-01/200526"
+        }
+      ],
+      "expected": [
+        "Filter diterapkan",
+        "Tab dan counter sesuai data",
+        "Baris diurutkan berdasarkan update terbaru"
+      ],
+      "testData": {
+        "orderId": "FCL-NRM-01/200526",
+        "status": "Perlu Aksi"
+      },
+      "selectorHints": {
+        "Filter": {
+          "role": "button",
+          "name": "Filter",
+          "testid": "negotiation-filter"
+        },
+        "ID Order": {
+          "role": "textbox",
+          "name": "ID Order",
+          "testid": "filter-order-id"
+        },
+        "Status": {
+          "role": "combobox",
+          "name": "Status",
+          "testid": "filter-status"
+        },
+        "Terapkan": {
+          "role": "button",
+          "name": "Terapkan",
+          "testid": "filter-apply"
+        },
+        "Tab Perlu Aksi": {
+          "role": "tab",
+          "name": "Perlu Aksi",
+          "testid": "tab-perlu-aksi"
+        }
+      }
+    },
+    {
+      "id": "AMS008-NEGOSIASI-POS-014",
+      "title": "Menu aksi shipper sesuai status negosiasi",
+      "category": "positive",
+      "priority": "high",
+      "requirement": "REQ-014",
+      "screen": "Daftar Negosiasi Shipper",
+      "preconditions": [
+        "Daftar memuat baris Perlu Aksi, Menunggu Vendor, Diterima, Ditolak, Nego Berakhir, dan Harga Tidak Berlaku"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Daftar Negosiasi Shipper",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Aksi negosiasi Perlu Aksi",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Menu aksi",
+          "value": "Detail Nego"
+        },
+        {
+          "action": "expect",
+          "target": "Menu aksi",
+          "value": "Terima Nego"
+        },
+        {
+          "action": "expect",
+          "target": "Menu aksi",
+          "value": "Riwayat Nego"
+        }
+      ],
+      "expected": [
+        "Menu status Perlu Aksi memuat tiga aksi yang diizinkan",
+        "Menu status lain mengikuti matriks hak akses"
+      ],
+      "testData": {
+        "status": "Perlu Aksi"
+      },
+      "selectorHints": {
+        "Menu aksi": {
+          "role": "button",
+          "name": "Aksi negosiasi",
+          "testid": "negotiation-actions-<id>"
+        },
+        "Detail Nego": {
+          "role": "menuitem",
+          "name": "Detail Nego",
+          "testid": "action-detail"
+        },
+        "Terima Nego": {
+          "role": "menuitem",
+          "name": "Terima Nego",
+          "testid": "action-accept"
+        },
+        "Riwayat Nego": {
+          "role": "menuitem",
+          "name": "Riwayat Nego",
+          "testid": "action-history"
+        }
+      }
+    },
+    {
+      "id": "AMS008-NEGOSIASI-POS-015",
+      "title": "Menampilkan data terbaru dan riwayat lengkap serta mengakhiri nego",
+      "category": "positive",
+      "priority": "high",
+      "requirement": "REQ-015",
+      "screen": "Detail Negosiasi Shipper",
+      "preconditions": [
+        "Negosiasi berstatus Menunggu Vendor",
+        "Tersedia tiga putaran riwayat"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Detail Negosiasi Shipper",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Data Nego Terbaru",
+          "value": "Harga Penawaran Awal"
+        },
+        {
+          "action": "expect",
+          "target": "Riwayat",
+          "value": "Putaran Nego"
+        },
+        {
+          "action": "click",
+          "target": "Akhiri Nego",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Konfirmasi akhiri nego",
+          "value": "Akhiri Nego"
+        },
+        {
+          "action": "click",
+          "target": "Ya",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Status negosiasi",
+          "value": "Nego Berakhir"
+        }
+      ],
+      "expected": [
+        "Data terbaru dan seluruh kolom riwayat tampil",
+        "Konfirmasi mengubah status menjadi Nego Berakhir"
+      ],
+      "testData": {
+        "status": "Menunggu Vendor",
+        "historyRows": 3
+      },
+      "selectorHints": {
+        "Data terbaru": {
+          "role": "region",
+          "name": "Data Nego Terbaru",
+          "testid": "latest-negotiation"
+        },
+        "Riwayat": {
+          "role": "table",
+          "name": "Riwayat",
+          "testid": "negotiation-history"
+        },
+        "Akhiri Nego": {
+          "role": "button",
+          "name": "Akhiri Nego",
+          "testid": "end-negotiation"
+        },
+        "Konfirmasi": {
+          "role": "dialog",
+          "name": "Konfirmasi akhiri nego",
+          "testid": "end-negotiation-dialog"
+        }
+      }
+    },
+    {
+      "id": "AMS008-NEGOSIASI-POS-016",
+      "title": "Mengajukan nego kembali dari detail dengan nominal valid",
+      "category": "positive",
+      "priority": "high",
+      "requirement": "REQ-016",
+      "screen": "Dialog Ajukan Nego",
+      "preconditions": [
+        "Shipper berstatus Perlu Aksi",
+        "Putaran saat ini tiga",
+        "Harga saat ini Rp 14.000.000",
+        "Nego pertama Rp 13.500.000"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Detail Negosiasi Shipper",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Ajukan Nego",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Dialog Ajukan Nego",
+          "value": "FCL-NRM-01/200526"
+        },
+        {
+          "action": "fill",
+          "target": "Nominal Negosiasi",
+          "value": "13000000"
+        },
+        {
+          "action": "click",
+          "target": "Kirim",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Ajukan",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Status negosiasi",
+          "value": "Menunggu Vendor"
+        }
+      ],
+      "expected": [
+        "Putaran bertambah menjadi empat",
+        "Status kembali Menunggu Vendor"
+      ],
+      "testData": {
+        "currentRound": 3,
+        "currentPrice": 14000000,
+        "firstNegotiation": 13500000,
+        "newAmount": 13000000
+      },
+      "selectorHints": {
+        "Dialog": {
+          "role": "dialog",
+          "name": "Ajukan Nego",
+          "testid": "renegotiate-dialog"
+        },
+        "Nominal Negosiasi": {
+          "role": "textbox",
+          "name": "Nominal Negosiasi",
+          "testid": "negotiation-amount"
+        },
+        "Kirim": {
+          "role": "button",
+          "name": "Kirim",
+          "testid": "submit-renegotiation"
+        }
+      }
+    },
+    {
+      "id": "AMS008-NEGOSIASI-POS-017",
+      "title": "Vendor melihat tab, timer, aksi, tooltip, dan riwayat sesuai status",
+      "category": "positive",
+      "priority": "high",
+      "requirement": "REQ-017",
+      "screen": "Detail Negosiasi Vendor",
+      "preconditions": [
+        "Vendor memiliki negosiasi berstatus Perlu Aksi"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Daftar Negosiasi Vendor",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Perlu Aksi",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Sisa waktu respons",
+          "value": "3 hari lagi"
+        },
+        {
+          "action": "click",
+          "target": "Detail Nego",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Respon Nego",
+          "value": "Terima Nego"
+        },
+        {
+          "action": "click",
+          "target": "Info sisa waktu respons",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Tooltip",
+          "value": "Sisa waktu Vendor untuk merespon nego Shipper"
+        }
+      ],
+      "expected": [
+        "Tab dan counter vendor tampil",
+        "Detail menyediakan tiga aksi respons dan tooltip timer"
+      ],
+      "testData": {
+        "status": "Perlu Aksi"
+      },
+      "selectorHints": {
+        "Tab Perlu Aksi": {
+          "role": "tab",
+          "name": "Perlu Aksi",
+          "testid": "tab-perlu-aksi"
+        },
+        "Detail Nego": {
+          "role": "menuitem",
+          "name": "Detail Nego",
+          "testid": "action-detail"
+        },
+        "Respon Nego": {
+          "role": "group",
+          "name": "Respon Nego",
+          "testid": "negotiation-response"
+        },
+        "Info sisa waktu": {
+          "role": "button",
+          "name": "Info sisa waktu respons",
+          "testid": "response-time-info"
+        },
+        "Tooltip": {
+          "role": "tooltip",
+          "name": "Sisa waktu Vendor untuk merespon nego Shipper",
+          "testid": "response-time-tooltip"
+        }
+      }
+    },
+    {
+      "id": "AMS008-NEGOSIASI-POS-018",
+      "title": "Vendor menerima nominal nego yang masih valid",
+      "category": "positive",
+      "priority": "high",
+      "requirement": "REQ-018",
+      "screen": "Dialog Terima Nego",
+      "preconditions": [
+        "Vendor berstatus Perlu Aksi",
+        "Batas respons belum berakhir",
+        "Penawaran masih aktif"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Detail Negosiasi Vendor",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Terima Nego",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Dialog Terima Nego",
+          "value": "Rp 13.500.000"
+        },
+        {
+          "action": "click",
+          "target": "Ya",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Status negosiasi",
+          "value": "Diterima"
+        },
+        {
+          "action": "expect",
+          "target": "Harga aktif",
+          "value": "Rp 13.500.000"
+        }
+      ],
+      "expected": [
+        "Status menjadi Diterima",
+        "Nominal shipper menjadi harga aktif"
+      ],
+      "testData": {
+        "negotiationAmount": 13500000,
+        "currentPrice": 15000000
+      },
+      "selectorHints": {
+        "Terima Nego": {
+          "role": "button",
+          "name": "Terima Nego",
+          "testid": "accept-negotiation"
+        },
+        "Dialog": {
+          "role": "dialog",
+          "name": "Anda Yakin Terima Nego?",
+          "testid": "accept-negotiation-dialog"
+        },
+        "Ya": {
+          "role": "button",
+          "name": "Ya",
+          "testid": "confirm-accept-negotiation"
+        },
+        "Status": {
+          "role": "status",
+          "name": "Status negosiasi",
+          "testid": "negotiation-status"
+        }
+      }
+    },
+    {
+      "id": "AMS008-NEGOSIASI-POS-019",
+      "title": "Vendor menolak dengan chip alasan yang dapat diedit",
+      "category": "positive",
+      "priority": "high",
+      "requirement": "REQ-019",
+      "screen": "Dialog Tolak Nego",
+      "preconditions": [
+        "Vendor berstatus Perlu Aksi",
+        "Penawaran aktif dan timer belum habis"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Detail Negosiasi Vendor",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Tolak Nego",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Harga di bawah biaya operasional kami",
+          "value": ""
+        },
+        {
+          "action": "fill",
+          "target": "Alasan penolakan",
+          "value": "Harga di bawah biaya operasional kami untuk rute ini"
+        },
+        {
+          "action": "click",
+          "target": "Tolak Nego",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Status negosiasi",
+          "value": "Ditolak"
+        },
+        {
+          "action": "expect",
+          "target": "Catatan Vendor",
+          "value": "Harga di bawah biaya operasional kami untuk rute ini"
+        }
+      ],
+      "expected": [
+        "Chip mengisi textarea dan teks dapat diedit",
+        "Harga aktif tidak berubah",
+        "Alasan tersimpan sebagai Catatan Vendor"
+      ],
+      "testData": {
+        "reasonChip": "Harga di bawah biaya operasional kami",
+        "editedReason": "Harga di bawah biaya operasional kami untuk rute ini"
+      },
+      "selectorHints": {
+        "Tolak Nego": {
+          "role": "button",
+          "name": "Tolak Nego",
+          "testid": "reject-negotiation"
+        },
+        "Dialog": {
+          "role": "dialog",
+          "name": "Tolak Nego",
+          "testid": "reject-negotiation-dialog"
+        },
+        "Alasan": {
+          "role": "textbox",
+          "name": "Alasan penolakan",
+          "testid": "rejection-reason"
+        },
+        "Chip": {
+          "role": "button",
+          "name": "Harga di bawah biaya operasional kami",
+          "testid": "rejection-chip-operational-cost"
+        }
+      }
+    },
+    {
+      "id": "AMS008-NEGOSIASI-POS-020",
+      "title": "Vendor mengirim nominal balasan di antara nego terbaru dan harga aktif",
+      "category": "positive",
+      "priority": "high",
+      "requirement": "REQ-020",
+      "screen": "Dialog Ajukan Balasan",
+      "preconditions": [
+        "Vendor berstatus Perlu Aksi",
+        "Nominal nego terbaru Rp 13.000.000",
+        "Harga aktif Rp 14.000.000"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Detail Negosiasi Vendor",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Ajukan Balasan",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Dialog Ajukan Balasan",
+          "value": "Rp 13.000.000"
+        },
+        {
+          "action": "fill",
+          "target": "Nominal Balasan",
+          "value": "13500000"
+        },
+        {
+          "action": "click",
+          "target": "Kirim",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Status vendor",
+          "value": "Menunggu Shipper"
+        },
+        {
+          "action": "expect",
+          "target": "Status shipper",
+          "value": "Perlu Aksi"
+        }
+      ],
+      "expected": [
+        "Balasan diterima",
+        "Timer respons shipper dimulai"
+      ],
+      "testData": {
+        "latestNegotiation": 13000000,
+        "currentPrice": 14000000,
+        "counterAmount": 13500000
+      },
+      "selectorHints": {
+        "Ajukan Balasan": {
+          "role": "button",
+          "name": "Ajukan Balasan",
+          "testid": "counter-offer"
+        },
+        "Dialog": {
+          "role": "dialog",
+          "name": "Ajukan Balasan",
+          "testid": "counter-offer-dialog"
+        },
+        "Nominal Balasan": {
+          "role": "textbox",
+          "name": "Nominal Balasan",
+          "testid": "counter-offer-amount"
+        },
+        "Kirim": {
+          "role": "button",
+          "name": "Kirim",
+          "testid": "submit-counter-offer"
+        }
+      }
+    },
+    {
+      "id": "AMS008-NEGOSIASI-POS-021",
+      "title": "Harga hasil nego diterima dipakai untuk pemesanan dan tetap menyimpan riwayat",
+      "category": "positive",
+      "priority": "high",
+      "requirement": "REQ-021",
+      "screen": "Detail Harga Penawaran",
+      "preconditions": [
+        "Negosiasi diterima pada Rp 13.500.000",
+        "Harga awal Rp 15.000.000"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Detail Harga Penawaran",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Harga aktif",
+          "value": "Rp 13.500.000"
+        },
+        {
+          "action": "click",
+          "target": "Pesan",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Ringkasan Pesanan",
+          "value": "Rp 13.500.000"
+        },
+        {
+          "action": "navigate",
+          "target": "Detail Negosiasi Shipper",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Riwayat",
+          "value": "Rp 15.000.000"
+        }
+      ],
+      "expected": [
+        "Harga hasil nego dipakai pada Pesan dan perhitungan pajak",
+        "Harga lama tetap tersedia di riwayat"
+      ],
+      "testData": {
+        "originalPrice": 15000000,
+        "acceptedPrice": 13500000,
+        "vatRate": "1.1%",
+        "withholdingRate": "2%"
+      },
+      "selectorHints": {
+        "Harga aktif": {
+          "role": "status",
+          "name": "Harga aktif",
+          "testid": "active-offer-price"
+        },
+        "Pesan": {
+          "role": "button",
+          "name": "Pesan",
+          "testid": "offer-order"
+        },
+        "Riwayat": {
+          "role": "table",
+          "name": "Riwayat",
+          "testid": "negotiation-history"
+        }
+      }
+    },
+    {
+      "id": "AMS008-NEGOSIASI-NEG-001",
+      "title": "Menolak Ajukan Nego setelah Rencana Akhir Kirim",
+      "category": "negative",
+      "priority": "high",
+      "requirement": "REQ-001",
+      "screen": "Detail Harga Penawaran",
+      "preconditions": [
+        "Shipper berada di Detail Harga Penawaran",
+        "Lelang telah melewati Rencana Akhir Kirim"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Detail Harga Penawaran",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Ajukan Nego",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Alert",
+          "value": "Nomor lelang sudah melewati tgl. rencana akhir kirim"
+        },
+        {
+          "action": "expect",
+          "target": "Halaman aktif",
+          "value": "Detail Harga Penawaran"
+        }
+      ],
+      "expected": [
+        "Alert tepat tampil",
+        "User tidak berpindah halaman"
+      ],
+      "testData": {
+        "auctionStatus": "Tutup",
+        "plannedDeliveryEnd": "2026-07-05T22:00:00+07:00",
+        "now": "2026-07-06T00:00:00+07:00"
+      },
+      "selectorHints": {
+        "Ajukan Nego": {
+          "role": "button",
+          "name": "Ajukan Nego",
+          "testid": "offer-negotiate"
+        },
+        "Alert": {
+          "role": "alert",
+          "name": "Nomor lelang sudah melewati tgl. rencana akhir kirim",
+          "testid": "auction-ineligible-alert"
+        }
+      }
+    },
+    {
+      "id": "AMS008-NEGOSIASI-NEG-002",
+      "title": "Menolak negosiasi penawaran FCL yang melewati Closing Time",
+      "category": "negative",
+      "priority": "high",
+      "requirement": "REQ-002",
+      "screen": "Detail Harga Penawaran",
+      "preconditions": [
+        "Penawaran FCL aktif secara administratif tetapi Closing Time telah lewat"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Detail Harga Penawaran",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Ajukan Nego",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Ajukan Nego",
+          "value": "penawaran tidak tersedia"
+        },
+        {
+          "action": "expect",
+          "target": "Penawaran FCL lewat closing",
+          "value": "tidak dapat dipilih"
+        }
+      ],
+      "expected": [
+        "Penawaran tidak muncul pada Ajukan Nego",
+        "Tidak ada proses nego yang dibuat"
+      ],
+      "testData": {
+        "offerId": "OFF-PAST-CLOSING",
+        "closingTime": "2026-06-22T15:00:00+07:00",
+        "now": "2026-06-22T15:00:01+07:00"
+      },
+      "selectorHints": {
+        "Ajukan Nego": {
+          "role": "button",
+          "name": "Ajukan Nego",
+          "testid": "offer-negotiate"
+        },
+        "Daftar penawaran": {
+          "role": "list",
+          "name": "Pilih Harga Penawaran",
+          "testid": "offer-list"
+        }
+      }
+    },
+    {
+      "id": "AMS008-NEGOSIASI-NEG-003",
+      "title": "Menolak pengajuan keenam pada penawaran yang sama",
+      "category": "negative",
+      "priority": "high",
+      "requirement": "REQ-003",
+      "screen": "Detail Negosiasi Shipper",
+      "preconditions": [
+        "Penawaran telah mencapai lima putaran shipper",
+        "Status memungkinkan Ajukan Nego Kembali"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Detail Negosiasi Shipper",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Ajukan Nego",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Alert batas putaran",
+          "value": "Maksimal 5 putaran nego"
+        },
+        {
+          "action": "expect",
+          "target": "Jumlah Putaran",
+          "value": "Nego #5"
+        }
+      ],
+      "expected": [
+        "Pengajuan keenam tidak dibuka/diproses",
+        "Jumlah putaran tetap lima"
+      ],
+      "testData": {
+        "currentRound": 5
+      },
+      "selectorHints": {
+        "Ajukan Nego": {
+          "role": "button",
+          "name": "Ajukan Nego",
+          "testid": "renegotiate"
+        },
+        "Alert": {
+          "role": "alert",
+          "name": "Maksimal 5 putaran nego",
+          "testid": "max-round-alert"
+        },
+        "Jumlah Putaran": {
+          "role": "status",
+          "name": "Jumlah Putaran",
+          "testid": "latest-round"
+        }
+      }
+    },
+    {
+      "id": "AMS008-NEGOSIASI-NEG-004",
+      "title": "Menandai Tidak Direspons ketika timer vendor terlewati",
+      "category": "negative",
+      "priority": "high",
+      "requirement": "REQ-004",
+      "screen": "Daftar Negosiasi Shipper",
+      "preconditions": [
+        "Vendor belum merespons",
+        "Batas waktu vendor telah lewat satu detik"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Daftar Negosiasi Shipper",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Nego Tidak Direspons",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Daftar khusus",
+          "value": "Tidak Direspons"
+        },
+        {
+          "action": "expect",
+          "target": "Aksi vendor",
+          "value": "tidak tersedia"
+        }
+      ],
+      "expected": [
+        "Status shipper menjadi Tidak Direspons",
+        "Negosiasi tidak lagi dapat direspons vendor"
+      ],
+      "testData": {
+        "deadline": "2026-08-30T10:20:00+07:00",
+        "now": "2026-08-30T10:20:01+07:00"
+      },
+      "selectorHints": {
+        "Nego Tidak Direspons": {
+          "role": "button",
+          "name": "Nego Tidak Direspons",
+          "testid": "unresponded-negotiations"
+        },
+        "Status": {
+          "role": "status",
+          "name": "Tidak Direspons",
+          "testid": "negotiation-status"
+        }
+      }
+    },
+    {
+      "id": "AMS008-NEGOSIASI-NEG-005",
+      "title": "Mencegah aksi pada status final",
+      "category": "negative",
+      "priority": "high",
+      "requirement": "REQ-005",
+      "screen": "Detail Negosiasi",
+      "preconditions": [
+        "Negosiasi berstatus Ditolak"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Detail Negosiasi Vendor",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Status negosiasi",
+          "value": "Ditolak"
+        },
+        {
+          "action": "expect",
+          "target": "Terima Nego",
+          "value": "tidak tersedia"
+        },
+        {
+          "action": "expect",
+          "target": "Ajukan Balasan",
+          "value": "tidak tersedia"
+        },
+        {
+          "action": "expect",
+          "target": "Tolak Nego",
+          "value": "tidak tersedia"
+        }
+      ],
+      "expected": [
+        "Status final tidak menyediakan aksi respons",
+        "Status tidak kembali menjadi berjalan"
+      ],
+      "testData": {
+        "finalStatus": "Ditolak"
+      },
+      "selectorHints": {
+        "Status": {
+          "role": "status",
+          "name": "Status negosiasi",
+          "testid": "negotiation-status"
+        },
+        "Respon Nego": {
+          "role": "group",
+          "name": "Respon Nego",
+          "testid": "negotiation-response"
+        }
+      }
+    },
+    {
+      "id": "AMS008-NEGOSIASI-NEG-006",
+      "title": "Menolak aksi lanjutan setelah lelang ulang membuat harga tidak berlaku",
+      "category": "negative",
+      "priority": "high",
+      "requirement": "REQ-006",
+      "screen": "Detail Negosiasi",
+      "preconditions": [
+        "Negosiasi sedang berjalan",
+        "Proses Lelang Ulang dimulai"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Detail Negosiasi Shipper",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Status negosiasi",
+          "value": "Harga Tidak Berlaku"
+        },
+        {
+          "action": "click",
+          "target": "Ajukan Nego",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Alert",
+          "value": "Penawaran tidak lagi berlaku"
+        }
+      ],
+      "expected": [
+        "Aksi pengajuan ditolak",
+        "Status tetap Harga Tidak Berlaku"
+      ],
+      "testData": {
+        "externalEvent": "reauction_started"
+      },
+      "selectorHints": {
+        "Status": {
+          "role": "status",
+          "name": "Status negosiasi",
+          "testid": "negotiation-status"
+        },
+        "Ajukan Nego": {
+          "role": "button",
+          "name": "Ajukan Nego",
+          "testid": "renegotiate"
+        },
+        "Alert": {
+          "role": "alert",
+          "name": "Penawaran tidak lagi berlaku",
+          "testid": "inactive-offer-alert"
+        }
+      }
+    },
+    {
+      "id": "AMS008-NEGOSIASI-NEG-007",
+      "title": "Menolak Kirim tanpa penawaran terpilih",
+      "category": "negative",
+      "priority": "high",
+      "requirement": "REQ-007",
+      "screen": "Ajukan Nego",
+      "preconditions": [
+        "Shipper berada di Ajukan Nego",
+        "Tidak ada checkbox penawaran dipilih"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Ajukan Nego",
+          "value": ""
+        },
+        {
+          "action": "fill",
+          "target": "Nominal Negosiasi",
+          "value": "12000000"
+        },
+        {
+          "action": "click",
+          "target": "Kirim",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Error pilihan",
+          "value": "Pilih minimal 1 penawaran"
+        }
+      ],
+      "expected": [
+        "Tidak ada proses dibuat",
+        "Error pilihan tampil atau tombol tetap disabled"
+      ],
+      "testData": {
+        "selectedCount": 0,
+        "amount": 12000000
+      },
+      "selectorHints": {
+        "Nominal Negosiasi": {
+          "role": "textbox",
+          "name": "Nominal Negosiasi",
+          "testid": "negotiation-amount"
+        },
+        "Kirim": {
+          "role": "button",
+          "name": "Kirim",
+          "testid": "submit-negotiation"
+        },
+        "Error pilihan": {
+          "role": "alert",
+          "name": "Pilih minimal 1 penawaran",
+          "testid": "offer-selection-error"
+        }
+      }
+    },
+    {
+      "id": "AMS008-NEGOSIASI-NEG-008",
+      "title": "Menolak nominal kosong, nonnumerik, nol, dan negatif",
+      "category": "negative",
+      "priority": "high",
+      "requirement": "REQ-008",
+      "screen": "Ajukan Nego",
+      "preconditions": [
+        "Satu penawaran valid dipilih"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Ajukan Nego",
+          "value": ""
+        },
+        {
+          "action": "fill",
+          "target": "Nominal Negosiasi",
+          "value": "0"
+        },
+        {
+          "action": "click",
+          "target": "Kirim",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Error nominal",
+          "value": "Nominal Negosiasi harus lebih dari 0"
+        },
+        {
+          "action": "fill",
+          "target": "Nominal Negosiasi",
+          "value": "abc"
+        },
+        {
+          "action": "expect",
+          "target": "Nominal Negosiasi",
+          "value": "input nonnumerik ditolak"
+        }
+      ],
+      "expected": [
+        "Nilai invalid tidak dapat dikirim",
+        "Tidak ada pengajuan tersimpan"
+      ],
+      "testData": {
+        "invalidAmounts": [
+          "",
+          "abc",
+          "0",
+          "-1"
+        ]
+      },
+      "selectorHints": {
+        "Nominal Negosiasi": {
+          "role": "textbox",
+          "name": "Nominal Negosiasi",
+          "testid": "negotiation-amount"
+        },
+        "Kirim": {
+          "role": "button",
+          "name": "Kirim",
+          "testid": "submit-negotiation"
+        },
+        "Error nominal": {
+          "role": "alert",
+          "name": "Nominal Negosiasi harus lebih dari 0",
+          "testid": "negotiation-amount-error"
+        }
+      }
+    },
+    {
+      "id": "AMS008-NEGOSIASI-NEG-009",
+      "title": "Menolak nominal tunggal sama dengan harga aktif",
+      "category": "negative",
+      "priority": "high",
+      "requirement": "REQ-009",
+      "screen": "Ajukan Nego",
+      "preconditions": [
+        "Satu penawaran dipilih",
+        "Harga aktif Rp 15.000.000"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Ajukan Nego",
+          "value": ""
+        },
+        {
+          "action": "fill",
+          "target": "Nominal Negosiasi",
+          "value": "15000000"
+        },
+        {
+          "action": "click",
+          "target": "Kirim",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Alert",
+          "value": "Nominal nego tidak dapat lebih tinggi dari harga sebelumnya"
+        }
+      ],
+      "expected": [
+        "Konfirmasi tidak tampil",
+        "Pilihan dan input tetap tersedia untuk diperbaiki"
+      ],
+      "testData": {
+        "currentPrice": 15000000,
+        "newAmount": 15000000
+      },
+      "selectorHints": {
+        "Nominal Negosiasi": {
+          "role": "textbox",
+          "name": "Nominal Negosiasi",
+          "testid": "negotiation-amount"
+        },
+        "Alert": {
+          "role": "alert",
+          "name": "Nominal nego tidak dapat lebih tinggi dari harga sebelumnya",
+          "testid": "single-price-error"
+        }
+      }
+    },
+    {
+      "id": "AMS008-NEGOSIASI-NEG-010",
+      "title": "Tidak memproses bulk ketika seluruh harga tidak sesuai",
+      "category": "negative",
+      "priority": "high",
+      "requirement": "REQ-010",
+      "screen": "Dialog Nominal Nego Belum Sesuai",
+      "preconditions": [
+        "Dua penawaran dipilih dengan harga Rp 16.000.000 dan Rp 17.000.000"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Ajukan Nego",
+          "value": ""
+        },
+        {
+          "action": "fill",
+          "target": "Nominal Negosiasi",
+          "value": "18000000"
+        },
+        {
+          "action": "click",
+          "target": "Kirim",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Dialog",
+          "value": "Nominal Nego Belum Sesuai"
+        },
+        {
+          "action": "click",
+          "target": "Cek Kembali",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Ajukan Nego",
+          "value": "2 Terpilih"
+        }
+      ],
+      "expected": [
+        "Dialog dapat ditutup tanpa mengubah pilihan",
+        "Tidak ada pengajuan diproses"
+      ],
+      "testData": {
+        "amount": 18000000,
+        "offerPrices": [
+          16000000,
+          17000000
+        ]
+      },
+      "selectorHints": {
+        "Dialog": {
+          "role": "dialog",
+          "name": "Nominal Nego Belum Sesuai",
+          "testid": "amount-mismatch-dialog"
+        },
+        "Cek Kembali": {
+          "role": "button",
+          "name": "Cek Kembali",
+          "testid": "review-again"
+        },
+        "Counter": {
+          "role": "status",
+          "name": "Jumlah penawaran terpilih",
+          "testid": "selected-offer-count"
+        }
+      }
+    },
+    {
+      "id": "AMS008-NEGOSIASI-NEG-011",
+      "title": "Menonaktifkan Proses Sisanya ketika semua penawaran melebihi nego pertama",
+      "category": "negative",
+      "priority": "high",
+      "requirement": "REQ-011",
+      "screen": "Dialog Nominal Melebihi Nego Sebelumnya",
+      "preconditions": [
+        "Semua penawaran terpilih memiliki nego pertama lebih rendah dari nominal baru"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Ajukan Nego",
+          "value": ""
+        },
+        {
+          "action": "fill",
+          "target": "Nominal Negosiasi",
+          "value": "14000000"
+        },
+        {
+          "action": "click",
+          "target": "Kirim",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Dialog",
+          "value": "Nominal Melebihi Nego Sebelumnya"
+        },
+        {
+          "action": "expect",
+          "target": "Proses Sisanya",
+          "value": "disabled"
+        },
+        {
+          "action": "expect",
+          "target": "Keterangan",
+          "value": "Tidak ada penawaran yang dapat diproses"
+        }
+      ],
+      "expected": [
+        "Proses Sisanya disabled",
+        "Tidak ada pengajuan dibuat"
+      ],
+      "testData": {
+        "newAmount": 14000000,
+        "firstNegotiations": [
+          12000000,
+          13000000
+        ]
+      },
+      "selectorHints": {
+        "Dialog": {
+          "role": "dialog",
+          "name": "Nominal Melebihi Nego Sebelumnya",
+          "testid": "previous-negotiation-dialog"
+        },
+        "Proses Sisanya": {
+          "role": "button",
+          "name": "Proses Sisanya",
+          "testid": "process-remaining"
+        },
+        "Keterangan": {
+          "role": "status",
+          "name": "Tidak ada penawaran yang dapat diproses",
+          "testid": "no-remaining-offers"
+        }
+      }
+    },
+    {
+      "id": "AMS008-NEGOSIASI-NEG-012",
+      "title": "Membatalkan konfirmasi tanpa membuat proses negosiasi",
+      "category": "negative",
+      "priority": "medium",
+      "requirement": "REQ-012",
+      "screen": "Konfirmasi Pengajuan Nego",
+      "preconditions": [
+        "Dua penawaran dan nominal valid telah lolos validasi"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Ajukan Nego",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Kirim",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Konfirmasi pengajuan",
+          "value": "2 penawaran"
+        },
+        {
+          "action": "click",
+          "target": "Batal",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Ajukan Nego",
+          "value": "2 Terpilih"
+        }
+      ],
+      "expected": [
+        "Dialog tertutup",
+        "Tidak ada putaran/status/timer yang berubah"
+      ],
+      "testData": {
+        "selectedCount": 2,
+        "amount": 12000000
+      },
+      "selectorHints": {
+        "Konfirmasi": {
+          "role": "dialog",
+          "name": "Konfirmasi pengajuan nego",
+          "testid": "submit-negotiation-dialog"
+        },
+        "Batal": {
+          "role": "button",
+          "name": "Batal",
+          "testid": "cancel-confirmation"
+        },
+        "Counter": {
+          "role": "status",
+          "name": "Jumlah penawaran terpilih",
+          "testid": "selected-offer-count"
+        }
+      }
+    },
+    {
+      "id": "AMS008-NEGOSIASI-NEG-013",
+      "title": "Tidak Direspons tidak muncul pada list utama atau tab Selesai",
+      "category": "negative",
+      "priority": "high",
+      "requirement": "REQ-013",
+      "screen": "Daftar Negosiasi Shipper",
+      "preconditions": [
+        "Shipper memiliki satu negosiasi Tidak Direspons"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Daftar Negosiasi Shipper",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Semua",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Tabel utama",
+          "value": "status Tidak Direspons tidak tampil"
+        },
+        {
+          "action": "click",
+          "target": "Selesai",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Tab Selesai",
+          "value": "status Tidak Direspons tidak tampil"
+        },
+        {
+          "action": "click",
+          "target": "Nego Tidak Direspons",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Daftar khusus",
+          "value": "Tidak Direspons"
+        }
+      ],
+      "expected": [
+        "Status hanya muncul pada halaman khusus",
+        "Counter tab utama tidak memasukkannya"
+      ],
+      "testData": {
+        "status": "Tidak Direspons"
+      },
+      "selectorHints": {
+        "Tab Semua": {
+          "role": "tab",
+          "name": "Semua",
+          "testid": "tab-semua"
+        },
+        "Tab Selesai": {
+          "role": "tab",
+          "name": "Selesai",
+          "testid": "tab-selesai"
+        },
+        "Nego Tidak Direspons": {
+          "role": "button",
+          "name": "Nego Tidak Direspons",
+          "testid": "unresponded-negotiations"
+        },
+        "Tabel": {
+          "role": "table",
+          "name": "Daftar Negosiasi",
+          "testid": "negotiation-table"
+        }
+      }
+    },
+    {
+      "id": "AMS008-NEGOSIASI-NEG-014",
+      "title": "Menyembunyikan aksi yang tidak diizinkan untuk Harga Tidak Berlaku",
+      "category": "negative",
+      "priority": "high",
+      "requirement": "REQ-014",
+      "screen": "Daftar Negosiasi Shipper",
+      "preconditions": [
+        "Negosiasi berstatus Harga Tidak Berlaku"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Daftar Negosiasi Shipper",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Aksi negosiasi Harga Tidak Berlaku",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Menu aksi",
+          "value": "Detail Nego"
+        },
+        {
+          "action": "expect",
+          "target": "Ajukan Nego Kembali",
+          "value": "tidak tersedia"
+        },
+        {
+          "action": "expect",
+          "target": "Riwayat Nego",
+          "value": "tidak tersedia"
+        }
+      ],
+      "expected": [
+        "Hanya Detail Nego tersedia",
+        "Aksi ilegal tidak dapat dipanggil"
+      ],
+      "testData": {
+        "status": "Harga Tidak Berlaku"
+      },
+      "selectorHints": {
+        "Menu aksi": {
+          "role": "button",
+          "name": "Aksi negosiasi",
+          "testid": "negotiation-actions-<id>"
+        },
+        "Detail Nego": {
+          "role": "menuitem",
+          "name": "Detail Nego",
+          "testid": "action-detail"
+        }
+      }
+    },
+    {
+      "id": "AMS008-NEGOSIASI-NEG-015",
+      "title": "Menyembunyikan aksi berjalan pada status Nego Berakhir",
+      "category": "negative",
+      "priority": "high",
+      "requirement": "REQ-015",
+      "screen": "Detail Negosiasi Shipper",
+      "preconditions": [
+        "Negosiasi berstatus Nego Berakhir"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Detail Negosiasi Shipper",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Status negosiasi",
+          "value": "Nego Berakhir"
+        },
+        {
+          "action": "expect",
+          "target": "Ajukan Nego",
+          "value": "tidak tersedia"
+        },
+        {
+          "action": "expect",
+          "target": "Akhiri Nego",
+          "value": "tidak tersedia"
+        },
+        {
+          "action": "expect",
+          "target": "Riwayat",
+          "value": "tetap tampil"
+        }
+      ],
+      "expected": [
+        "Tidak ada tombol aksi berjalan",
+        "Data dan riwayat tetap dapat dilihat"
+      ],
+      "testData": {
+        "status": "Nego Berakhir"
+      },
+      "selectorHints": {
+        "Status": {
+          "role": "status",
+          "name": "Status negosiasi",
+          "testid": "negotiation-status"
+        },
+        "Riwayat": {
+          "role": "table",
+          "name": "Riwayat",
+          "testid": "negotiation-history"
+        }
+      }
+    },
+    {
+      "id": "AMS008-NEGOSIASI-NEG-016",
+      "title": "Menolak nominal nego kembali di atas nego pertama",
+      "category": "negative",
+      "priority": "high",
+      "requirement": "REQ-016",
+      "screen": "Dialog Ajukan Nego",
+      "preconditions": [
+        "Shipper berstatus Perlu Aksi",
+        "Harga saat ini Rp 15.000.000",
+        "Nego pertama Rp 12.000.000"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Detail Negosiasi Shipper",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Ajukan Nego",
+          "value": ""
+        },
+        {
+          "action": "fill",
+          "target": "Nominal Negosiasi",
+          "value": "13000000"
+        },
+        {
+          "action": "click",
+          "target": "Kirim",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Alert",
+          "value": "Nominal nego tidak dapat lebih tinggi dari nominal nego sebelumnya"
+        }
+      ],
+      "expected": [
+        "Konfirmasi tidak tampil",
+        "Putaran tidak bertambah"
+      ],
+      "testData": {
+        "currentPrice": 15000000,
+        "firstNegotiation": 12000000,
+        "newAmount": 13000000
+      },
+      "selectorHints": {
+        "Ajukan Nego": {
+          "role": "button",
+          "name": "Ajukan Nego",
+          "testid": "renegotiate"
+        },
+        "Nominal Negosiasi": {
+          "role": "textbox",
+          "name": "Nominal Negosiasi",
+          "testid": "negotiation-amount"
+        },
+        "Alert": {
+          "role": "alert",
+          "name": "Nominal nego tidak dapat lebih tinggi dari nominal nego sebelumnya",
+          "testid": "previous-amount-error"
+        }
+      }
+    },
+    {
+      "id": "AMS008-NEGOSIASI-NEG-017",
+      "title": "Vendor tidak melihat status atau halaman Tidak Direspons",
+      "category": "negative",
+      "priority": "high",
+      "requirement": "REQ-017",
+      "screen": "Daftar Negosiasi Vendor",
+      "preconditions": [
+        "Vendor telah login",
+        "Ada negosiasi yang timeout pada sisi shipper"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Daftar Negosiasi Vendor",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Tab daftar",
+          "value": "Tidak Direspons tidak tersedia"
+        },
+        {
+          "action": "expect",
+          "target": "Tombol daftar",
+          "value": "Tidak Direspons tidak tersedia"
+        },
+        {
+          "action": "expect",
+          "target": "Tabel vendor",
+          "value": "Tidak Direspons tidak tampil"
+        }
+      ],
+      "expected": [
+        "Vendor tidak memiliki status, tab, atau halaman Tidak Direspons"
+      ],
+      "testData": {
+        "shipperStatus": "Tidak Direspons"
+      },
+      "selectorHints": {
+        "Tab daftar": {
+          "role": "tablist",
+          "name": "Status negosiasi",
+          "testid": "negotiation-tabs"
+        },
+        "Tabel vendor": {
+          "role": "table",
+          "name": "Daftar Negosiasi",
+          "testid": "negotiation-table"
+        }
+      }
+    },
+    {
+      "id": "AMS008-NEGOSIASI-NEG-018",
+      "title": "Menolak Terima Nego setelah batas respons berakhir",
+      "category": "negative",
+      "priority": "high",
+      "requirement": "REQ-018",
+      "screen": "Dialog Terima Nego",
+      "preconditions": [
+        "Vendor membuka dialog sebelum deadline",
+        "Deadline terlewati sebelum tombol Ya diklik"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Detail Negosiasi Vendor",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Terima Nego",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Ya",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Alert",
+          "value": "Batas waktu respons telah berakhir"
+        },
+        {
+          "action": "expect",
+          "target": "Status negosiasi",
+          "value": "Tidak Direspons pada sisi shipper"
+        }
+      ],
+      "expected": [
+        "Harga aktif tidak berubah",
+        "Penerimaan tidak tersimpan"
+      ],
+      "testData": {
+        "deadline": "2026-08-30T10:20:00+07:00",
+        "confirmAt": "2026-08-30T10:20:01+07:00"
+      },
+      "selectorHints": {
+        "Terima Nego": {
+          "role": "button",
+          "name": "Terima Nego",
+          "testid": "accept-negotiation"
+        },
+        "Ya": {
+          "role": "button",
+          "name": "Ya",
+          "testid": "confirm-accept-negotiation"
+        },
+        "Alert": {
+          "role": "alert",
+          "name": "Batas waktu respons telah berakhir",
+          "testid": "response-expired-alert"
+        }
+      }
+    },
+    {
+      "id": "AMS008-NEGOSIASI-NEG-019",
+      "title": "Menolak submit tanpa alasan penolakan",
+      "category": "negative",
+      "priority": "high",
+      "requirement": "REQ-019",
+      "screen": "Dialog Tolak Nego",
+      "preconditions": [
+        "Vendor berstatus Perlu Aksi",
+        "Dialog Tolak Nego terbuka"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Detail Negosiasi Vendor",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Tolak Nego",
+          "value": ""
+        },
+        {
+          "action": "fill",
+          "target": "Alasan penolakan",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Tolak Nego",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Error alasan",
+          "value": "Alasan penolakan wajib diisi"
+        }
+      ],
+      "expected": [
+        "Status tetap Perlu Aksi",
+        "Harga dan catatan tidak berubah"
+      ],
+      "testData": {
+        "reason": ""
+      },
+      "selectorHints": {
+        "Dialog": {
+          "role": "dialog",
+          "name": "Tolak Nego",
+          "testid": "reject-negotiation-dialog"
+        },
+        "Alasan": {
+          "role": "textbox",
+          "name": "Alasan penolakan",
+          "testid": "rejection-reason"
+        },
+        "Tolak Nego": {
+          "role": "button",
+          "name": "Tolak Nego",
+          "testid": "confirm-reject-negotiation"
+        },
+        "Error": {
+          "role": "alert",
+          "name": "Alasan penolakan wajib diisi",
+          "testid": "rejection-reason-error"
+        }
+      }
+    },
+    {
+      "id": "AMS008-NEGOSIASI-NEG-020",
+      "title": "Menolak balasan sama dengan batas bawah atau batas atas",
+      "category": "negative",
+      "priority": "high",
+      "requirement": "REQ-020",
+      "screen": "Dialog Ajukan Balasan",
+      "preconditions": [
+        "Nominal nego terbaru Rp 13.000.000",
+        "Harga aktif Rp 14.000.000"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Detail Negosiasi Vendor",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Ajukan Balasan",
+          "value": ""
+        },
+        {
+          "action": "fill",
+          "target": "Nominal Balasan",
+          "value": "13000000"
+        },
+        {
+          "action": "click",
+          "target": "Kirim",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Error batas bawah",
+          "value": "Nominal Balasan harus lebih besar dari Nominal Nego Terbaru"
+        },
+        {
+          "action": "fill",
+          "target": "Nominal Balasan",
+          "value": "14000000"
+        },
+        {
+          "action": "click",
+          "target": "Kirim",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Error batas atas",
+          "value": "Nominal Balasan harus lebih kecil dari Harga Saat Ini"
+        }
+      ],
+      "expected": [
+        "Kedua nilai batas eksklusif ditolak",
+        "Status tetap Perlu Aksi"
+      ],
+      "testData": {
+        "latestNegotiation": 13000000,
+        "currentPrice": 14000000,
+        "invalidAmounts": [
+          13000000,
+          14000000
+        ]
+      },
+      "selectorHints": {
+        "Nominal Balasan": {
+          "role": "textbox",
+          "name": "Nominal Balasan",
+          "testid": "counter-offer-amount"
+        },
+        "Kirim": {
+          "role": "button",
+          "name": "Kirim",
+          "testid": "submit-counter-offer"
+        },
+        "Error": {
+          "role": "alert",
+          "name": "Validasi Nominal Balasan",
+          "testid": "counter-offer-error"
+        }
+      }
+    },
+    {
+      "id": "AMS008-NEGOSIASI-NEG-021",
+      "title": "Status Ditolak tidak mengubah harga aktif",
+      "category": "negative",
+      "priority": "high",
+      "requirement": "REQ-021",
+      "screen": "Detail Harga Penawaran",
+      "preconditions": [
+        "Harga aktif sebelum negosiasi Rp 15.000.000",
+        "Vendor menolak nominal Rp 13.500.000"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Detail Harga Penawaran",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Harga aktif",
+          "value": "Rp 15.000.000"
+        },
+        {
+          "action": "click",
+          "target": "Pesan",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Ringkasan Pesanan",
+          "value": "Rp 15.000.000"
+        },
+        {
+          "action": "navigate",
+          "target": "Detail Negosiasi Shipper",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Status negosiasi",
+          "value": "Ditolak"
+        }
+      ],
+      "expected": [
+        "Harga nego yang ditolak tidak dipakai",
+        "Pemesanan tetap memakai harga aktif sebelumnya"
+      ],
+      "testData": {
+        "activePrice": 15000000,
+        "rejectedAmount": 13500000
+      },
+      "selectorHints": {
+        "Harga aktif": {
+          "role": "status",
+          "name": "Harga aktif",
+          "testid": "active-offer-price"
+        },
+        "Pesan": {
+          "role": "button",
+          "name": "Pesan",
+          "testid": "offer-order"
+        },
+        "Status": {
+          "role": "status",
+          "name": "Status negosiasi",
+          "testid": "negotiation-status"
+        }
+      }
+    },
+    {
+      "id": "AMS008-NEGOSIASI-EDG-001",
+      "title": "Menerima nilai minimum Rp 1 jika masih di bawah harga aktif",
+      "category": "edge",
+      "priority": "medium",
+      "requirement": "REQ-008",
+      "screen": "Ajukan Nego",
+      "preconditions": [
+        "Satu penawaran aktif seharga Rp 10.000.000 dipilih"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Ajukan Nego",
+          "value": ""
+        },
+        {
+          "action": "fill",
+          "target": "Nominal Negosiasi",
+          "value": "1"
+        },
+        {
+          "action": "expect",
+          "target": "Nominal Negosiasi",
+          "value": "Rp 1"
+        },
+        {
+          "action": "click",
+          "target": "Kirim",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Konfirmasi pengajuan",
+          "value": "1 penawaran"
+        }
+      ],
+      "expected": [
+        "Nilai batas minimum positif diterima dan diformat"
+      ],
+      "testData": {
+        "amount": 1,
+        "currentPrice": 10000000
+      },
+      "selectorHints": {
+        "Nominal Negosiasi": {
+          "role": "textbox",
+          "name": "Nominal Negosiasi",
+          "testid": "negotiation-amount"
+        },
+        "Kirim": {
+          "role": "button",
+          "name": "Kirim",
+          "testid": "submit-negotiation"
+        }
+      }
+    },
+    {
+      "id": "AMS008-NEGOSIASI-EDG-002",
+      "title": "Menerima balasan satu rupiah di atas nego dan satu rupiah di bawah harga aktif",
+      "category": "edge",
+      "priority": "high",
+      "requirement": "REQ-020",
+      "screen": "Dialog Ajukan Balasan",
+      "preconditions": [
+        "Nominal nego terbaru Rp 13.000.000",
+        "Harga aktif Rp 13.000.002"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Detail Negosiasi Vendor",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Ajukan Balasan",
+          "value": ""
+        },
+        {
+          "action": "fill",
+          "target": "Nominal Balasan",
+          "value": "13000001"
+        },
+        {
+          "action": "click",
+          "target": "Kirim",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Status vendor",
+          "value": "Menunggu Shipper"
+        }
+      ],
+      "expected": [
+        "Satu-satunya nilai valid di antara batas eksklusif diterima"
+      ],
+      "testData": {
+        "latestNegotiation": 13000000,
+        "currentPrice": 13000002,
+        "counterAmount": 13000001
+      },
+      "selectorHints": {
+        "Nominal Balasan": {
+          "role": "textbox",
+          "name": "Nominal Balasan",
+          "testid": "counter-offer-amount"
+        },
+        "Kirim": {
+          "role": "button",
+          "name": "Kirim",
+          "testid": "submit-counter-offer"
+        }
+      }
+    },
+    {
+      "id": "AMS008-NEGOSIASI-EDG-003",
+      "title": "Memproses satu respons tepat sebelum deadline dan menolak respons sesudahnya",
+      "category": "edge",
+      "priority": "high",
+      "requirement": "REQ-004",
+      "screen": "Detail Negosiasi Vendor",
+      "preconditions": [
+        "Dua negosiasi identik memiliki deadline yang sama"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Detail Negosiasi Vendor",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Terima Nego satu milidetik sebelum deadline",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Negosiasi pertama",
+          "value": "Diterima"
+        },
+        {
+          "action": "click",
+          "target": "Terima Nego satu milidetik setelah deadline",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Negosiasi kedua",
+          "value": "Batas waktu respons telah berakhir"
+        }
+      ],
+      "expected": [
+        "Perbandingan deadline konsisten pada batas waktu WIB"
+      ],
+      "testData": {
+        "deadline": "2026-08-30T10:20:00.000+07:00",
+        "times": [
+          "2026-08-30T10:19:59.999+07:00",
+          "2026-08-30T10:20:00.001+07:00"
+        ]
+      },
+      "selectorHints": {
+        "Terima Nego": {
+          "role": "button",
+          "name": "Terima Nego",
+          "testid": "accept-negotiation"
+        },
+        "Status": {
+          "role": "status",
+          "name": "Status negosiasi",
+          "testid": "negotiation-status"
+        },
+        "Alert": {
+          "role": "alert",
+          "name": "Batas waktu respons telah berakhir",
+          "testid": "response-expired-alert"
+        }
+      }
+    },
+    {
+      "id": "AMS008-NEGOSIASI-STR-001",
+      "title": "Mempertahankan Pilih Semua dan counter pada seribu penawaran lintas 50 halaman",
+      "category": "stress",
+      "priority": "medium",
+      "requirement": "REQ-007",
+      "screen": "Ajukan Nego",
+      "preconditions": [
+        "Tersedia 1.000 penawaran valid dengan page size 20"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Ajukan Nego",
+          "value": ""
+        },
+        {
+          "action": "check",
+          "target": "Pilih Semua",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Halaman 50",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Counter terpilih",
+          "value": "1000 Terpilih"
+        },
+        {
+          "action": "click",
+          "target": "Filter",
+          "value": ""
+        },
+        {
+          "action": "select",
+          "target": "Vendor",
+          "value": "PT Trans Logistics"
+        },
+        {
+          "action": "click",
+          "target": "Terapkan",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Counter terpilih",
+          "value": "1000 Terpilih"
+        }
+      ],
+      "expected": [
+        "Pemilihan lintas halaman tetap konsisten",
+        "Filter tidak merusak state pilihan",
+        "UI tetap responsif"
+      ],
+      "testData": {
+        "offerCount": 1000,
+        "pageSize": 20,
+        "pageCount": 50
+      },
+      "selectorHints": {
+        "Pilih Semua": {
+          "role": "checkbox",
+          "name": "Pilih Semua",
+          "testid": "select-all-offers"
+        },
+        "Counter": {
+          "role": "status",
+          "name": "Jumlah penawaran terpilih",
+          "testid": "selected-offer-count"
+        },
+        "Pagination": {
+          "role": "navigation",
+          "name": "Pagination",
+          "testid": "pagination"
+        },
+        "Filter": {
+          "role": "button",
+          "name": "Filter",
+          "testid": "negotiate-filter"
+        }
+      }
+    },
+    {
+      "id": "AMS008-NEGOSIASI-STR-002",
+      "title": "Membuat lima ratus proses bulk tanpa duplikat",
+      "category": "stress",
+      "priority": "high",
+      "requirement": "REQ-012",
+      "screen": "Konfirmasi Pengajuan Nego",
+      "preconditions": [
+        "500 penawaran valid dipilih",
+        "Nominal lolos seluruh validasi"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Ajukan Nego",
+          "value": ""
+        },
+        {
+          "action": "fill",
+          "target": "Nominal Negosiasi",
+          "value": "10000000"
+        },
+        {
+          "action": "click",
+          "target": "Kirim",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Konfirmasi pengajuan",
+          "value": "500 penawaran"
+        },
+        {
+          "action": "click",
+          "target": "Ajukan",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Toast",
+          "value": "500 negosiasi berhasil diajukan"
+        }
+      ],
+      "expected": [
+        "Tepat 500 proses unik dibuat",
+        "Setiap putaran bertambah sekali",
+        "Timer dan status seluruh proses konsisten"
+      ],
+      "testData": {
+        "selectedCount": 500,
+        "amount": 10000000
+      },
+      "selectorHints": {
+        "Nominal Negosiasi": {
+          "role": "textbox",
+          "name": "Nominal Negosiasi",
+          "testid": "negotiation-amount"
+        },
+        "Kirim": {
+          "role": "button",
+          "name": "Kirim",
+          "testid": "submit-negotiation"
+        },
+        "Ajukan": {
+          "role": "button",
+          "name": "Ajukan",
+          "testid": "confirm-submit-negotiation"
+        },
+        "Toast": {
+          "role": "status",
+          "name": "500 negosiasi berhasil diajukan",
+          "testid": "negotiation-success-toast"
+        }
+      }
+    },
+    {
+      "id": "AMS008-NEGOSIASI-STR-003",
+      "title": "Memfilter dan mengurutkan sepuluh ribu negosiasi lintas lelang",
+      "category": "stress",
+      "priority": "medium",
+      "requirement": "REQ-013",
+      "screen": "Daftar Negosiasi Shipper",
+      "preconditions": [
+        "Shipper memiliki 10.000 negosiasi FTL/FCL beragam status dan waktu update"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Daftar Negosiasi Shipper",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Filter",
+          "value": ""
+        },
+        {
+          "action": "select",
+          "target": "Jenis Order",
+          "value": "FCL"
+        },
+        {
+          "action": "select",
+          "target": "Status",
+          "value": "Perlu Aksi"
+        },
+        {
+          "action": "click",
+          "target": "Terapkan",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Urutkan tanggal update terbaru",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Tabel negosiasi",
+          "value": "20 baris halaman pertama"
+        }
+      ],
+      "expected": [
+        "Hasil tepat, tanpa duplikasi antarhalaman",
+        "Urutan terbaru konsisten",
+        "Counter tab sesuai seluruh dataset"
+      ],
+      "testData": {
+        "recordCount": 10000,
+        "pageSize": 20,
+        "type": "FCL",
+        "status": "Perlu Aksi"
+      },
+      "selectorHints": {
+        "Filter": {
+          "role": "button",
+          "name": "Filter",
+          "testid": "negotiation-filter"
+        },
+        "Jenis Order": {
+          "role": "combobox",
+          "name": "Jenis Order",
+          "testid": "filter-order-type"
+        },
+        "Status": {
+          "role": "combobox",
+          "name": "Status",
+          "testid": "filter-status"
+        },
+        "Terapkan": {
+          "role": "button",
+          "name": "Terapkan",
+          "testid": "filter-apply"
+        },
+        "Tabel": {
+          "role": "table",
+          "name": "Daftar Negosiasi",
+          "testid": "negotiation-table"
+        }
+      }
+    },
+    {
+      "id": "AMS008-NEGOSIASI-STR-004",
+      "title": "Menjamin hanya satu respons final saat aksi vendor paralel",
+      "category": "stress",
+      "priority": "high",
+      "requirement": "REQ-020",
+      "screen": "Dialog Ajukan Balasan",
+      "preconditions": [
+        "Dua sesi vendor membuka negosiasi Perlu Aksi yang sama",
+        "Keduanya masih dalam batas waktu"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Detail Negosiasi Vendor sesi A dan B",
+          "value": ""
+        },
+        {
+          "action": "fill",
+          "target": "Nominal Balasan sesi A",
+          "value": "13500000"
+        },
+        {
+          "action": "click",
+          "target": "Kirim sesi A",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Terima Nego sesi B",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Sesi A",
+          "value": "Menunggu Shipper"
+        },
+        {
+          "action": "expect",
+          "target": "Sesi B",
+          "value": "Negosiasi sudah direspons"
+        }
+      ],
+      "expected": [
+        "Hanya aksi pertama yang tersimpan",
+        "Tidak terjadi double update harga/status/riwayat"
+      ],
+      "testData": {
+        "sessions": 2,
+        "firstAction": "counter_offer",
+        "secondAction": "accept"
+      },
+      "selectorHints": {
+        "Nominal Balasan": {
+          "role": "textbox",
+          "name": "Nominal Balasan",
+          "testid": "counter-offer-amount"
+        },
+        "Kirim": {
+          "role": "button",
+          "name": "Kirim",
+          "testid": "submit-counter-offer"
+        },
+        "Terima Nego": {
+          "role": "button",
+          "name": "Terima Nego",
+          "testid": "accept-negotiation"
+        },
+        "Alert": {
+          "role": "alert",
+          "name": "Negosiasi sudah direspons",
+          "testid": "stale-negotiation-alert"
+        }
+      }
+    }
+  ]
+}
+

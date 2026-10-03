@@ -114,6 +114,8 @@ dipertahankan untuk sementara sebagai kehati-hatian (staging berisi data nyata),
 keterpaksaan teknis — jangan beralih ke `storageState` + `workers>1` tanpa konfirmasi eksplisit user
 lebih dulu. Guard "login gagal 2x → berhenti" berlaku di semua mode.
 
+Catatan eksplorasi 2026-10-04: pemeriksaan Vendor menerima `storageState` pada context baru untuk akses Order; sesi asal kemudian redirect login pada navigasi berikutnya. Penyebab belum terverifikasi, sehingga keberhasilan akses sesaat tidak membuktikan stabilitas sesi jangka panjang. Bukti: `explore/module-map.md` dan `artifacts/explore-detail-20261003/vendor-session-end.json`.
+
 ## Batasan Eksekusi Browser
 
 - Selalu tunggu network idle / elemen terlihat sebelum assert; UI modern sering memakai drawer/modal yang render async.

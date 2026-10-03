@@ -1,0 +1,3772 @@
+{
+  "summary": {
+    "total": 56,
+    "positive": 20,
+    "negative": 28,
+    "edge": 3,
+    "stress": 5
+  },
+  "source": {
+    "spec": "inputs/ams007-request-jadwal/spec.txt",
+    "designs": [
+      "inputs/ams007-request-jadwal/designs/081-list-lelang-spot-rate-shipper.png",
+      "inputs/ams007-request-jadwal/designs/082.png",
+      "inputs/ams007-request-jadwal/designs/083.png",
+      "inputs/ams007-request-jadwal/designs/084-list-daftar-penawaran-vendor.png",
+      "inputs/ams007-request-jadwal/designs/085.png",
+      "inputs/ams007-request-jadwal/designs/086.png",
+      "inputs/ams007-request-jadwal/designs/087.png",
+      "inputs/ams007-request-jadwal/designs/088.png"
+    ],
+    "extras": []
+  },
+  "scenarios": [
+    {
+      "id": "AMS007-POS-001",
+      "title": "Aksi Request Jadwal tersedia pada lelang FCL",
+      "category": "positive",
+      "priority": "high",
+      "requirement": "REQ-001",
+      "screen": "Lelang Spot Rate Shipper",
+      "preconditions": [
+        "Shipper sudah login",
+        "Tersedia lelang FCL"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Lelang Spot Rate Shipper",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Buka menu aksi",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Request Jadwal",
+          "value": "aksi terlihat"
+        }
+      ],
+      "expected": [
+        "Aksi Request Jadwal terlihat untuk FCL"
+      ],
+      "testData": {
+        "jenisPengiriman": "FCL"
+      },
+      "selectorHints": {
+        "buka-menu-aksi": {
+          "role": "button",
+          "name": "Buka menu aksi",
+          "testid": "buka-menu-aksi"
+        },
+        "request-jadwal": {
+          "role": "status",
+          "name": "Request Jadwal",
+          "testid": "request-jadwal"
+        }
+      }
+    },
+    {
+      "id": "AMS007-NEG-001",
+      "title": "Fitur Request Jadwal tidak tersedia pada lelang FTL",
+      "category": "negative",
+      "priority": "high",
+      "requirement": "REQ-001",
+      "screen": "Lelang Spot Rate Shipper",
+      "preconditions": [
+        "Shipper sudah login",
+        "Tersedia lelang FTL"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Lelang Spot Rate Shipper",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Buka menu aksi",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Request Jadwal",
+          "value": "aksi tidak tersedia"
+        }
+      ],
+      "expected": [
+        "FTL tidak dapat memakai Request Jadwal"
+      ],
+      "testData": {
+        "jenisPengiriman": "FTL"
+      },
+      "selectorHints": {
+        "buka-menu-aksi": {
+          "role": "button",
+          "name": "Buka menu aksi",
+          "testid": "buka-menu-aksi"
+        },
+        "request-jadwal": {
+          "role": "status",
+          "name": "Request Jadwal",
+          "testid": "request-jadwal"
+        }
+      }
+    },
+    {
+      "id": "AMS007-POS-002",
+      "title": "Kedua jalur membuka halaman Request Jadwal yang sama",
+      "category": "positive",
+      "priority": "high",
+      "requirement": "REQ-002",
+      "screen": "Request Jadwal Shipper",
+      "preconditions": [
+        "Lelang FCL memenuhi syarat"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Lelang Spot Rate Shipper",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Request Jadwal",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Request Jadwal",
+          "value": "No. Lelang yang dipilih"
+        },
+        {
+          "action": "navigate",
+          "target": "Detail Harga Penawaran",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Request Jadwal",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Request Jadwal",
+          "value": "No. Lelang yang sama"
+        }
+      ],
+      "expected": [
+        "Kedua jalur menuju konteks lelang yang sama"
+      ],
+      "testData": {
+        "noLelang": "FCL-NRM-01/200526"
+      },
+      "selectorHints": {
+        "request-jadwal": {
+          "role": "status",
+          "name": "Request Jadwal",
+          "testid": "request-jadwal"
+        }
+      }
+    },
+    {
+      "id": "AMS007-NEG-002",
+      "title": "Tautan Request Jadwal dengan nomor lelang tidak valid ditolak",
+      "category": "negative",
+      "priority": "medium",
+      "requirement": "REQ-002",
+      "screen": "Request Jadwal Shipper",
+      "preconditions": [
+        "Shipper sudah login"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Request Jadwal Shipper",
+          "value": ""
+        },
+        {
+          "action": "fill",
+          "target": "No. Lelang",
+          "value": "FCL-TIDAK-ADA"
+        },
+        {
+          "action": "expect",
+          "target": "Data Lelang",
+          "value": "tidak ditemukan"
+        }
+      ],
+      "expected": [
+        "Halaman tidak menampilkan data lelang lain"
+      ],
+      "testData": {
+        "noLelang": "FCL-TIDAK-ADA"
+      },
+      "selectorHints": {
+        "no-lelang": {
+          "role": "textbox",
+          "name": "No. Lelang",
+          "testid": "no-lelang"
+        },
+        "data-lelang": {
+          "role": "status",
+          "name": "Data Lelang",
+          "testid": "data-lelang"
+        }
+      }
+    },
+    {
+      "id": "AMS007-POS-003",
+      "title": "Lelang tutup dengan penawaran dan sebelum batas kirim dapat diajukan",
+      "category": "positive",
+      "priority": "high",
+      "requirement": "REQ-003",
+      "screen": "Request Jadwal Shipper",
+      "preconditions": [
+        "Lelang FCL berstatus Tutup",
+        "Ada penawaran",
+        "Belum melewati Rencana Akhir Kirim"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Lelang Spot Rate Shipper",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Request Jadwal",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Pilih Harga Penawaran",
+          "value": "daftar penawaran tampil"
+        }
+      ],
+      "expected": [
+        "Pengajuan dapat dilanjutkan"
+      ],
+      "testData": {
+        "status": "Tutup"
+      },
+      "selectorHints": {
+        "request-jadwal": {
+          "role": "button",
+          "name": "Request Jadwal",
+          "testid": "request-jadwal"
+        },
+        "pilih-harga-penawaran": {
+          "role": "status",
+          "name": "Pilih Harga Penawaran",
+          "testid": "pilih-harga-penawaran"
+        }
+      }
+    },
+    {
+      "id": "AMS007-NEG-003",
+      "title": "Lelang belum tutup menampilkan alert kelayakan",
+      "category": "negative",
+      "priority": "high",
+      "requirement": "REQ-003",
+      "screen": "Lelang Spot Rate Shipper",
+      "preconditions": [
+        "Lelang masih Sedang Buka"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Lelang Spot Rate Shipper",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Request Jadwal",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Alert",
+          "value": "Nomor lelang belum melewati batas tutup lelang"
+        }
+      ],
+      "expected": [
+        "Request tidak dibuat"
+      ],
+      "testData": {
+        "status": "Sedang Buka"
+      },
+      "selectorHints": {
+        "request-jadwal": {
+          "role": "button",
+          "name": "Request Jadwal",
+          "testid": "request-jadwal"
+        },
+        "alert": {
+          "role": "status",
+          "name": "Alert",
+          "testid": "alert"
+        }
+      }
+    },
+    {
+      "id": "AMS007-NEG-004",
+      "title": "Lelang tanpa penawaran menampilkan alert",
+      "category": "negative",
+      "priority": "high",
+      "requirement": "REQ-003",
+      "screen": "Lelang Spot Rate Shipper",
+      "preconditions": [
+        "Lelang sudah tutup",
+        "Belum ada penawaran"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Lelang Spot Rate Shipper",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Request Jadwal",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Alert",
+          "value": "Belum ada peserta lelang yang mengajukan penawaran"
+        }
+      ],
+      "expected": [
+        "Request tidak dibuat"
+      ],
+      "testData": {
+        "jumlahPenawaran": 0
+      },
+      "selectorHints": {
+        "request-jadwal": {
+          "role": "button",
+          "name": "Request Jadwal",
+          "testid": "request-jadwal"
+        },
+        "alert": {
+          "role": "status",
+          "name": "Alert",
+          "testid": "alert"
+        }
+      }
+    },
+    {
+      "id": "AMS007-NEG-005",
+      "title": "Lelang melewati Rencana Akhir Kirim ditolak",
+      "category": "negative",
+      "priority": "high",
+      "requirement": "REQ-003",
+      "screen": "Lelang Spot Rate Shipper",
+      "preconditions": [
+        "Lelang sudah melewati Rencana Akhir Kirim"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Lelang Spot Rate Shipper",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Request Jadwal",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Alert",
+          "value": "Nomor lelang sudah melewati tgl. rencana akhir kirim. Silahkan hubungi CS"
+        }
+      ],
+      "expected": [
+        "Request tidak dibuat"
+      ],
+      "testData": {
+        "waktuWIB": "2026-07-06 00:01"
+      },
+      "selectorHints": {
+        "request-jadwal": {
+          "role": "button",
+          "name": "Request Jadwal",
+          "testid": "request-jadwal"
+        },
+        "alert": {
+          "role": "status",
+          "name": "Alert",
+          "testid": "alert"
+        }
+      }
+    },
+    {
+      "id": "AMS007-NEG-006",
+      "title": "Lelang dibatalkan tidak dapat diajukan",
+      "category": "negative",
+      "priority": "high",
+      "requirement": "REQ-003",
+      "screen": "Lelang Spot Rate Shipper",
+      "preconditions": [
+        "Lelang berstatus Dibatalkan"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Lelang Spot Rate Shipper",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Buka menu aksi",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Request Jadwal",
+          "value": "nonaktif"
+        },
+        {
+          "action": "expect",
+          "target": "Alert",
+          "value": "lelang dibatalkan"
+        }
+      ],
+      "expected": [
+        "Request tidak dibuat"
+      ],
+      "testData": {
+        "status": "Dibatalkan"
+      },
+      "selectorHints": {
+        "buka-menu-aksi": {
+          "role": "button",
+          "name": "Buka menu aksi",
+          "testid": "buka-menu-aksi"
+        },
+        "request-jadwal": {
+          "role": "status",
+          "name": "Request Jadwal",
+          "testid": "request-jadwal"
+        },
+        "alert": {
+          "role": "status",
+          "name": "Alert",
+          "testid": "alert"
+        }
+      }
+    },
+    {
+      "id": "AMS007-POS-004",
+      "title": "Halaman menampilkan info read-only dan seluruh penawaran eligible",
+      "category": "positive",
+      "priority": "high",
+      "requirement": "REQ-004",
+      "screen": "Request Jadwal Shipper",
+      "preconditions": [
+        "Ada penawaran aktif dan penawaran tanpa jadwal"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Request Jadwal Shipper",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Informasi Lelang",
+          "value": "read-only"
+        },
+        {
+          "action": "expect",
+          "target": "Card Penawaran Aktif",
+          "value": "tampil"
+        },
+        {
+          "action": "expect",
+          "target": "Card Belum Input Jadwal",
+          "value": "tampil"
+        }
+      ],
+      "expected": [
+        "Informasi tidak dapat diedit",
+        "Semua penawaran eligible tampil"
+      ],
+      "testData": {
+        "jumlahEligible": 3
+      },
+      "selectorHints": {
+        "informasi-lelang": {
+          "role": "status",
+          "name": "Informasi Lelang",
+          "testid": "informasi-lelang"
+        },
+        "card-penawaran-aktif": {
+          "role": "status",
+          "name": "Card Penawaran Aktif",
+          "testid": "card-penawaran-aktif"
+        },
+        "card-belum-input-jadwal": {
+          "role": "status",
+          "name": "Card Belum Input Jadwal",
+          "testid": "card-belum-input-jadwal"
+        }
+      }
+    },
+    {
+      "id": "AMS007-NEG-007",
+      "title": "Harga kadaluwarsa akibat lelang ulang tidak dapat dipilih",
+      "category": "negative",
+      "priority": "high",
+      "requirement": "REQ-004",
+      "screen": "Request Jadwal Shipper",
+      "preconditions": [
+        "Ada harga kadaluwarsa akibat lelang ulang"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Request Jadwal Shipper",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Harga Kadaluwarsa",
+          "value": "tidak tampil pada pilihan"
+        }
+      ],
+      "expected": [
+        "Harga kadaluwarsa tidak terekspos sebagai opsi"
+      ],
+      "testData": {
+        "statusHarga": "Kadaluwarsa"
+      },
+      "selectorHints": {
+        "harga-kadaluwarsa": {
+          "role": "status",
+          "name": "Harga Kadaluwarsa",
+          "testid": "harga-kadaluwarsa"
+        }
+      }
+    },
+    {
+      "id": "AMS007-POS-005",
+      "title": "Penawaran tanpa jadwal menampilkan badge dan tanda strip",
+      "category": "positive",
+      "priority": "medium",
+      "requirement": "REQ-005",
+      "screen": "Request Jadwal Shipper",
+      "preconditions": [
+        "Penawaran belum memiliki jadwal"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Request Jadwal Shipper",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Belum Input Jadwal",
+          "value": "badge merah"
+        },
+        {
+          "action": "expect",
+          "target": "ETD ETA Open Stack Closing Time",
+          "value": "-"
+        }
+      ],
+      "expected": [
+        "Badge dan empat nilai kosong tampil sesuai desain"
+      ],
+      "testData": {
+        "jadwal": null
+      },
+      "selectorHints": {
+        "belum-input-jadwal": {
+          "role": "status",
+          "name": "Belum Input Jadwal",
+          "testid": "belum-input-jadwal"
+        },
+        "etd-eta-open-stack-closing-time": {
+          "role": "status",
+          "name": "ETD ETA Open Stack Closing Time",
+          "testid": "etd-eta-open-stack-closing-time"
+        }
+      }
+    },
+    {
+      "id": "AMS007-NEG-008",
+      "title": "Penawaran yang sudah memiliki jadwal tidak diberi badge belum input",
+      "category": "negative",
+      "priority": "medium",
+      "requirement": "REQ-005",
+      "screen": "Request Jadwal Shipper",
+      "preconditions": [
+        "Penawaran sudah memiliki jadwal"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Request Jadwal Shipper",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Belum Input Jadwal",
+          "value": "tidak tampil"
+        },
+        {
+          "action": "expect",
+          "target": "ETD ETA Open Stack Closing Time",
+          "value": "nilai jadwal aktual"
+        }
+      ],
+      "expected": [
+        "Status jadwal tidak salah ditandai"
+      ],
+      "testData": {
+        "etd": "23/06/2026 10:00",
+        "eta": "28/06/2026 13:00"
+      },
+      "selectorHints": {
+        "belum-input-jadwal": {
+          "role": "status",
+          "name": "Belum Input Jadwal",
+          "testid": "belum-input-jadwal"
+        },
+        "etd-eta-open-stack-closing-time": {
+          "role": "status",
+          "name": "ETD ETA Open Stack Closing Time",
+          "testid": "etd-eta-open-stack-closing-time"
+        }
+      }
+    },
+    {
+      "id": "AMS007-POS-006",
+      "title": "Multi-select memperbarui counter secara real-time",
+      "category": "positive",
+      "priority": "high",
+      "requirement": "REQ-006",
+      "screen": "Request Jadwal Shipper",
+      "preconditions": [
+        "Sedikitnya empat penawaran eligible tampil"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Request Jadwal Shipper",
+          "value": ""
+        },
+        {
+          "action": "check",
+          "target": "Penawaran 1",
+          "value": "true"
+        },
+        {
+          "action": "check",
+          "target": "Penawaran 2",
+          "value": "true"
+        },
+        {
+          "action": "check",
+          "target": "Penawaran 3",
+          "value": "true"
+        },
+        {
+          "action": "check",
+          "target": "Penawaran 4",
+          "value": "true"
+        },
+        {
+          "action": "expect",
+          "target": "Counter Terpilih",
+          "value": "4 Terpilih"
+        }
+      ],
+      "expected": [
+        "Empat card tersorot dan counter bernilai empat"
+      ],
+      "testData": {
+        "pilihan": 4
+      },
+      "selectorHints": {
+        "penawaran-1": {
+          "role": "checkbox",
+          "name": "Penawaran 1",
+          "testid": "penawaran-1"
+        },
+        "penawaran-2": {
+          "role": "checkbox",
+          "name": "Penawaran 2",
+          "testid": "penawaran-2"
+        },
+        "penawaran-3": {
+          "role": "checkbox",
+          "name": "Penawaran 3",
+          "testid": "penawaran-3"
+        },
+        "penawaran-4": {
+          "role": "checkbox",
+          "name": "Penawaran 4",
+          "testid": "penawaran-4"
+        },
+        "counter-terpilih": {
+          "role": "status",
+          "name": "Counter Terpilih",
+          "testid": "counter-terpilih"
+        }
+      }
+    },
+    {
+      "id": "AMS007-NEG-009",
+      "title": "Melepas satu pilihan menghapus status penuh Pilih Semua",
+      "category": "negative",
+      "priority": "high",
+      "requirement": "REQ-006",
+      "screen": "Request Jadwal Shipper",
+      "preconditions": [
+        "Semua penawaran halaman telah dipilih"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Request Jadwal Shipper",
+          "value": ""
+        },
+        {
+          "action": "check",
+          "target": "Pilih Semua",
+          "value": "true"
+        },
+        {
+          "action": "uncheck",
+          "target": "Penawaran 2",
+          "value": "false"
+        },
+        {
+          "action": "expect",
+          "target": "Pilih Semua",
+          "value": "tidak tercentang penuh"
+        },
+        {
+          "action": "expect",
+          "target": "Counter Terpilih",
+          "value": "berkurang satu"
+        }
+      ],
+      "expected": [
+        "State checkbox dan counter konsisten"
+      ],
+      "testData": {
+        "jumlahHalaman": 20
+      },
+      "selectorHints": {
+        "pilih-semua": {
+          "role": "status",
+          "name": "Pilih Semua",
+          "testid": "pilih-semua"
+        },
+        "penawaran-2": {
+          "role": "checkbox",
+          "name": "Penawaran 2",
+          "testid": "penawaran-2"
+        },
+        "counter-terpilih": {
+          "role": "status",
+          "name": "Counter Terpilih",
+          "testid": "counter-terpilih"
+        }
+      }
+    },
+    {
+      "id": "AMS007-EDG-001",
+      "title": "Pilihan lintas pagination tetap dihitung",
+      "category": "edge",
+      "priority": "high",
+      "requirement": "REQ-006",
+      "screen": "Request Jadwal Shipper",
+      "preconditions": [
+        "Ada lebih dari satu halaman penawaran"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Request Jadwal Shipper",
+          "value": ""
+        },
+        {
+          "action": "check",
+          "target": "Penawaran Halaman 1",
+          "value": "true"
+        },
+        {
+          "action": "click",
+          "target": "Halaman 2",
+          "value": ""
+        },
+        {
+          "action": "check",
+          "target": "Penawaran Halaman 2",
+          "value": "true"
+        },
+        {
+          "action": "click",
+          "target": "Halaman 1",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Counter Terpilih",
+          "value": "2 Terpilih"
+        },
+        {
+          "action": "expect",
+          "target": "Penawaran Halaman 1",
+          "value": "tetap tercentang"
+        }
+      ],
+      "expected": [
+        "Pilihan bertahan lintas halaman"
+      ],
+      "testData": {
+        "halaman1": 1,
+        "halaman2": 1
+      },
+      "selectorHints": {
+        "penawaran-halaman-1": {
+          "role": "status",
+          "name": "Penawaran Halaman 1",
+          "testid": "penawaran-halaman-1"
+        },
+        "halaman-2": {
+          "role": "button",
+          "name": "Halaman 2",
+          "testid": "halaman-2"
+        },
+        "penawaran-halaman-2": {
+          "role": "checkbox",
+          "name": "Penawaran Halaman 2",
+          "testid": "penawaran-halaman-2"
+        },
+        "halaman-1": {
+          "role": "button",
+          "name": "Halaman 1",
+          "testid": "halaman-1"
+        },
+        "counter-terpilih": {
+          "role": "status",
+          "name": "Counter Terpilih",
+          "testid": "counter-terpilih"
+        }
+      }
+    },
+    {
+      "id": "AMS007-POS-007",
+      "title": "Batal kembali tanpa menyimpan pilihan",
+      "category": "positive",
+      "priority": "medium",
+      "requirement": "REQ-007",
+      "screen": "Request Jadwal Shipper",
+      "preconditions": [
+        "Satu penawaran dipilih"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Request Jadwal Shipper",
+          "value": ""
+        },
+        {
+          "action": "check",
+          "target": "Penawaran 1",
+          "value": "true"
+        },
+        {
+          "action": "click",
+          "target": "Batal",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Lelang Spot Rate Shipper",
+          "value": "halaman sebelumnya"
+        },
+        {
+          "action": "expect",
+          "target": "Request Baru",
+          "value": "tidak tersimpan"
+        }
+      ],
+      "expected": [
+        "Navigasi kembali dan tidak ada request baru"
+      ],
+      "testData": {
+        "pilihan": 1
+      },
+      "selectorHints": {
+        "penawaran-1": {
+          "role": "checkbox",
+          "name": "Penawaran 1",
+          "testid": "penawaran-1"
+        },
+        "batal": {
+          "role": "button",
+          "name": "Batal",
+          "testid": "batal"
+        },
+        "lelang-spot-rate-shipper": {
+          "role": "status",
+          "name": "Lelang Spot Rate Shipper",
+          "testid": "lelang-spot-rate-shipper"
+        },
+        "request-baru": {
+          "role": "status",
+          "name": "Request Baru",
+          "testid": "request-baru"
+        }
+      }
+    },
+    {
+      "id": "AMS007-NEG-010",
+      "title": "Nol pilihan membuat Kirim nonaktif",
+      "category": "negative",
+      "priority": "high",
+      "requirement": "REQ-007",
+      "screen": "Request Jadwal Shipper",
+      "preconditions": [
+        "Tidak ada penawaran dipilih"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Request Jadwal Shipper",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Counter Terpilih",
+          "value": "0 Terpilih"
+        },
+        {
+          "action": "expect",
+          "target": "Kirim",
+          "value": "nonaktif"
+        }
+      ],
+      "expected": [
+        "Pengajuan kosong tidak dapat dikirim"
+      ],
+      "testData": {
+        "pilihan": 0
+      },
+      "selectorHints": {
+        "counter-terpilih": {
+          "role": "status",
+          "name": "Counter Terpilih",
+          "testid": "counter-terpilih"
+        },
+        "kirim": {
+          "role": "status",
+          "name": "Kirim",
+          "testid": "kirim"
+        }
+      }
+    },
+    {
+      "id": "AMS007-POS-008",
+      "title": "Konfirmasi menyimpan request dan memberi notifikasi serta penanda",
+      "category": "positive",
+      "priority": "high",
+      "requirement": "REQ-008",
+      "screen": "Request Jadwal Shipper",
+      "preconditions": [
+        "Dua penawaran dari dua vendor dipilih"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Request Jadwal Shipper",
+          "value": ""
+        },
+        {
+          "action": "check",
+          "target": "Penawaran Vendor A",
+          "value": "true"
+        },
+        {
+          "action": "check",
+          "target": "Penawaran Vendor B",
+          "value": "true"
+        },
+        {
+          "action": "click",
+          "target": "Kirim",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Konfirmasi Request Jadwal",
+          "value": "tampil"
+        },
+        {
+          "action": "click",
+          "target": "Konfirmasi",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Request Jadwal",
+          "value": "tersimpan per harga"
+        },
+        {
+          "action": "expect",
+          "target": "Push Notification",
+          "value": "terkirim ke vendor terkait"
+        },
+        {
+          "action": "expect",
+          "target": "Penanda Request Jadwal",
+          "value": "tampil"
+        }
+      ],
+      "expected": [
+        "Dua request tersimpan",
+        "Vendor terkait menerima notifikasi",
+        "Tab dan card ditandai"
+      ],
+      "testData": {
+        "jumlahRequest": 2,
+        "jumlahVendor": 2
+      },
+      "selectorHints": {
+        "penawaran-vendor-a": {
+          "role": "checkbox",
+          "name": "Penawaran Vendor A",
+          "testid": "penawaran-vendor-a"
+        },
+        "penawaran-vendor-b": {
+          "role": "checkbox",
+          "name": "Penawaran Vendor B",
+          "testid": "penawaran-vendor-b"
+        },
+        "kirim": {
+          "role": "button",
+          "name": "Kirim",
+          "testid": "kirim"
+        },
+        "konfirmasi-request-jadwal": {
+          "role": "status",
+          "name": "Konfirmasi Request Jadwal",
+          "testid": "konfirmasi-request-jadwal"
+        },
+        "konfirmasi": {
+          "role": "button",
+          "name": "Konfirmasi",
+          "testid": "konfirmasi"
+        },
+        "request-jadwal": {
+          "role": "status",
+          "name": "Request Jadwal",
+          "testid": "request-jadwal"
+        },
+        "push-notification": {
+          "role": "status",
+          "name": "Push Notification",
+          "testid": "push-notification"
+        },
+        "penanda-request-jadwal": {
+          "role": "status",
+          "name": "Penanda Request Jadwal",
+          "testid": "penanda-request-jadwal"
+        }
+      }
+    },
+    {
+      "id": "AMS007-NEG-011",
+      "title": "Pembatalan dialog konfirmasi tidak menyimpan request",
+      "category": "negative",
+      "priority": "high",
+      "requirement": "REQ-008",
+      "screen": "Request Jadwal Shipper",
+      "preconditions": [
+        "Satu penawaran dipilih"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Request Jadwal Shipper",
+          "value": ""
+        },
+        {
+          "action": "check",
+          "target": "Penawaran 1",
+          "value": "true"
+        },
+        {
+          "action": "click",
+          "target": "Kirim",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Batal Konfirmasi",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Request Baru",
+          "value": "tidak tersimpan"
+        },
+        {
+          "action": "expect",
+          "target": "Request Jadwal Shipper",
+          "value": "pilihan tetap tersedia"
+        }
+      ],
+      "expected": [
+        "Tidak ada side effect penyimpanan atau notifikasi"
+      ],
+      "testData": {
+        "konfirmasi": false
+      },
+      "selectorHints": {
+        "penawaran-1": {
+          "role": "checkbox",
+          "name": "Penawaran 1",
+          "testid": "penawaran-1"
+        },
+        "kirim": {
+          "role": "button",
+          "name": "Kirim",
+          "testid": "kirim"
+        },
+        "batal-konfirmasi": {
+          "role": "button",
+          "name": "Batal Konfirmasi",
+          "testid": "batal-konfirmasi"
+        },
+        "request-baru": {
+          "role": "status",
+          "name": "Request Baru",
+          "testid": "request-baru"
+        },
+        "request-jadwal-shipper": {
+          "role": "status",
+          "name": "Request Jadwal Shipper",
+          "testid": "request-jadwal-shipper"
+        }
+      }
+    },
+    {
+      "id": "AMS007-POS-009",
+      "title": "Request berulang menambah jumlah request",
+      "category": "positive",
+      "priority": "high",
+      "requirement": "REQ-009",
+      "screen": "Detail Harga Penawaran Shipper",
+      "preconditions": [
+        "Penawaran pernah di-request dua kali"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Request Jadwal Shipper",
+          "value": ""
+        },
+        {
+          "action": "check",
+          "target": "Penawaran yang Sama",
+          "value": "true"
+        },
+        {
+          "action": "click",
+          "target": "Kirim",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Konfirmasi",
+          "value": ""
+        },
+        {
+          "action": "navigate",
+          "target": "Detail Harga Penawaran Shipper",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Jumlah Request Jadwal",
+          "value": "3"
+        }
+      ],
+      "expected": [
+        "Request ketiga diterima"
+      ],
+      "testData": {
+        "jumlahSebelum": 2,
+        "jumlahSesudah": 3
+      },
+      "selectorHints": {
+        "penawaran-yang-sama": {
+          "role": "checkbox",
+          "name": "Penawaran yang Sama",
+          "testid": "penawaran-yang-sama"
+        },
+        "kirim": {
+          "role": "button",
+          "name": "Kirim",
+          "testid": "kirim"
+        },
+        "konfirmasi": {
+          "role": "button",
+          "name": "Konfirmasi",
+          "testid": "konfirmasi"
+        },
+        "jumlah-request-jadwal": {
+          "role": "status",
+          "name": "Jumlah Request Jadwal",
+          "testid": "jumlah-request-jadwal"
+        }
+      }
+    },
+    {
+      "id": "AMS007-NEG-012",
+      "title": "Request jadwal tidak boleh mengubah harga penawaran",
+      "category": "negative",
+      "priority": "high",
+      "requirement": "REQ-009",
+      "screen": "Detail Harga Penawaran Shipper",
+      "preconditions": [
+        "Harga penawaran Rp16.000.000"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Request Jadwal Shipper",
+          "value": ""
+        },
+        {
+          "action": "check",
+          "target": "Penawaran Rp16.000.000",
+          "value": "true"
+        },
+        {
+          "action": "click",
+          "target": "Kirim",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Konfirmasi",
+          "value": ""
+        },
+        {
+          "action": "navigate",
+          "target": "Detail Harga Penawaran Shipper",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Harga Penawaran",
+          "value": "Rp16.000.000"
+        }
+      ],
+      "expected": [
+        "Integritas harga tetap terjaga"
+      ],
+      "testData": {
+        "hargaSebelum": 16000000,
+        "hargaSesudah": 16000000
+      },
+      "selectorHints": {
+        "penawaran-rp16-000-000": {
+          "role": "checkbox",
+          "name": "Penawaran Rp16.000.000",
+          "testid": "penawaran-rp16-000-000"
+        },
+        "kirim": {
+          "role": "button",
+          "name": "Kirim",
+          "testid": "kirim"
+        },
+        "konfirmasi": {
+          "role": "button",
+          "name": "Konfirmasi",
+          "testid": "konfirmasi"
+        },
+        "harga-penawaran": {
+          "role": "status",
+          "name": "Harga Penawaran",
+          "testid": "harga-penawaran"
+        }
+      }
+    },
+    {
+      "id": "AMS007-STR-001",
+      "title": "Seratus request berulang tetap tercatat tanpa batas buatan",
+      "category": "stress",
+      "priority": "medium",
+      "requirement": "REQ-009",
+      "screen": "Detail Harga Penawaran Shipper",
+      "preconditions": [
+        "Penawaran eligible yang sama tersedia"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Request Jadwal Shipper",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Kirim Request Berulang 100 Kali",
+          "value": ""
+        },
+        {
+          "action": "navigate",
+          "target": "Detail Harga Penawaran Shipper",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Jumlah Request Jadwal",
+          "value": "100"
+        },
+        {
+          "action": "expect",
+          "target": "Harga Penawaran",
+          "value": "tetap"
+        }
+      ],
+      "expected": [
+        "Semua request tercatat tanpa duplikasi hilang",
+        "Harga tidak berubah"
+      ],
+      "testData": {
+        "jumlahRequest": 100
+      },
+      "selectorHints": {
+        "kirim-request-berulang-100-kali": {
+          "role": "button",
+          "name": "Kirim Request Berulang 100 Kali",
+          "testid": "kirim-request-berulang-100-kali"
+        },
+        "jumlah-request-jadwal": {
+          "role": "status",
+          "name": "Jumlah Request Jadwal",
+          "testid": "jumlah-request-jadwal"
+        },
+        "harga-penawaran": {
+          "role": "status",
+          "name": "Harga Penawaran",
+          "testid": "harga-penawaran"
+        }
+      }
+    },
+    {
+      "id": "AMS007-POS-010",
+      "title": "Vendor membuka Update Jadwal dari card request aktif",
+      "category": "positive",
+      "priority": "high",
+      "requirement": "REQ-010",
+      "screen": "Daftar Penawaran Vendor",
+      "preconditions": [
+        "Harga memiliki request belum direspons"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Daftar Penawaran Vendor",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Tab Request Jadwal",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Badge Request Jadwal",
+          "value": "tampil"
+        },
+        {
+          "action": "click",
+          "target": "Buka menu aksi",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Update Jadwal",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Update Jadwal",
+          "value": "dialog tampil"
+        }
+      ],
+      "expected": [
+        "Card berada di tab request dan modal terbuka"
+      ],
+      "testData": {
+        "statusRequest": "aktif"
+      },
+      "selectorHints": {
+        "tab-request-jadwal": {
+          "role": "button",
+          "name": "Tab Request Jadwal",
+          "testid": "tab-request-jadwal"
+        },
+        "badge-request-jadwal": {
+          "role": "status",
+          "name": "Badge Request Jadwal",
+          "testid": "badge-request-jadwal"
+        },
+        "buka-menu-aksi": {
+          "role": "button",
+          "name": "Buka menu aksi",
+          "testid": "buka-menu-aksi"
+        },
+        "update-jadwal": {
+          "role": "status",
+          "name": "Update Jadwal",
+          "testid": "update-jadwal"
+        }
+      }
+    },
+    {
+      "id": "AMS007-NEG-013",
+      "title": "Aksi Update Jadwal hilang setelah request direspons",
+      "category": "negative",
+      "priority": "high",
+      "requirement": "REQ-010",
+      "screen": "Daftar Penawaran Vendor",
+      "preconditions": [
+        "Request harga telah direspons"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Daftar Penawaran Vendor",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Buka menu aksi",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Update Jadwal",
+          "value": "tidak tampil"
+        },
+        {
+          "action": "expect",
+          "target": "Badge Request Jadwal",
+          "value": "tidak tampil"
+        }
+      ],
+      "expected": [
+        "Request selesai tidak dapat direspons ulang lewat aksi lama"
+      ],
+      "testData": {
+        "statusRequest": "selesai"
+      },
+      "selectorHints": {
+        "buka-menu-aksi": {
+          "role": "button",
+          "name": "Buka menu aksi",
+          "testid": "buka-menu-aksi"
+        },
+        "update-jadwal": {
+          "role": "status",
+          "name": "Update Jadwal",
+          "testid": "update-jadwal"
+        },
+        "badge-request-jadwal": {
+          "role": "status",
+          "name": "Badge Request Jadwal",
+          "testid": "badge-request-jadwal"
+        }
+      }
+    },
+    {
+      "id": "AMS007-POS-011",
+      "title": "Vendor membuka Respon Request Jadwal dari Lelang Spot Rate",
+      "category": "positive",
+      "priority": "high",
+      "requirement": "REQ-011",
+      "screen": "Lelang Spot Rate Vendor",
+      "preconditions": [
+        "Lelang memiliki request aktif milik vendor"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Lelang Spot Rate Vendor",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Tab Request Jadwal",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Buka menu aksi",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Respon Request Jadwal",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Respon Request Jadwal",
+          "value": "halaman tampil"
+        }
+      ],
+      "expected": [
+        "Halaman respons membuka lelang yang benar"
+      ],
+      "testData": {
+        "noLelang": "FCL-NRM-01/200526"
+      },
+      "selectorHints": {
+        "tab-request-jadwal": {
+          "role": "button",
+          "name": "Tab Request Jadwal",
+          "testid": "tab-request-jadwal"
+        },
+        "buka-menu-aksi": {
+          "role": "button",
+          "name": "Buka menu aksi",
+          "testid": "buka-menu-aksi"
+        },
+        "respon-request-jadwal": {
+          "role": "status",
+          "name": "Respon Request Jadwal",
+          "testid": "respon-request-jadwal"
+        }
+      }
+    },
+    {
+      "id": "AMS007-NEG-014",
+      "title": "Aksi Respon Request Jadwal tidak tampil tanpa request pending",
+      "category": "negative",
+      "priority": "high",
+      "requirement": "REQ-011",
+      "screen": "Lelang Spot Rate Vendor",
+      "preconditions": [
+        "Lelang tidak memiliki request belum direspons"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Lelang Spot Rate Vendor",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Buka menu aksi",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Respon Request Jadwal",
+          "value": "tidak tampil"
+        }
+      ],
+      "expected": [
+        "Vendor tidak dapat membuka respons kosong dari card tersebut"
+      ],
+      "testData": {
+        "pending": 0
+      },
+      "selectorHints": {
+        "buka-menu-aksi": {
+          "role": "button",
+          "name": "Buka menu aksi",
+          "testid": "buka-menu-aksi"
+        },
+        "respon-request-jadwal": {
+          "role": "status",
+          "name": "Respon Request Jadwal",
+          "testid": "respon-request-jadwal"
+        }
+      }
+    },
+    {
+      "id": "AMS007-POS-012",
+      "title": "Dropdown No. Lelang memindahkan konteks request aktif",
+      "category": "positive",
+      "priority": "high",
+      "requirement": "REQ-012",
+      "screen": "Respon Request Jadwal Vendor",
+      "preconditions": [
+        "Vendor memiliki request aktif pada dua lelang"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Respon Request Jadwal Vendor",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Informasi Umum",
+          "value": "read-only"
+        },
+        {
+          "action": "select",
+          "target": "No. Lelang",
+          "value": "FCL-NRM-02/200526"
+        },
+        {
+          "action": "expect",
+          "target": "Informasi Umum",
+          "value": "data FCL-NRM-02/200526"
+        },
+        {
+          "action": "expect",
+          "target": "Pilih Harga Penawaran",
+          "value": "daftar sesuai lelang kedua"
+        }
+      ],
+      "expected": [
+        "Konteks berpindah tanpa kembali ke list"
+      ],
+      "testData": {
+        "lelangAktif": 2
+      },
+      "selectorHints": {
+        "informasi-umum": {
+          "role": "status",
+          "name": "Informasi Umum",
+          "testid": "informasi-umum"
+        },
+        "no-lelang": {
+          "role": "combobox",
+          "name": "No. Lelang",
+          "testid": "no-lelang"
+        },
+        "pilih-harga-penawaran": {
+          "role": "status",
+          "name": "Pilih Harga Penawaran",
+          "testid": "pilih-harga-penawaran"
+        }
+      }
+    },
+    {
+      "id": "AMS007-NEG-015",
+      "title": "Dropdown tidak memuat lelang vendor lain atau tanpa request aktif",
+      "category": "negative",
+      "priority": "high",
+      "requirement": "REQ-012",
+      "screen": "Respon Request Jadwal Vendor",
+      "preconditions": [
+        "Ada lelang vendor lain dan lelang tanpa request aktif"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Respon Request Jadwal Vendor",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "No. Lelang",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Lelang Vendor Lain",
+          "value": "tidak tersedia"
+        },
+        {
+          "action": "expect",
+          "target": "Lelang Tanpa Request Aktif",
+          "value": "tidak tersedia"
+        }
+      ],
+      "expected": [
+        "Opsi dropdown terisolasi per vendor dan status"
+      ],
+      "testData": {
+        "vendor": "vendor-a"
+      },
+      "selectorHints": {
+        "no-lelang": {
+          "role": "button",
+          "name": "No. Lelang",
+          "testid": "no-lelang"
+        },
+        "lelang-vendor-lain": {
+          "role": "status",
+          "name": "Lelang Vendor Lain",
+          "testid": "lelang-vendor-lain"
+        },
+        "lelang-tanpa-request-aktif": {
+          "role": "status",
+          "name": "Lelang Tanpa Request Aktif",
+          "testid": "lelang-tanpa-request-aktif"
+        }
+      }
+    },
+    {
+      "id": "AMS007-STR-002",
+      "title": "Dropdown tetap responsif untuk seribu lelang aktif",
+      "category": "stress",
+      "priority": "medium",
+      "requirement": "REQ-012",
+      "screen": "Respon Request Jadwal Vendor",
+      "preconditions": [
+        "Vendor memiliki 1000 lelang dengan request aktif"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Respon Request Jadwal Vendor",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "No. Lelang",
+          "value": ""
+        },
+        {
+          "action": "fill",
+          "target": "Cari No. Lelang",
+          "value": "FCL-NRM-999"
+        },
+        {
+          "action": "select",
+          "target": "No. Lelang",
+          "value": "FCL-NRM-999"
+        },
+        {
+          "action": "expect",
+          "target": "Informasi Umum",
+          "value": "diperbarui tanpa timeout"
+        }
+      ],
+      "expected": [
+        "Pencarian dan pergantian konteks selesai dalam SLA aplikasi"
+      ],
+      "testData": {
+        "jumlahLelang": 1000
+      },
+      "selectorHints": {
+        "no-lelang": {
+          "role": "combobox",
+          "name": "No. Lelang",
+          "testid": "no-lelang"
+        },
+        "cari-no-lelang": {
+          "role": "textbox",
+          "name": "Cari No. Lelang",
+          "testid": "cari-no-lelang"
+        },
+        "informasi-umum": {
+          "role": "status",
+          "name": "Informasi Umum",
+          "testid": "informasi-umum"
+        }
+      }
+    },
+    {
+      "id": "AMS007-POS-013",
+      "title": "Card hilang setelah Update berhasil",
+      "category": "positive",
+      "priority": "high",
+      "requirement": "REQ-013",
+      "screen": "Respon Request Jadwal Vendor",
+      "preconditions": [
+        "Dua card request belum direspons"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Respon Request Jadwal Vendor",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Update pada Penawaran 1",
+          "value": ""
+        },
+        {
+          "action": "fill",
+          "target": "Closing Time",
+          "value": "24/09/2026 10:00"
+        },
+        {
+          "action": "fill",
+          "target": "Berangkat (ETD)",
+          "value": "25/09/2026 10:00"
+        },
+        {
+          "action": "fill",
+          "target": "Tiba (ETA)",
+          "value": "27/09/2026 10:00"
+        },
+        {
+          "action": "click",
+          "target": "Kirim",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Penawaran 1",
+          "value": "hilang dari daftar"
+        },
+        {
+          "action": "expect",
+          "target": "Penawaran 2",
+          "value": "tetap tampil"
+        }
+      ],
+      "expected": [
+        "Hanya card yang selesai dihapus"
+      ],
+      "testData": {
+        "requestAwal": 2,
+        "requestSisa": 1
+      },
+      "selectorHints": {
+        "update-pada-penawaran-1": {
+          "role": "button",
+          "name": "Update pada Penawaran 1",
+          "testid": "update-pada-penawaran-1"
+        },
+        "closing-time": {
+          "role": "textbox",
+          "name": "Closing Time",
+          "testid": "closing-time"
+        },
+        "berangkat-etd": {
+          "role": "textbox",
+          "name": "Berangkat (ETD)",
+          "testid": "berangkat-etd"
+        },
+        "tiba-eta": {
+          "role": "textbox",
+          "name": "Tiba (ETA)",
+          "testid": "tiba-eta"
+        },
+        "kirim": {
+          "role": "button",
+          "name": "Kirim",
+          "testid": "kirim"
+        },
+        "penawaran-1": {
+          "role": "status",
+          "name": "Penawaran 1",
+          "testid": "penawaran-1"
+        },
+        "penawaran-2": {
+          "role": "status",
+          "name": "Penawaran 2",
+          "testid": "penawaran-2"
+        }
+      }
+    },
+    {
+      "id": "AMS007-NEG-016",
+      "title": "Daftar tidak menampilkan harga yang tidak diminta atau sudah direspons",
+      "category": "negative",
+      "priority": "high",
+      "requirement": "REQ-013",
+      "screen": "Respon Request Jadwal Vendor",
+      "preconditions": [
+        "Vendor memiliki harga non-request dan harga selesai"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Respon Request Jadwal Vendor",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Harga Non-request",
+          "value": "tidak tampil"
+        },
+        {
+          "action": "expect",
+          "target": "Harga Sudah Direspons",
+          "value": "tidak tampil"
+        }
+      ],
+      "expected": [
+        "Daftar hanya berisi request pending milik vendor"
+      ],
+      "testData": {
+        "pending": 1
+      },
+      "selectorHints": {
+        "harga-non-request": {
+          "role": "status",
+          "name": "Harga Non-request",
+          "testid": "harga-non-request"
+        },
+        "harga-sudah-direspons": {
+          "role": "status",
+          "name": "Harga Sudah Direspons",
+          "testid": "harga-sudah-direspons"
+        }
+      }
+    },
+    {
+      "id": "AMS007-POS-014",
+      "title": "Seluruh respons membersihkan tab dan penanda request",
+      "category": "positive",
+      "priority": "high",
+      "requirement": "REQ-014",
+      "screen": "Respon Request Jadwal Vendor",
+      "preconditions": [
+        "Tersisa satu request pending"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Respon Request Jadwal Vendor",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Update",
+          "value": ""
+        },
+        {
+          "action": "fill",
+          "target": "Closing Time",
+          "value": "24/09/2026 10:00"
+        },
+        {
+          "action": "fill",
+          "target": "Berangkat (ETD)",
+          "value": "25/09/2026 10:00"
+        },
+        {
+          "action": "fill",
+          "target": "Tiba (ETA)",
+          "value": "27/09/2026 10:00"
+        },
+        {
+          "action": "click",
+          "target": "Kirim",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Pilih Harga Penawaran",
+          "value": "list kosong"
+        },
+        {
+          "action": "click",
+          "target": "Simpan",
+          "value": ""
+        },
+        {
+          "action": "navigate",
+          "target": "Lelang Spot Rate Vendor",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Penanda Request Jadwal",
+          "value": "hilang"
+        }
+      ],
+      "expected": [
+        "Lelang keluar dari tab request dan halaman ditutup"
+      ],
+      "testData": {
+        "requestSisa": 0
+      },
+      "selectorHints": {
+        "update": {
+          "role": "button",
+          "name": "Update",
+          "testid": "update"
+        },
+        "closing-time": {
+          "role": "textbox",
+          "name": "Closing Time",
+          "testid": "closing-time"
+        },
+        "berangkat-etd": {
+          "role": "textbox",
+          "name": "Berangkat (ETD)",
+          "testid": "berangkat-etd"
+        },
+        "tiba-eta": {
+          "role": "textbox",
+          "name": "Tiba (ETA)",
+          "testid": "tiba-eta"
+        },
+        "kirim": {
+          "role": "button",
+          "name": "Kirim",
+          "testid": "kirim"
+        },
+        "pilih-harga-penawaran": {
+          "role": "status",
+          "name": "Pilih Harga Penawaran",
+          "testid": "pilih-harga-penawaran"
+        },
+        "simpan": {
+          "role": "button",
+          "name": "Simpan",
+          "testid": "simpan"
+        },
+        "penanda-request-jadwal": {
+          "role": "status",
+          "name": "Penanda Request Jadwal",
+          "testid": "penanda-request-jadwal"
+        }
+      }
+    },
+    {
+      "id": "AMS007-NEG-017",
+      "title": "Simpan tidak menutup halaman selama masih ada update pending",
+      "category": "negative",
+      "priority": "high",
+      "requirement": "REQ-014",
+      "screen": "Respon Request Jadwal Vendor",
+      "preconditions": [
+        "Masih ada satu card belum di-update"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Respon Request Jadwal Vendor",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Simpan",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Respon Request Jadwal Vendor",
+          "value": "tetap terbuka"
+        },
+        {
+          "action": "expect",
+          "target": "Request Belum Direspons",
+          "value": "masih tampil"
+        }
+      ],
+      "expected": [
+        "Request tidak ditandai selesai prematur"
+      ],
+      "testData": {
+        "requestSisa": 1
+      },
+      "selectorHints": {
+        "simpan": {
+          "role": "button",
+          "name": "Simpan",
+          "testid": "simpan"
+        },
+        "respon-request-jadwal-vendor": {
+          "role": "status",
+          "name": "Respon Request Jadwal Vendor",
+          "testid": "respon-request-jadwal-vendor"
+        },
+        "request-belum-direspons": {
+          "role": "status",
+          "name": "Request Belum Direspons",
+          "testid": "request-belum-direspons"
+        }
+      }
+    },
+    {
+      "id": "AMS007-POS-015",
+      "title": "Modal membuka form jadwal baru Direct dalam keadaan kosong",
+      "category": "positive",
+      "priority": "high",
+      "requirement": "REQ-015",
+      "screen": "Update Jadwal Vendor",
+      "preconditions": [
+        "Request aktif tersedia"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Daftar Penawaran Vendor",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Update Jadwal",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Informasi Harga",
+          "value": "read-only"
+        },
+        {
+          "action": "expect",
+          "target": "Jenis Jadwal Kapal",
+          "value": "Direct terpilih"
+        },
+        {
+          "action": "expect",
+          "target": "Field Jadwal",
+          "value": "kosong"
+        },
+        {
+          "action": "select",
+          "target": "Pelayaran",
+          "value": "Meratus"
+        },
+        {
+          "action": "fill",
+          "target": "Nama Kapal",
+          "value": "KM TIDAR"
+        },
+        {
+          "action": "fill",
+          "target": "Voyage",
+          "value": "088"
+        }
+      ],
+      "expected": [
+        "Form baru tidak mewarisi jadwal lama"
+      ],
+      "testData": {
+        "jenisJadwal": "Direct"
+      },
+      "selectorHints": {
+        "update-jadwal": {
+          "role": "button",
+          "name": "Update Jadwal",
+          "testid": "update-jadwal"
+        },
+        "informasi-harga": {
+          "role": "status",
+          "name": "Informasi Harga",
+          "testid": "informasi-harga"
+        },
+        "jenis-jadwal-kapal": {
+          "role": "status",
+          "name": "Jenis Jadwal Kapal",
+          "testid": "jenis-jadwal-kapal"
+        },
+        "field-jadwal": {
+          "role": "status",
+          "name": "Field Jadwal",
+          "testid": "field-jadwal"
+        },
+        "pelayaran": {
+          "role": "combobox",
+          "name": "Pelayaran",
+          "testid": "pelayaran"
+        },
+        "nama-kapal": {
+          "role": "textbox",
+          "name": "Nama Kapal",
+          "testid": "nama-kapal"
+        },
+        "voyage": {
+          "role": "textbox",
+          "name": "Voyage",
+          "testid": "voyage"
+        }
+      }
+    },
+    {
+      "id": "AMS007-NEG-018",
+      "title": "Batal modal membuang input tanpa menyimpan",
+      "category": "negative",
+      "priority": "high",
+      "requirement": "REQ-015",
+      "screen": "Update Jadwal Vendor",
+      "preconditions": [
+        "Modal Update Jadwal terbuka"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Update Jadwal Vendor",
+          "value": ""
+        },
+        {
+          "action": "fill",
+          "target": "Nama Kapal",
+          "value": "KAPAL SEMENTARA"
+        },
+        {
+          "action": "click",
+          "target": "Batal",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Update Jadwal",
+          "value": "dialog tertutup"
+        },
+        {
+          "action": "expect",
+          "target": "Jadwal Baru",
+          "value": "tidak tersimpan"
+        }
+      ],
+      "expected": [
+        "Perubahan sementara dibuang"
+      ],
+      "testData": {
+        "namaKapal": "KAPAL SEMENTARA"
+      },
+      "selectorHints": {
+        "nama-kapal": {
+          "role": "textbox",
+          "name": "Nama Kapal",
+          "testid": "nama-kapal"
+        },
+        "batal": {
+          "role": "button",
+          "name": "Batal",
+          "testid": "batal"
+        },
+        "update-jadwal": {
+          "role": "status",
+          "name": "Update Jadwal",
+          "testid": "update-jadwal"
+        },
+        "jadwal-baru": {
+          "role": "status",
+          "name": "Jadwal Baru",
+          "testid": "jadwal-baru"
+        }
+      }
+    },
+    {
+      "id": "AMS007-POS-016",
+      "title": "Jadwal Direct valid dapat dikirim tanpa Open Stack",
+      "category": "positive",
+      "priority": "high",
+      "requirement": "REQ-016",
+      "screen": "Update Jadwal Vendor",
+      "preconditions": [
+        "Waktu sistem 23/09/2026 09:00 WIB"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Update Jadwal Vendor",
+          "value": ""
+        },
+        {
+          "action": "select",
+          "target": "Pelayaran",
+          "value": "Meratus"
+        },
+        {
+          "action": "fill",
+          "target": "Nama Kapal",
+          "value": "KM TIDAR"
+        },
+        {
+          "action": "fill",
+          "target": "Voyage",
+          "value": "088"
+        },
+        {
+          "action": "fill",
+          "target": "Closing Time",
+          "value": "24/09/2026 10:00"
+        },
+        {
+          "action": "fill",
+          "target": "Berangkat (ETD)",
+          "value": "25/09/2026 10:00"
+        },
+        {
+          "action": "fill",
+          "target": "Tiba (ETA)",
+          "value": "27/09/2026 10:00"
+        },
+        {
+          "action": "click",
+          "target": "Kirim",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Jadwal",
+          "value": "berhasil disimpan"
+        }
+      ],
+      "expected": [
+        "Open Stack kosong diterima dan urutan waktu valid"
+      ],
+      "testData": {
+        "openStack": "",
+        "closing": "2026-09-24T10:00:00+07:00",
+        "etd": "2026-09-25T10:00:00+07:00",
+        "eta": "2026-09-27T10:00:00+07:00"
+      },
+      "selectorHints": {
+        "pelayaran": {
+          "role": "combobox",
+          "name": "Pelayaran",
+          "testid": "pelayaran"
+        },
+        "nama-kapal": {
+          "role": "textbox",
+          "name": "Nama Kapal",
+          "testid": "nama-kapal"
+        },
+        "voyage": {
+          "role": "textbox",
+          "name": "Voyage",
+          "testid": "voyage"
+        },
+        "closing-time": {
+          "role": "textbox",
+          "name": "Closing Time",
+          "testid": "closing-time"
+        },
+        "berangkat-etd": {
+          "role": "textbox",
+          "name": "Berangkat (ETD)",
+          "testid": "berangkat-etd"
+        },
+        "tiba-eta": {
+          "role": "textbox",
+          "name": "Tiba (ETA)",
+          "testid": "tiba-eta"
+        },
+        "kirim": {
+          "role": "button",
+          "name": "Kirim",
+          "testid": "kirim"
+        },
+        "jadwal": {
+          "role": "status",
+          "name": "Jadwal",
+          "testid": "jadwal"
+        }
+      }
+    },
+    {
+      "id": "AMS007-NEG-019",
+      "title": "Closing Time wajib diisi",
+      "category": "negative",
+      "priority": "high",
+      "requirement": "REQ-016",
+      "screen": "Update Jadwal Vendor",
+      "preconditions": [
+        "Modal terbuka"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Update Jadwal Vendor",
+          "value": ""
+        },
+        {
+          "action": "fill",
+          "target": "Berangkat (ETD)",
+          "value": "25/09/2026 10:00"
+        },
+        {
+          "action": "fill",
+          "target": "Tiba (ETA)",
+          "value": "27/09/2026 10:00"
+        },
+        {
+          "action": "click",
+          "target": "Kirim",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Closing Time",
+          "value": "wajib diisi"
+        }
+      ],
+      "expected": [
+        "Jadwal tidak tersimpan"
+      ],
+      "testData": {
+        "closing": ""
+      },
+      "selectorHints": {
+        "berangkat-etd": {
+          "role": "textbox",
+          "name": "Berangkat (ETD)",
+          "testid": "berangkat-etd"
+        },
+        "tiba-eta": {
+          "role": "textbox",
+          "name": "Tiba (ETA)",
+          "testid": "tiba-eta"
+        },
+        "kirim": {
+          "role": "button",
+          "name": "Kirim",
+          "testid": "kirim"
+        },
+        "closing-time": {
+          "role": "status",
+          "name": "Closing Time",
+          "testid": "closing-time"
+        }
+      }
+    },
+    {
+      "id": "AMS007-NEG-020",
+      "title": "Closing Time harus setelah waktu sekarang dan Open Stack",
+      "category": "negative",
+      "priority": "high",
+      "requirement": "REQ-016",
+      "screen": "Update Jadwal Vendor",
+      "preconditions": [
+        "Waktu sistem 23/09/2026 09:00 WIB"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Update Jadwal Vendor",
+          "value": ""
+        },
+        {
+          "action": "fill",
+          "target": "Open Stack",
+          "value": "24/09/2026 12:00"
+        },
+        {
+          "action": "fill",
+          "target": "Closing Time",
+          "value": "24/09/2026 11:00"
+        },
+        {
+          "action": "click",
+          "target": "Kirim",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Closing Time",
+          "value": "harus lebih besar dari Open Stack dan waktu saat ini"
+        }
+      ],
+      "expected": [
+        "Jadwal tidak tersimpan"
+      ],
+      "testData": {
+        "openStack": "2026-09-24T12:00:00+07:00",
+        "closing": "2026-09-24T11:00:00+07:00"
+      },
+      "selectorHints": {
+        "open-stack": {
+          "role": "textbox",
+          "name": "Open Stack",
+          "testid": "open-stack"
+        },
+        "closing-time": {
+          "role": "status",
+          "name": "Closing Time",
+          "testid": "closing-time"
+        },
+        "kirim": {
+          "role": "button",
+          "name": "Kirim",
+          "testid": "kirim"
+        }
+      }
+    },
+    {
+      "id": "AMS007-NEG-021",
+      "title": "ETD wajib setelah Closing Time",
+      "category": "negative",
+      "priority": "high",
+      "requirement": "REQ-016",
+      "screen": "Update Jadwal Vendor",
+      "preconditions": [
+        "Modal terbuka"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Update Jadwal Vendor",
+          "value": ""
+        },
+        {
+          "action": "fill",
+          "target": "Closing Time",
+          "value": "24/09/2026 10:00"
+        },
+        {
+          "action": "fill",
+          "target": "Berangkat (ETD)",
+          "value": "24/09/2026 09:59"
+        },
+        {
+          "action": "fill",
+          "target": "Tiba (ETA)",
+          "value": "27/09/2026 10:00"
+        },
+        {
+          "action": "click",
+          "target": "Kirim",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Berangkat (ETD)",
+          "value": "harus lebih besar dari Closing Time"
+        }
+      ],
+      "expected": [
+        "Jadwal tidak tersimpan"
+      ],
+      "testData": {
+        "closing": "2026-09-24T10:00:00+07:00",
+        "etd": "2026-09-24T09:59:00+07:00"
+      },
+      "selectorHints": {
+        "closing-time": {
+          "role": "textbox",
+          "name": "Closing Time",
+          "testid": "closing-time"
+        },
+        "berangkat-etd": {
+          "role": "status",
+          "name": "Berangkat (ETD)",
+          "testid": "berangkat-etd"
+        },
+        "tiba-eta": {
+          "role": "textbox",
+          "name": "Tiba (ETA)",
+          "testid": "tiba-eta"
+        },
+        "kirim": {
+          "role": "button",
+          "name": "Kirim",
+          "testid": "kirim"
+        }
+      }
+    },
+    {
+      "id": "AMS007-NEG-022",
+      "title": "ETA wajib setelah ETD",
+      "category": "negative",
+      "priority": "high",
+      "requirement": "REQ-016",
+      "screen": "Update Jadwal Vendor",
+      "preconditions": [
+        "Modal terbuka"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Update Jadwal Vendor",
+          "value": ""
+        },
+        {
+          "action": "fill",
+          "target": "Closing Time",
+          "value": "24/09/2026 10:00"
+        },
+        {
+          "action": "fill",
+          "target": "Berangkat (ETD)",
+          "value": "25/09/2026 10:00"
+        },
+        {
+          "action": "fill",
+          "target": "Tiba (ETA)",
+          "value": "25/09/2026 09:59"
+        },
+        {
+          "action": "click",
+          "target": "Kirim",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Tiba (ETA)",
+          "value": "harus lebih besar dari ETD"
+        }
+      ],
+      "expected": [
+        "Jadwal tidak tersimpan"
+      ],
+      "testData": {
+        "etd": "2026-09-25T10:00:00+07:00",
+        "eta": "2026-09-25T09:59:00+07:00"
+      },
+      "selectorHints": {
+        "closing-time": {
+          "role": "textbox",
+          "name": "Closing Time",
+          "testid": "closing-time"
+        },
+        "berangkat-etd": {
+          "role": "textbox",
+          "name": "Berangkat (ETD)",
+          "testid": "berangkat-etd"
+        },
+        "tiba-eta": {
+          "role": "status",
+          "name": "Tiba (ETA)",
+          "testid": "tiba-eta"
+        },
+        "kirim": {
+          "role": "button",
+          "name": "Kirim",
+          "testid": "kirim"
+        }
+      }
+    },
+    {
+      "id": "AMS007-NEG-023",
+      "title": "ETD Connecting di luar rentang ditolak",
+      "category": "negative",
+      "priority": "high",
+      "requirement": "REQ-016",
+      "screen": "Update Jadwal Vendor",
+      "preconditions": [
+        "Jenis jadwal Connecting dipilih"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Update Jadwal Vendor",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Connecting",
+          "value": ""
+        },
+        {
+          "action": "fill",
+          "target": "ETD Utama",
+          "value": "25/09/2026 10:00"
+        },
+        {
+          "action": "fill",
+          "target": "ETD Connecting 1",
+          "value": "25/09/2026 09:00"
+        },
+        {
+          "action": "fill",
+          "target": "Tiba (ETA)",
+          "value": "27/09/2026 10:00"
+        },
+        {
+          "action": "click",
+          "target": "Kirim",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "ETD Connecting 1",
+          "value": "harus setelah ETD sebelumnya dan tidak melebihi ETA"
+        }
+      ],
+      "expected": [
+        "Jadwal tidak tersimpan"
+      ],
+      "testData": {
+        "etdUtama": "2026-09-25T10:00:00+07:00",
+        "etdConnecting": "2026-09-25T09:00:00+07:00"
+      },
+      "selectorHints": {
+        "connecting": {
+          "role": "button",
+          "name": "Connecting",
+          "testid": "connecting"
+        },
+        "etd-utama": {
+          "role": "textbox",
+          "name": "ETD Utama",
+          "testid": "etd-utama"
+        },
+        "etd-connecting-1": {
+          "role": "status",
+          "name": "ETD Connecting 1",
+          "testid": "etd-connecting-1"
+        },
+        "tiba-eta": {
+          "role": "textbox",
+          "name": "Tiba (ETA)",
+          "testid": "tiba-eta"
+        },
+        "kirim": {
+          "role": "button",
+          "name": "Kirim",
+          "testid": "kirim"
+        }
+      }
+    },
+    {
+      "id": "AMS007-EDG-002",
+      "title": "Batas waktu yang sama persis ditolak kecuali Connecting sama dengan ETA",
+      "category": "edge",
+      "priority": "high",
+      "requirement": "REQ-016",
+      "screen": "Update Jadwal Vendor",
+      "preconditions": [
+        "Jenis jadwal Connecting dipilih"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Update Jadwal Vendor",
+          "value": ""
+        },
+        {
+          "action": "fill",
+          "target": "Open Stack",
+          "value": "24/09/2026 10:00"
+        },
+        {
+          "action": "fill",
+          "target": "Closing Time",
+          "value": "24/09/2026 10:00"
+        },
+        {
+          "action": "fill",
+          "target": "Berangkat (ETD)",
+          "value": "25/09/2026 10:00"
+        },
+        {
+          "action": "fill",
+          "target": "Tiba (ETA)",
+          "value": "27/09/2026 10:00"
+        },
+        {
+          "action": "fill",
+          "target": "ETD Connecting 1",
+          "value": "27/09/2026 10:00"
+        },
+        {
+          "action": "click",
+          "target": "Kirim",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Closing Time",
+          "value": "harus lebih besar dari Open Stack"
+        }
+      ],
+      "expected": [
+        "Kesetaraan Open Stack/Closing ditolak; batas Connecting sama dengan ETA sendiri valid"
+      ],
+      "testData": {
+        "equalBoundary": true
+      },
+      "selectorHints": {
+        "open-stack": {
+          "role": "textbox",
+          "name": "Open Stack",
+          "testid": "open-stack"
+        },
+        "closing-time": {
+          "role": "status",
+          "name": "Closing Time",
+          "testid": "closing-time"
+        },
+        "berangkat-etd": {
+          "role": "textbox",
+          "name": "Berangkat (ETD)",
+          "testid": "berangkat-etd"
+        },
+        "tiba-eta": {
+          "role": "textbox",
+          "name": "Tiba (ETA)",
+          "testid": "tiba-eta"
+        },
+        "etd-connecting-1": {
+          "role": "textbox",
+          "name": "ETD Connecting 1",
+          "testid": "etd-connecting-1"
+        },
+        "kirim": {
+          "role": "button",
+          "name": "Kirim",
+          "testid": "kirim"
+        }
+      }
+    },
+    {
+      "id": "AMS007-POS-017",
+      "title": "Kirim berhasil memperbarui status dan menghapus badge request",
+      "category": "positive",
+      "priority": "high",
+      "requirement": "REQ-017",
+      "screen": "Daftar Penawaran Vendor",
+      "preconditions": [
+        "Penawaran belum memiliki jadwal dan request aktif"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Update Jadwal Vendor",
+          "value": ""
+        },
+        {
+          "action": "fill",
+          "target": "Closing Time",
+          "value": "24/09/2026 10:00"
+        },
+        {
+          "action": "fill",
+          "target": "Berangkat (ETD)",
+          "value": "25/09/2026 10:00"
+        },
+        {
+          "action": "fill",
+          "target": "Tiba (ETA)",
+          "value": "27/09/2026 10:00"
+        },
+        {
+          "action": "click",
+          "target": "Kirim",
+          "value": ""
+        },
+        {
+          "action": "navigate",
+          "target": "Daftar Penawaran Vendor",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Status Penawaran",
+          "value": "Input Penawaran"
+        },
+        {
+          "action": "expect",
+          "target": "Belum Input Jadwal",
+          "value": "hilang"
+        },
+        {
+          "action": "expect",
+          "target": "Request Jadwal",
+          "value": "hilang"
+        }
+      ],
+      "expected": [
+        "Status dan badge disinkronkan"
+      ],
+      "testData": {
+        "statusAwal": "Belum Input Jadwal",
+        "statusAkhir": "Input Penawaran"
+      },
+      "selectorHints": {
+        "closing-time": {
+          "role": "textbox",
+          "name": "Closing Time",
+          "testid": "closing-time"
+        },
+        "berangkat-etd": {
+          "role": "textbox",
+          "name": "Berangkat (ETD)",
+          "testid": "berangkat-etd"
+        },
+        "tiba-eta": {
+          "role": "textbox",
+          "name": "Tiba (ETA)",
+          "testid": "tiba-eta"
+        },
+        "kirim": {
+          "role": "button",
+          "name": "Kirim",
+          "testid": "kirim"
+        },
+        "status-penawaran": {
+          "role": "status",
+          "name": "Status Penawaran",
+          "testid": "status-penawaran"
+        },
+        "belum-input-jadwal": {
+          "role": "status",
+          "name": "Belum Input Jadwal",
+          "testid": "belum-input-jadwal"
+        },
+        "request-jadwal": {
+          "role": "status",
+          "name": "Request Jadwal",
+          "testid": "request-jadwal"
+        }
+      }
+    },
+    {
+      "id": "AMS007-NEG-024",
+      "title": "Kirim gagal mempertahankan status request dan badge lama",
+      "category": "negative",
+      "priority": "high",
+      "requirement": "REQ-017",
+      "screen": "Daftar Penawaran Vendor",
+      "preconditions": [
+        "Form jadwal tidak valid"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Update Jadwal Vendor",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Kirim",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Validasi Jadwal",
+          "value": "tampil"
+        },
+        {
+          "action": "click",
+          "target": "Batal",
+          "value": ""
+        },
+        {
+          "action": "navigate",
+          "target": "Daftar Penawaran Vendor",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Belum Input Jadwal",
+          "value": "tetap tampil"
+        },
+        {
+          "action": "expect",
+          "target": "Request Jadwal",
+          "value": "tetap tampil"
+        }
+      ],
+      "expected": [
+        "Kegagalan tidak menutup request"
+      ],
+      "testData": {
+        "valid": false
+      },
+      "selectorHints": {
+        "kirim": {
+          "role": "button",
+          "name": "Kirim",
+          "testid": "kirim"
+        },
+        "validasi-jadwal": {
+          "role": "status",
+          "name": "Validasi Jadwal",
+          "testid": "validasi-jadwal"
+        },
+        "batal": {
+          "role": "button",
+          "name": "Batal",
+          "testid": "batal"
+        },
+        "belum-input-jadwal": {
+          "role": "status",
+          "name": "Belum Input Jadwal",
+          "testid": "belum-input-jadwal"
+        },
+        "request-jadwal": {
+          "role": "status",
+          "name": "Request Jadwal",
+          "testid": "request-jadwal"
+        }
+      }
+    },
+    {
+      "id": "AMS007-POS-018",
+      "title": "Jadwal vendor langsung tercermin pada detail shipper",
+      "category": "positive",
+      "priority": "high",
+      "requirement": "REQ-018",
+      "screen": "Detail Harga Penawaran Shipper",
+      "preconditions": [
+        "Vendor berhasil menyimpan jadwal Connecting"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Detail Harga Penawaran Shipper",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "ETD ETA Closing Time",
+          "value": "nilai jadwal baru"
+        },
+        {
+          "action": "expect",
+          "target": "Info Connecting",
+          "value": "detail transit baru"
+        },
+        {
+          "action": "expect",
+          "target": "Tombol Pesan",
+          "value": "status sesuai jadwal"
+        },
+        {
+          "action": "expect",
+          "target": "Harga Penawaran",
+          "value": "nilai semula"
+        }
+      ],
+      "expected": [
+        "Seluruh detail jadwal terbaru tampil tanpa perubahan harga"
+      ],
+      "testData": {
+        "jenisJadwal": "Connecting"
+      },
+      "selectorHints": {
+        "etd-eta-closing-time": {
+          "role": "status",
+          "name": "ETD ETA Closing Time",
+          "testid": "etd-eta-closing-time"
+        },
+        "info-connecting": {
+          "role": "status",
+          "name": "Info Connecting",
+          "testid": "info-connecting"
+        },
+        "tombol-pesan": {
+          "role": "status",
+          "name": "Tombol Pesan",
+          "testid": "tombol-pesan"
+        },
+        "harga-penawaran": {
+          "role": "status",
+          "name": "Harga Penawaran",
+          "testid": "harga-penawaran"
+        }
+      }
+    },
+    {
+      "id": "AMS007-NEG-025",
+      "title": "Perubahan jadwal tidak boleh mengubah harga shipper",
+      "category": "negative",
+      "priority": "high",
+      "requirement": "REQ-018",
+      "screen": "Detail Harga Penawaran Shipper",
+      "preconditions": [
+        "Harga sebelum update Rp16.000.000"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Update Jadwal Vendor",
+          "value": ""
+        },
+        {
+          "action": "fill",
+          "target": "Closing Time",
+          "value": "24/09/2026 10:00"
+        },
+        {
+          "action": "fill",
+          "target": "Berangkat (ETD)",
+          "value": "25/09/2026 10:00"
+        },
+        {
+          "action": "fill",
+          "target": "Tiba (ETA)",
+          "value": "27/09/2026 10:00"
+        },
+        {
+          "action": "click",
+          "target": "Kirim",
+          "value": ""
+        },
+        {
+          "action": "navigate",
+          "target": "Detail Harga Penawaran Shipper",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Harga Penawaran",
+          "value": "Rp16.000.000"
+        }
+      ],
+      "expected": [
+        "Harga dan komponen pajak tidak berubah"
+      ],
+      "testData": {
+        "harga": 16000000
+      },
+      "selectorHints": {
+        "closing-time": {
+          "role": "textbox",
+          "name": "Closing Time",
+          "testid": "closing-time"
+        },
+        "berangkat-etd": {
+          "role": "textbox",
+          "name": "Berangkat (ETD)",
+          "testid": "berangkat-etd"
+        },
+        "tiba-eta": {
+          "role": "textbox",
+          "name": "Tiba (ETA)",
+          "testid": "tiba-eta"
+        },
+        "kirim": {
+          "role": "button",
+          "name": "Kirim",
+          "testid": "kirim"
+        },
+        "harga-penawaran": {
+          "role": "status",
+          "name": "Harga Penawaran",
+          "testid": "harga-penawaran"
+        }
+      }
+    },
+    {
+      "id": "AMS007-POS-019",
+      "title": "Update jadwal berhasil tercatat di Riwayat Perubahan",
+      "category": "positive",
+      "priority": "high",
+      "requirement": "REQ-019",
+      "screen": "Riwayat Perubahan Vendor",
+      "preconditions": [
+        "Update jadwal valid telah dikirim"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Daftar Penawaran Vendor",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Buka menu aksi",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Riwayat Perubahan",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Update Jadwal",
+          "value": "aktor, waktu WIB, dan nilai perubahan"
+        }
+      ],
+      "expected": [
+        "Audit trail memuat update yang benar"
+      ],
+      "testData": {
+        "aktor": "Administrator Vendor"
+      },
+      "selectorHints": {
+        "buka-menu-aksi": {
+          "role": "button",
+          "name": "Buka menu aksi",
+          "testid": "buka-menu-aksi"
+        },
+        "riwayat-perubahan": {
+          "role": "button",
+          "name": "Riwayat Perubahan",
+          "testid": "riwayat-perubahan"
+        },
+        "update-jadwal": {
+          "role": "status",
+          "name": "Update Jadwal",
+          "testid": "update-jadwal"
+        }
+      }
+    },
+    {
+      "id": "AMS007-NEG-026",
+      "title": "Update setelah Rencana Akhir Kirim ditolak",
+      "category": "negative",
+      "priority": "high",
+      "requirement": "REQ-019",
+      "screen": "Update Jadwal Vendor",
+      "preconditions": [
+        "Waktu telah melewati Rencana Akhir Kirim"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Daftar Penawaran Vendor",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Update Jadwal",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Alert",
+          "value": "sudah melewati Rencana Akhir Kirim"
+        },
+        {
+          "action": "expect",
+          "target": "Update Jadwal",
+          "value": "tidak dapat disimpan"
+        }
+      ],
+      "expected": [
+        "Request tidak berubah menjadi selesai"
+      ],
+      "testData": {
+        "melewatiBatas": true
+      },
+      "selectorHints": {
+        "update-jadwal": {
+          "role": "status",
+          "name": "Update Jadwal",
+          "testid": "update-jadwal"
+        },
+        "alert": {
+          "role": "status",
+          "name": "Alert",
+          "testid": "alert"
+        }
+      }
+    },
+    {
+      "id": "AMS007-NEG-027",
+      "title": "Harga N/A atau kadaluwarsa tidak dapat di-update",
+      "category": "negative",
+      "priority": "high",
+      "requirement": "REQ-019",
+      "screen": "Update Jadwal Vendor",
+      "preconditions": [
+        "Harga berstatus Kadaluwarsa"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Daftar Penawaran Vendor",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Update Jadwal",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Alert",
+          "value": "harga N/A atau kadaluwarsa"
+        },
+        {
+          "action": "expect",
+          "target": "Update Jadwal",
+          "value": "tidak dapat disimpan"
+        }
+      ],
+      "expected": [
+        "Tidak ada jadwal atau riwayat sukses baru"
+      ],
+      "testData": {
+        "statusHarga": "Kadaluwarsa"
+      },
+      "selectorHints": {
+        "update-jadwal": {
+          "role": "status",
+          "name": "Update Jadwal",
+          "testid": "update-jadwal"
+        },
+        "alert": {
+          "role": "status",
+          "name": "Alert",
+          "testid": "alert"
+        }
+      }
+    },
+    {
+      "id": "AMS007-POS-020",
+      "title": "Validasi dan riwayat menggunakan waktu WIB",
+      "category": "positive",
+      "priority": "high",
+      "requirement": "REQ-020",
+      "screen": "Update Jadwal Vendor",
+      "preconditions": [
+        "Waktu server ekuivalen 23/09/2026 02:00 UTC",
+        "Waktu lokal 23/09/2026 09:00 WIB"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Update Jadwal Vendor",
+          "value": ""
+        },
+        {
+          "action": "fill",
+          "target": "Closing Time",
+          "value": "23/09/2026 09:01"
+        },
+        {
+          "action": "fill",
+          "target": "Berangkat (ETD)",
+          "value": "23/09/2026 10:00"
+        },
+        {
+          "action": "fill",
+          "target": "Tiba (ETA)",
+          "value": "24/09/2026 10:00"
+        },
+        {
+          "action": "click",
+          "target": "Kirim",
+          "value": ""
+        },
+        {
+          "action": "navigate",
+          "target": "Riwayat Perubahan Vendor",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Waktu Perubahan",
+          "value": "23/09/2026 09:00 WIB"
+        }
+      ],
+      "expected": [
+        "Closing satu menit ke depan diterima menurut WIB",
+        "Audit trail tampil WIB"
+      ],
+      "testData": {
+        "serverUTC": "2026-09-23T02:00:00Z",
+        "wib": "2026-09-23T09:00:00+07:00"
+      },
+      "selectorHints": {
+        "closing-time": {
+          "role": "textbox",
+          "name": "Closing Time",
+          "testid": "closing-time"
+        },
+        "berangkat-etd": {
+          "role": "textbox",
+          "name": "Berangkat (ETD)",
+          "testid": "berangkat-etd"
+        },
+        "tiba-eta": {
+          "role": "textbox",
+          "name": "Tiba (ETA)",
+          "testid": "tiba-eta"
+        },
+        "kirim": {
+          "role": "button",
+          "name": "Kirim",
+          "testid": "kirim"
+        },
+        "waktu-perubahan": {
+          "role": "status",
+          "name": "Waktu Perubahan",
+          "testid": "waktu-perubahan"
+        }
+      }
+    },
+    {
+      "id": "AMS007-NEG-028",
+      "title": "Validasi tidak salah memakai UTC sebagai waktu lokal",
+      "category": "negative",
+      "priority": "high",
+      "requirement": "REQ-020",
+      "screen": "Update Jadwal Vendor",
+      "preconditions": [
+        "Waktu lokal 23/09/2026 09:00 WIB"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Update Jadwal Vendor",
+          "value": ""
+        },
+        {
+          "action": "fill",
+          "target": "Closing Time",
+          "value": "23/09/2026 08:59"
+        },
+        {
+          "action": "fill",
+          "target": "Berangkat (ETD)",
+          "value": "23/09/2026 10:00"
+        },
+        {
+          "action": "fill",
+          "target": "Tiba (ETA)",
+          "value": "24/09/2026 10:00"
+        },
+        {
+          "action": "click",
+          "target": "Kirim",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Closing Time",
+          "value": "harus lebih besar dari waktu saat ini"
+        }
+      ],
+      "expected": [
+        "Waktu lampau WIB ditolak walau lebih besar dari jam UTC"
+      ],
+      "testData": {
+        "closingWIB": "2026-09-23T08:59:00+07:00"
+      },
+      "selectorHints": {
+        "closing-time": {
+          "role": "status",
+          "name": "Closing Time",
+          "testid": "closing-time"
+        },
+        "berangkat-etd": {
+          "role": "textbox",
+          "name": "Berangkat (ETD)",
+          "testid": "berangkat-etd"
+        },
+        "tiba-eta": {
+          "role": "textbox",
+          "name": "Tiba (ETA)",
+          "testid": "tiba-eta"
+        },
+        "kirim": {
+          "role": "button",
+          "name": "Kirim",
+          "testid": "kirim"
+        }
+      }
+    },
+    {
+      "id": "AMS007-EDG-003",
+      "title": "Pergantian hari WIB divalidasi tanpa bergeser tanggal",
+      "category": "edge",
+      "priority": "high",
+      "requirement": "REQ-020",
+      "screen": "Update Jadwal Vendor",
+      "preconditions": [
+        "Waktu lokal 31/12/2026 23:59 WIB"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Update Jadwal Vendor",
+          "value": ""
+        },
+        {
+          "action": "fill",
+          "target": "Closing Time",
+          "value": "01/01/2027 00:00"
+        },
+        {
+          "action": "fill",
+          "target": "Berangkat (ETD)",
+          "value": "01/01/2027 01:00"
+        },
+        {
+          "action": "fill",
+          "target": "Tiba (ETA)",
+          "value": "02/01/2027 01:00"
+        },
+        {
+          "action": "click",
+          "target": "Kirim",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Jadwal",
+          "value": "berhasil disimpan dengan tanggal 1 Januari WIB"
+        }
+      ],
+      "expected": [
+        "Pergantian tahun diproses menurut WIB"
+      ],
+      "testData": {
+        "now": "2026-12-31T23:59:00+07:00"
+      },
+      "selectorHints": {
+        "closing-time": {
+          "role": "textbox",
+          "name": "Closing Time",
+          "testid": "closing-time"
+        },
+        "berangkat-etd": {
+          "role": "textbox",
+          "name": "Berangkat (ETD)",
+          "testid": "berangkat-etd"
+        },
+        "tiba-eta": {
+          "role": "textbox",
+          "name": "Tiba (ETA)",
+          "testid": "tiba-eta"
+        },
+        "kirim": {
+          "role": "button",
+          "name": "Kirim",
+          "testid": "kirim"
+        },
+        "jadwal": {
+          "role": "status",
+          "name": "Jadwal",
+          "testid": "jadwal"
+        }
+      }
+    },
+    {
+      "id": "AMS007-STR-003",
+      "title": "Pilih Semua dan counter stabil pada seribu penawaran",
+      "category": "stress",
+      "priority": "medium",
+      "requirement": "REQ-006",
+      "screen": "Request Jadwal Shipper",
+      "preconditions": [
+        "Terdapat 1000 penawaran eligible dalam 50 halaman"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Request Jadwal Shipper",
+          "value": ""
+        },
+        {
+          "action": "check",
+          "target": "Pilih Semua Halaman 1",
+          "value": "true"
+        },
+        {
+          "action": "click",
+          "target": "Halaman 50",
+          "value": ""
+        },
+        {
+          "action": "check",
+          "target": "Pilih Semua Halaman 50",
+          "value": "true"
+        },
+        {
+          "action": "expect",
+          "target": "Counter Terpilih",
+          "value": "40 Terpilih"
+        },
+        {
+          "action": "click",
+          "target": "Halaman 1",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Pilih Semua",
+          "value": "tetap tercentang"
+        }
+      ],
+      "expected": [
+        "Tidak ada pilihan hilang dan UI tetap responsif"
+      ],
+      "testData": {
+        "total": 1000,
+        "perHalaman": 20,
+        "halamanDipilih": 2
+      },
+      "selectorHints": {
+        "pilih-semua-halaman-1": {
+          "role": "checkbox",
+          "name": "Pilih Semua Halaman 1",
+          "testid": "pilih-semua-halaman-1"
+        },
+        "halaman-50": {
+          "role": "button",
+          "name": "Halaman 50",
+          "testid": "halaman-50"
+        },
+        "pilih-semua-halaman-50": {
+          "role": "checkbox",
+          "name": "Pilih Semua Halaman 50",
+          "testid": "pilih-semua-halaman-50"
+        },
+        "counter-terpilih": {
+          "role": "status",
+          "name": "Counter Terpilih",
+          "testid": "counter-terpilih"
+        },
+        "halaman-1": {
+          "role": "button",
+          "name": "Halaman 1",
+          "testid": "halaman-1"
+        },
+        "pilih-semua": {
+          "role": "status",
+          "name": "Pilih Semua",
+          "testid": "pilih-semua"
+        }
+      }
+    },
+    {
+      "id": "AMS007-STR-004",
+      "title": "Pengajuan massal lintas vendor menyimpan dan mengirim notifikasi sekali per target",
+      "category": "stress",
+      "priority": "high",
+      "requirement": "REQ-008",
+      "screen": "Request Jadwal Shipper",
+      "preconditions": [
+        "Ada 500 penawaran eligible dari 100 vendor"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Request Jadwal Shipper",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Pilih 500 Penawaran",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Kirim",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Konfirmasi",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Request Jadwal",
+          "value": "500 request tersimpan"
+        },
+        {
+          "action": "expect",
+          "target": "Push Notification",
+          "value": "terkirim ke 100 vendor tanpa duplikat tidak semestinya"
+        }
+      ],
+      "expected": [
+        "Tidak ada request hilang",
+        "Distribusi notifikasi konsisten"
+      ],
+      "testData": {
+        "penawaran": 500,
+        "vendor": 100
+      },
+      "selectorHints": {
+        "pilih-500-penawaran": {
+          "role": "button",
+          "name": "Pilih 500 Penawaran",
+          "testid": "pilih-500-penawaran"
+        },
+        "kirim": {
+          "role": "button",
+          "name": "Kirim",
+          "testid": "kirim"
+        },
+        "konfirmasi": {
+          "role": "button",
+          "name": "Konfirmasi",
+          "testid": "konfirmasi"
+        },
+        "request-jadwal": {
+          "role": "status",
+          "name": "Request Jadwal",
+          "testid": "request-jadwal"
+        },
+        "push-notification": {
+          "role": "status",
+          "name": "Push Notification",
+          "testid": "push-notification"
+        }
+      }
+    },
+    {
+      "id": "AMS007-STR-005",
+      "title": "Dua sesi paralel merespons request yang sama secara idempoten",
+      "category": "stress",
+      "priority": "high",
+      "requirement": "REQ-013",
+      "screen": "Respon Request Jadwal Vendor",
+      "preconditions": [
+        "Dua sesi vendor membuka request yang sama"
+      ],
+      "steps": [
+        {
+          "action": "navigate",
+          "target": "Respon Request Jadwal Vendor",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Kirim Jadwal dari Sesi A",
+          "value": ""
+        },
+        {
+          "action": "click",
+          "target": "Kirim Jadwal dari Sesi B",
+          "value": ""
+        },
+        {
+          "action": "expect",
+          "target": "Request Jadwal",
+          "value": "hanya satu respons efektif"
+        },
+        {
+          "action": "expect",
+          "target": "Sesi B",
+          "value": "pesan request sudah diproses"
+        },
+        {
+          "action": "expect",
+          "target": "Riwayat Perubahan",
+          "value": "tidak ada duplikasi inkonsisten"
+        }
+      ],
+      "expected": [
+        "Tidak terjadi double completion atau data jadwal korup"
+      ],
+      "testData": {
+        "sesi": 2
+      },
+      "selectorHints": {
+        "kirim-jadwal-dari-sesi-a": {
+          "role": "button",
+          "name": "Kirim Jadwal dari Sesi A",
+          "testid": "kirim-jadwal-dari-sesi-a"
+        },
+        "kirim-jadwal-dari-sesi-b": {
+          "role": "button",
+          "name": "Kirim Jadwal dari Sesi B",
+          "testid": "kirim-jadwal-dari-sesi-b"
+        },
+        "request-jadwal": {
+          "role": "status",
+          "name": "Request Jadwal",
+          "testid": "request-jadwal"
+        },
+        "sesi-b": {
+          "role": "status",
+          "name": "Sesi B",
+          "testid": "sesi-b"
+        },
+        "riwayat-perubahan": {
+          "role": "status",
+          "name": "Riwayat Perubahan",
+          "testid": "riwayat-perubahan"
+        }
+      }
+    }
+  ]
+}
+

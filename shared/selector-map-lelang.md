@@ -84,7 +84,7 @@ Pemetaan browser dilakukan pada `/lelang`, panel Filter, `/lelang/buat` mode FTL
 | filter-lelang | Tidak Ada Order | `page.getByRole('checkbox', { name: /Tidak Ada Order/ })` | role | Bila accessible name hilang, scope teks label |
 | filter-lelang | Tidak Ada Penawaran | `page.getByRole('checkbox', { name: /Tidak Ada Penawaran/ })` | role | Bila accessible name hilang, scope teks label |
 | filter-lelang | Lelang Ulang | `page.getByRole('checkbox', { name: /Lelang Ulang/ })` | role | Checkbox filter; jangan tertukar tombol tab |
-| filter-lelang | Reset | `page.getByRole('button', { name: 'Reset' })` | role | Membersihkan filter lokal |
+| filter-lelang | Reset | `page.getByRole('button', { name: 'Reset' })` | role | Diverifikasi 2026-10-03: mengosongkan field; saat filter aktif langsung mengembalikan daftar tanpa klik Terapkan; panel Spot Rate ikut tertutup |
 | filter-lelang | Terapkan | `page.getByRole('button', { name: 'Terapkan' })` | role | Menjalankan pencarian; tidak mengubah data |
 | filter-lelang | Tutup filter | tombol ikon close panel | TIDAK STABIL | Tidak ada label stabil; gunakan `Escape` bila perlu |
 
