@@ -1,0 +1,524 @@
+{
+  "module": "ams009-harga-penawaran-rules",
+  "source": {
+    "changeRequest": "Permintaan user 2026-10-05; rule Harga Penawaran FCL/FTL, Bid/Edit, status dan Lelang Ulang"
+  },
+  "scenarios": [
+    {
+      "id": "SCN-0001",
+      "title": "Input pertama FCL tersimpan",
+      "category": "positive",
+      "priority": "high",
+      "screen": "SCR-01",
+      "requirements": [
+        "REQ-001"
+      ],
+      "steps": [
+        "Buka Input Harga pada lelang FCL Sedang Buka buatan run.",
+        "Isi Pelayaran A, Kontainer X, harga valid, masa berlaku hari ini.",
+        "Simpan dan konfirmasi Ya."
+      ],
+      "expected": [
+        "Satu penawaran tersimpan dan dapat dilihat kembali."
+      ]
+    },
+    {
+      "id": "SCN-0002",
+      "title": "Duplikasi FCL dalam satu submit ditolak",
+      "category": "negative",
+      "priority": "high",
+      "screen": "SCR-01",
+      "requirements": [
+        "REQ-001"
+      ],
+      "steps": [
+        "Gunakan lelang FCL buatan run tanpa harga untuk kombinasi B/X.",
+        "Isi dua baris Pelayaran B dan Kontainer X dengan harga/tanggal berbeda.",
+        "Simpan dan konfirmasi bila tersedia."
+      ],
+      "expected": [
+        "Duplikasi ditolak; tidak terbentuk dua penawaran kombinasi yang sama."
+      ]
+    },
+    {
+      "id": "SCN-0003",
+      "title": "Duplikasi FCL tersimpan ditolak meski harga dan tanggal berbeda",
+      "category": "negative",
+      "priority": "high",
+      "screen": "SCR-01",
+      "requirements": [
+        "REQ-001"
+      ],
+      "steps": [
+        "Catat ID dan jumlah penawaran A/X yang sudah tersimpan.",
+        "Input lagi A/X dengan harga dan masa berlaku berbeda.",
+        "Simpan lalu baca ulang penawaran."
+      ],
+      "expected": [
+        "Input kedua ditolak; ID, jumlah, harga, dan status penawaran pertama tidak berubah."
+      ]
+    },
+    {
+      "id": "SCN-0004",
+      "title": "FCL pelayaran berbeda dengan kontainer sama diizinkan",
+      "category": "positive",
+      "priority": "high",
+      "screen": "SCR-01",
+      "requirements": [
+        "REQ-001"
+      ],
+      "steps": [
+        "Input kombinasi Pelayaran C/Kontainer X di lelang yang sudah memiliki A/X.",
+        "Simpan dan baca ulang data."
+      ],
+      "expected": [
+        "A/X dan C/X tersimpan sebagai penawaran berbeda."
+      ]
+    },
+    {
+      "id": "SCN-0005",
+      "title": "FCL pelayaran sama dengan kontainer berbeda diizinkan",
+      "category": "positive",
+      "priority": "high",
+      "screen": "SCR-01",
+      "requirements": [
+        "REQ-001"
+      ],
+      "steps": [
+        "Gunakan lelang FCL yang membuka Kontainer X dan Y.",
+        "Input A/Y setelah A/X tersimpan."
+      ],
+      "expected": [
+        "A/X dan A/Y dapat tersimpan terpisah."
+      ]
+    },
+    {
+      "id": "SCN-0006",
+      "title": "Input pertama FTL tersimpan",
+      "category": "positive",
+      "priority": "high",
+      "screen": "SCR-01",
+      "requirements": [
+        "REQ-002"
+      ],
+      "steps": [
+        "Input harga Jenis Armada X pada lelang FTL Sedang Buka buatan run.",
+        "Simpan dan konfirmasi Ya."
+      ],
+      "expected": [
+        "Satu penawaran Armada X tersimpan."
+      ]
+    },
+    {
+      "id": "SCN-0007",
+      "title": "Duplikasi FTL dalam satu submit ditolak",
+      "category": "negative",
+      "priority": "high",
+      "screen": "SCR-01",
+      "requirements": [
+        "REQ-002"
+      ],
+      "steps": [
+        "Isi dua baris untuk Armada Y yang belum punya harga, dengan harga/tanggal berbeda.",
+        "Simpan dan konfirmasi bila tersedia."
+      ],
+      "expected": [
+        "Duplikasi ditolak; tidak terbentuk dua penawaran Armada Y."
+      ]
+    },
+    {
+      "id": "SCN-0008",
+      "title": "Duplikasi FTL tersimpan ditolak meski harga dan tanggal berbeda",
+      "category": "negative",
+      "priority": "high",
+      "screen": "SCR-01",
+      "requirements": [
+        "REQ-002"
+      ],
+      "steps": [
+        "Catat penawaran Armada X.",
+        "Input lagi Armada X dengan harga dan tanggal berbeda.",
+        "Simpan dan baca ulang."
+      ],
+      "expected": [
+        "Input kedua ditolak; data pertama tidak berubah."
+      ]
+    },
+    {
+      "id": "SCN-0009",
+      "title": "FTL armada berbeda diizinkan",
+      "category": "positive",
+      "priority": "high",
+      "screen": "SCR-01",
+      "requirements": [
+        "REQ-002"
+      ],
+      "steps": [
+        "Input Armada Y setelah Armada X tersimpan pada lelang yang membuka keduanya."
+      ],
+      "expected": [
+        "Masing-masing jenis armada dapat memiliki satu harga vendor."
+      ]
+    },
+    {
+      "id": "SCN-0010",
+      "title": "Kombinasi sama di lelang berbeda diizinkan",
+      "category": "positive",
+      "priority": "high",
+      "screen": "SCR-01",
+      "requirements": [
+        "REQ-001"
+      ],
+      "steps": [
+        "Input A/X pada lelang FCL buatan run lainnya."
+      ],
+      "expected": [
+        "Keunikan dibatasi per lelang; penawaran dapat tersimpan."
+      ]
+    },
+    {
+      "id": "SCN-0011",
+      "title": "Harga lama belum Kadaluwarsa sebelum harga ulang disimpan",
+      "category": "edge",
+      "priority": "high",
+      "screen": "SCR-02",
+      "requirements": [
+        "REQ-003"
+      ],
+      "steps": [
+        "Tutup putaran awal fixture buatan run yang telah memiliki harga.",
+        "Mulai Lelang Ulang dan tunggu Sedang Buka.",
+        "Baca harga lama sebelum menyimpan harga baru."
+      ],
+      "expected": [
+        "Pembukaan Lelang Ulang saja tidak membuat harga lama Kadaluwarsa."
+      ]
+    },
+    {
+      "id": "SCN-0012",
+      "title": "Simpan harga baru Lelang Ulang membuat harga lama Kadaluwarsa",
+      "category": "positive",
+      "priority": "high",
+      "screen": "SCR-01",
+      "requirements": [
+        "REQ-003"
+      ],
+      "steps": [
+        "Pada Lelang Ulang Sedang Buka, input kembali kombinasi putaran awal.",
+        "Simpan berhasil lalu baca harga baru dan lama."
+      ],
+      "expected": [
+        "Harga baru tersimpan; harga lama vendor menjadi Kadaluwarsa."
+      ]
+    },
+    {
+      "id": "SCN-0013",
+      "title": "Simpan ulang gagal tidak membuat harga lama Kadaluwarsa",
+      "category": "negative",
+      "priority": "high",
+      "screen": "SCR-01",
+      "requirements": [
+        "REQ-003"
+      ],
+      "steps": [
+        "Pada Lelang Ulang Sedang Buka sebelum harga baru berhasil disimpan, isi harga invalid lalu Simpan.",
+        "Baca kembali harga lama."
+      ],
+      "expected": [
+        "Tidak ada harga baru tersimpan; harga lama tidak Kadaluwarsa akibat percobaan gagal."
+      ]
+    },
+    {
+      "id": "SCN-0014",
+      "title": "Edit naik memperbarui ID penawaran yang sama",
+      "category": "positive",
+      "priority": "high",
+      "screen": "SCR-03",
+      "requirements": [
+        "REQ-004"
+      ],
+      "steps": [
+        "Catat ID, jumlah, harga, dan atribut penawaran fixture aktif.",
+        "Edit Harga ke nominal lebih tinggi dan Simpan.",
+        "Baca ulang ID dan jumlah."
+      ],
+      "expected": [
+        "Harga naik pada ID yang sama; tidak ada baris baru atau Tidak Berlaku akibat edit; riwayat dapat mencatat perubahan."
+      ]
+    },
+    {
+      "id": "SCN-0015",
+      "title": "Edit turun memperbarui ID penawaran yang sama",
+      "category": "positive",
+      "priority": "high",
+      "screen": "SCR-03",
+      "requirements": [
+        "REQ-004"
+      ],
+      "steps": [
+        "Catat ID dan jumlah penawaran aktif.",
+        "Edit ke nominal lebih rendah dan Simpan."
+      ],
+      "expected": [
+        "ID dan jumlah tidak berubah; harga turun; tidak ada Tidak Berlaku akibat edit."
+      ]
+    },
+    {
+      "id": "SCN-0016",
+      "title": "Bid turun memperbarui ID penawaran yang sama",
+      "category": "positive",
+      "priority": "high",
+      "screen": "SCR-04",
+      "requirements": [
+        "REQ-005"
+      ],
+      "steps": [
+        "Catat ID, jumlah, harga, dan atribut penawaran aktif.",
+        "Dari Live Bidding, pilih kombinasi terkait lalu bid lebih rendah.",
+        "Konfirmasi Ya dan baca ulang penawaran."
+      ],
+      "expected": [
+        "Harga turun pada ID yang sama; jumlah tidak bertambah; tidak ada Tidak Berlaku akibat bid; atribut selain harga tetap."
+      ]
+    },
+    {
+      "id": "SCN-0017",
+      "title": "Bid sama ditolak tanpa perubahan",
+      "category": "negative",
+      "priority": "high",
+      "screen": "SCR-04",
+      "requirements": [
+        "REQ-005"
+      ],
+      "steps": [
+        "Bid dengan nominal sama dengan harga penawaran saat ini."
+      ],
+      "expected": [
+        "Bid ditolak; ID, jumlah, dan harga tetap."
+      ]
+    },
+    {
+      "id": "SCN-0018",
+      "title": "Bid naik ditolak tanpa perubahan",
+      "category": "negative",
+      "priority": "high",
+      "screen": "SCR-04",
+      "requirements": [
+        "REQ-005"
+      ],
+      "steps": [
+        "Bid dengan nominal di atas harga penawaran saat ini."
+      ],
+      "expected": [
+        "Bid ditolak; ID, jumlah, dan harga tetap."
+      ]
+    },
+    {
+      "id": "SCN-0019",
+      "title": "Bid berulang tidak menambah baris penawaran",
+      "category": "edge",
+      "priority": "high",
+      "screen": "SCR-04",
+      "requirements": [
+        "REQ-005"
+      ],
+      "steps": [
+        "Lakukan bid turun kedua pada penawaran yang telah dibid.",
+        "Baca ulang seluruh penawaran fixture."
+      ],
+      "expected": [
+        "Tetap memakai ID awal dan jumlah baris awal; riwayat bid boleh bertambah."
+      ]
+    },
+    {
+      "id": "SCN-0020",
+      "title": "Masa berlaku kemarin menjadi Tidak Berlaku",
+      "category": "edge",
+      "priority": "high",
+      "screen": "SCR-02",
+      "requirements": [
+        "REQ-006"
+      ],
+      "steps": [
+        "Cari fixture penawaran yang masa berlakunya sebelum tanggal hari ini.",
+        "Pastikan belum Kadaluwarsa, Closing Time dan Rencana Akhir Kirim belum lewat.",
+        "Baca status penawaran dan tanggal bisnis."
+      ],
+      "expected": [
+        "Penawaran menjadi Tidak Berlaku; bukan Kadaluwarsa karena tanggal."
+      ]
+    },
+    {
+      "id": "SCN-0021",
+      "title": "Masa berlaku hari ini tetap aktif",
+      "category": "edge",
+      "priority": "high",
+      "screen": "SCR-02",
+      "requirements": [
+        "REQ-006"
+      ],
+      "steps": [
+        "Gunakan penawaran masa berlaku hari ini dengan seluruh batas lain belum lewat.",
+        "Baca ulang status."
+      ],
+      "expected": [
+        "Penawaran masih aktif pada hari tersebut; tanpa badge Tidak Berlaku atau Kadaluwarsa."
+      ]
+    },
+    {
+      "id": "SCN-0022",
+      "title": "Pergantian hari mengubah masa berlaku menjadi Tidak Berlaku",
+      "category": "edge",
+      "priority": "high",
+      "screen": "SCR-02",
+      "requirements": [
+        "REQ-006"
+      ],
+      "steps": [
+        "Gunakan fixture masa berlaku hari D tanpa pemicu status lain.",
+        "Amati sebelum dan setelah pergantian tanggal bisnis aktual."
+      ],
+      "expected": [
+        "Aktif pada D; Tidak Berlaku pada D+1. Jam browser yang dimajukan saja bukan bukti waktu backend."
+      ]
+    },
+    {
+      "id": "SCN-0023",
+      "title": "Diagnosis status saat Closing Time sudah lewat",
+      "category": "edge",
+      "priority": "high",
+      "screen": "SCR-05",
+      "requirements": [
+        "REQ-007"
+      ],
+      "steps": [
+        "Cari penawaran FCL dengan Closing Time sebelum sekarang, masa berlaku dan Rencana Akhir Kirim belum lewat.",
+        "Baca jadwal dan status penawaran aktual."
+      ],
+      "expected": [
+        "Catat apakah Tidak Berlaku. Verdict rule ditunda bila arah pembanding belum dikonfirmasi; jangan menyimpulkan bug dari asumsi."
+      ]
+    },
+    {
+      "id": "SCN-0024",
+      "title": "Diagnosis status saat Closing Time belum lewat",
+      "category": "edge",
+      "priority": "high",
+      "screen": "SCR-05",
+      "requirements": [
+        "REQ-007"
+      ],
+      "steps": [
+        "Cari penawaran FCL dengan Closing Time setelah sekarang tanpa pemicu status lain.",
+        "Baca jadwal dan status aktual."
+      ],
+      "expected": [
+        "Catat perilaku pembanding tanggal masa depan; arah rule masih ambigu."
+      ]
+    },
+    {
+      "id": "SCN-0025",
+      "title": "Rencana Akhir Kirim lewat membuat penawaran Tidak Berlaku",
+      "category": "edge",
+      "priority": "high",
+      "screen": "SCR-02",
+      "requirements": [
+        "REQ-008"
+      ],
+      "steps": [
+        "Cari penawaran non-Kadaluwarsa dengan Rencana Akhir Kirim sebelum sekarang.",
+        "Catat masa berlaku dan Closing Time agar pemicu lain terlihat.",
+        "Baca status penawaran."
+      ],
+      "expected": [
+        "Penawaran Tidak Berlaku karena Rencana Akhir Kirim lewat; jika pemicu tidak dapat diisolasi catat keterbatasan."
+      ]
+    },
+    {
+      "id": "SCN-0026",
+      "title": "Rencana Akhir Kirim belum lewat tidak memicu Tidak Berlaku",
+      "category": "edge",
+      "priority": "high",
+      "screen": "SCR-02",
+      "requirements": [
+        "REQ-008"
+      ],
+      "steps": [
+        "Gunakan fixture dengan masa berlaku hari ini, Rencana Akhir Kirim di masa depan, dan Closing Time belum lewat bila ada.",
+        "Baca status penawaran."
+      ],
+      "expected": [
+        "Tidak ada Tidak Berlaku akibat Rencana Akhir Kirim."
+      ]
+    },
+    {
+      "id": "SCN-0027",
+      "title": "Keunikan kombinasi tidak melarang vendor lain",
+      "category": "positive",
+      "priority": "high",
+      "screen": "SCR-01",
+      "requirements": [
+        "REQ-009"
+      ],
+      "steps": [
+        "Gunakan dua akun vendor yang diundang pada lelang uji yang sama.",
+        "Vendor A dan B masing-masing input kombinasi sama satu kali."
+      ],
+      "expected": [
+        "Masing-masing vendor dapat memiliki satu penawaran kombinasi tersebut; data terisolasi."
+      ]
+    },
+    {
+      "id": "SCN-0028",
+      "title": "Duplikasi kombinasi dalam putaran ulang yang sama ditolak",
+      "category": "negative",
+      "priority": "high",
+      "screen": "SCR-01",
+      "requirements": [
+        "REQ-003"
+      ],
+      "steps": [
+        "Setelah harga putaran ulang tersimpan, input kombinasi sama sekali lagi pada putaran tersebut."
+      ],
+      "expected": [
+        "Input kedua ditolak; harga lama yang sudah Kadaluwarsa tidak menghalangi input pertama putaran baru."
+      ]
+    },
+    {
+      "id": "SCN-0029",
+      "title": "Bid FCL berulang memperbarui ID yang sama dan mempertahankan jadwal",
+      "category": "positive",
+      "priority": "high",
+      "screen": "SCR-04",
+      "requirements": [
+        "REQ-005"
+      ],
+      "steps": [
+        "Gunakan harga FCL aktif fixture dengan jadwal kapal terisi, catat ID dan seluruh atribut.",
+        "Bid turun pada kombinasi pelayaran/kontainer yang sama dua kali.",
+        "Baca ulang penawaran dan jadwal setelah tiap bid."
+      ],
+      "expected": [
+        "ID dan jumlah penawaran tetap; tidak ada Tidak Berlaku akibat bid; jadwal dan atribut selain harga tetap."
+      ]
+    },
+    {
+      "id": "SCN-0030",
+      "title": "Edit FTL naik dan turun memperbarui ID yang sama",
+      "category": "positive",
+      "priority": "high",
+      "screen": "SCR-03",
+      "requirements": [
+        "REQ-004"
+      ],
+      "steps": [
+        "Catat ID, harga dan jumlah penawaran FTL fixture aktif.",
+        "Edit harga ke lebih tinggi, Simpan lalu baca ulang.",
+        "Edit lagi ke lebih rendah, Simpan lalu baca ulang."
+      ],
+      "expected": [
+        "Kedua edit berhasil pada ID yang sama; jumlah record tidak bertambah dan tidak membuat Tidak Berlaku."
+      ]
+    }
+  ]
+}

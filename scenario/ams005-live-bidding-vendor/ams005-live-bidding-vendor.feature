@@ -299,18 +299,13 @@ Feature: Live Bidding Spot Rate dari POV vendor
     Then sistem menampilkan "Harga penawaran sama dengan harga sebelumnya" pada "Dialog Tidak Dapat Bid Harga"
 
   @positive @priority-high @REQ-017 @screen-live-bidding-spot-rate
-  Scenario: [AMS005-LIVE-BIDDING-VENDOR-POS-017] Konfirmasi Ya menyimpan bid dan memperbarui card
-    Given Vendor terautentikasi dan memiliki akses ke menu Lelang Spot Rate
-    And Vendor diundang ke lelang Spot Rate yang berstatus Sedang Buka
-    And Vendor memiliki harga dan jadwal aktif untuk Pelayaran ASDP pada kontainer 20 Feet Dry
-    When user membuka "Live Bidding Spot Rate"
-    And user memilih "ASDP" pada "Pelayaran"
-    And user mengisi field "Harga Baru" dengan "15900000"
-    And user mengklik "Bid Harga"
-    And user mengklik "Ya"
-    Then sistem menampilkan "Harga penawaran berhasil disimpan" pada "Toast sukses"
-    And sistem menampilkan "Rp 0" pada "Harga Baru"
-    And sistem menampilkan "Rp 15.900.000" pada "Top 3"
+  Scenario: [AMS005-LIVE-BIDDING-VENDOR-POS-017] Konfirmasi Ya memperbarui bid pada penawaran yang sama
+    Given Catat ID, jumlah record, harga dan atribut penawaran aktif fixture.
+    When Bid lebih rendah pada kombinasi yang sama lalu konfirmasi Ya.
+    And Baca ulang penawaran dan Live Bidding.
+    Then Harga diperbarui pada ID yang sama dengan atribut lain tetap
+    And Jumlah penawaran tidak bertambah dan bid tidak membuat harga lama Tidak Berlaku
+    And Form reset dan Top 3 diperbarui
 
   @negative @priority-high @REQ-017 @screen-live-bidding-spot-rate
   Scenario: [AMS005-LIVE-BIDDING-VENDOR-NEG-017] Konfirmasi Batal tidak menyimpan bid

@@ -1,0 +1,1032 @@
+{
+  "module": "ams004-input-harga-penawaran-vendor",
+  "sourceFile": "ams004-input-harga-penawaran-vendor.scenarios.json",
+  "screenMap": {
+    "Daftar Lelang": "SCR-01",
+    "Detail Lelang Spot Rate": "SCR-02",
+    "Input Harga Penawaran FCL": "SCR-03",
+    "Input Harga Penawaran FTL": "SCR-04",
+    "Edit Harga Penawaran": "SCR-05",
+    "Daftar Penawaran": "SCR-06",
+    "Live Bidding Spot Rate": "SCR-07"
+  },
+  "scenarios": [
+    {
+      "id": "SCN-0001",
+      "sourceId": "AMS004-POS-001",
+      "title": "Vendor hanya melihat lelang undangan dan harga miliknya",
+      "category": "positive",
+      "priority": "high",
+      "screen": "SCR-01",
+      "requirements": [
+        "REQ-001"
+      ],
+      "steps": [
+        "navigate — Daftar Lelang",
+        "expect — Daftar Lelang — FCL-NRM-01/200526",
+        "click — Detail — FCL-NRM-01/200526",
+        "expect — Harga Penawaran — harga milik Vendor A"
+      ],
+      "expected": [
+        "Lelang undangan terlihat",
+        "Harga Vendor B dan identitas peserta lain tidak terlihat"
+      ],
+      "preconditions": [
+        "Vendor A sudah login",
+        "Vendor A diundang ke FCL-NRM-01/200526",
+        "Vendor B mempunyai penawaran pada lelang yang sama"
+      ]
+    },
+    {
+      "id": "SCN-0002",
+      "sourceId": "AMS004-NEG-001",
+      "title": "Vendor tidak dapat membuka lelang yang tidak mengundangnya melalui URL langsung",
+      "category": "negative",
+      "priority": "high",
+      "screen": "SCR-02",
+      "requirements": [
+        "REQ-001"
+      ],
+      "steps": [
+        "navigate — URL Detail FCL-PRIVATE-02",
+        "expect — Akses ditolak — Lelang tidak ditemukan atau Anda tidak memiliki akses",
+        "expect — Data vendor — tidak tampil"
+      ],
+      "expected": [
+        "Respons tidak membocorkan detail lelang atau penawaran vendor lain",
+        "Tidak ada perubahan data"
+      ],
+      "preconditions": [
+        "Vendor A sudah login",
+        "FCL-PRIVATE-02 tidak mengundang Vendor A"
+      ]
+    },
+    {
+      "id": "SCN-0003",
+      "sourceId": "AMS004-POS-002",
+      "title": "Tab, filter, legend, counter, dan pagination Daftar Lelang berfungsi",
+      "category": "positive",
+      "priority": "medium",
+      "screen": "SCR-01",
+      "requirements": [
+        "REQ-002"
+      ],
+      "steps": [
+        "navigate — Daftar Lelang",
+        "click — Filter",
+        "select — Status — Sedang Buka",
+        "click — Terapkan",
+        "expect — Card lelang — status Sedang Buka",
+        "click — Lelang Ulang",
+        "expect — Counter Lelang Ulang — sesuai jumlah data",
+        "select — Tampilkan — 20",
+        "expect — Pagination — 1 - 20 data"
+      ],
+      "expected": [
+        "Filter hanya menampilkan status terpilih",
+        "Legend dan border Perlu Input Harga, Request Jadwal, Proses Nego, Lelang Ulang konsisten",
+        "Counter dan pagination akurat"
+      ],
+      "preconditions": [
+        "Vendor memiliki lelang pada beberapa status dan kategori"
+      ]
+    },
+    {
+      "id": "SCN-0004",
+      "sourceId": "AMS004-NEG-002",
+      "title": "Tab Request Jadwal tidak memasukkan lelang FTL atau data tanpa request",
+      "category": "negative",
+      "priority": "medium",
+      "screen": "SCR-01",
+      "requirements": [
+        "REQ-002"
+      ],
+      "steps": [
+        "navigate — Daftar Lelang",
+        "click — Request Jadwal",
+        "expect — Daftar Request Jadwal — tidak memuat FTL dan FCL tanpa request"
+      ],
+      "expected": [
+        "Counter tidak menghitung data yang tidak eligible",
+        "Tidak ada card FTL pada tab Request Jadwal"
+      ],
+      "preconditions": [
+        "Vendor memiliki FTL Sedang Buka dan FCL tanpa request jadwal"
+      ]
+    },
+    {
+      "id": "SCN-0005",
+      "sourceId": "AMS004-POS-003",
+      "title": "Detail FCL menampilkan data read-only dan fitur daftar harga vendor",
+      "category": "positive",
+      "priority": "medium",
+      "screen": "SCR-02",
+      "requirements": [
+        "REQ-003"
+      ],
+      "steps": [
+        "navigate — Detail Lelang Spot Rate",
+        "click — Syarat & Ketentuan",
+        "click — Data Pengirim",
+        "click — Data Penerima",
+        "click — Filter",
+        "click — Urutkan",
+        "click — Detail Biaya",
+        "click — Info Connecting",
+        "expect — Detail Lelang Spot Rate — data lelang read-only dan harga vendor"
+      ],
+      "expected": [
+        "Seluruh section dan dokumen lelang dapat dibaca",
+        "Filter, urutkan, tab detail, dan pagination harga tersedia",
+        "Tidak ada kontrol edit pada data lelang"
+      ],
+      "preconditions": [
+        "Vendor diundang dan mempunyai penawaran FCL"
+      ]
+    },
+    {
+      "id": "SCN-0006",
+      "sourceId": "AMS004-NEG-003",
+      "title": "Manipulasi filter detail tidak dapat menampilkan harga vendor lain",
+      "category": "negative",
+      "priority": "high",
+      "screen": "SCR-02",
+      "requirements": [
+        "REQ-003"
+      ],
+      "steps": [
+        "navigate — Detail Lelang Spot Rate",
+        "click — Filter",
+        "fill — Vendor — Vendor B",
+        "click — Terapkan",
+        "expect — Harga Penawaran — tidak ada harga Vendor B"
+      ],
+      "expected": [
+        "Filter tidak menyediakan atau mengabaikan vendor lain",
+        "Data Vendor B tidak pernah dirender"
+      ],
+      "preconditions": [
+        "Vendor A dan Vendor B mempunyai harga pada lelang yang sama",
+        "Vendor A sudah login"
+      ]
+    },
+    {
+      "id": "SCN-0007",
+      "sourceId": "AMS004-POS-004",
+      "title": "Dua jalur membuka form menghasilkan konteks No. Lelang yang benar",
+      "category": "positive",
+      "priority": "high",
+      "screen": "SCR-03",
+      "requirements": [
+        "REQ-004"
+      ],
+      "steps": [
+        "navigate — Detail Lelang Spot Rate",
+        "click — Input Harga",
+        "expect — No. Lelang — FCL-NRM-01/200526; disabled",
+        "navigate — Daftar Penawaran",
+        "click — Input Harga",
+        "expect — No. Lelang — kosong; enabled"
+      ],
+      "expected": [
+        "Dari detail, No. Lelang otomatis terisi dan terkunci",
+        "Dari Daftar Penawaran, vendor dapat memilih No. Lelang",
+        "Breadcrumb mengikuti halaman asal"
+      ],
+      "preconditions": [
+        "Lelang FCL sedang buka dan mengundang vendor"
+      ]
+    },
+    {
+      "id": "SCN-0008",
+      "sourceId": "AMS004-NEG-004",
+      "title": "Input Harga pada lelang di luar Sedang Buka ditolak",
+      "category": "negative",
+      "priority": "high",
+      "screen": "SCR-01",
+      "requirements": [
+        "REQ-004"
+      ],
+      "steps": [
+        "navigate — Daftar Lelang",
+        "click — Aksi FCL-NRM-CLOSED",
+        "click — Input Harga Penawaran",
+        "expect — Alert — Harga penawaran sudah melewati tanggal tutup lelang",
+        "click — Mengerti"
+      ],
+      "expected": [
+        "Form input tidak terbuka",
+        "Data tidak berubah"
+      ],
+      "preconditions": [
+        "Lelang FCL berstatus Tutup"
+      ]
+    },
+    {
+      "id": "SCN-0009",
+      "sourceId": "AMS004-POS-005",
+      "title": "Pemilihan lelang menampilkan informasi FCL dan detail multipoint",
+      "category": "positive",
+      "priority": "medium",
+      "screen": "SCR-03",
+      "requirements": [
+        "REQ-005"
+      ],
+      "steps": [
+        "navigate — Input Harga Penawaran FCL",
+        "select — No. Lelang — FCL-MULTI-01",
+        "expect — Informasi Umum — FCL, jumlah kontainer, jenis, asuransi, biaya, POL dan POD",
+        "click — Multipickup",
+        "expect — Detail Multipickup — Muat 1 dan Muat 2 beserta kota, drop point, alamat",
+        "click — Tutup",
+        "click — Multidrop",
+        "expect — Detail Multidrop — daftar Bongkar"
+      ],
+      "expected": [
+        "Informasi lelang muncul read-only",
+        "Dialog multipoint memuat seluruh titik yang benar"
+      ],
+      "preconditions": [
+        "Vendor membuka form dari Daftar Penawaran",
+        "Lelang FCL multipickup dan multidrop sedang buka"
+      ]
+    },
+    {
+      "id": "SCN-0010",
+      "sourceId": "AMS004-NEG-005",
+      "title": "Dropdown No. Lelang mengecualikan lelang tidak eligible",
+      "category": "negative",
+      "priority": "high",
+      "screen": "SCR-03",
+      "requirements": [
+        "REQ-005"
+      ],
+      "steps": [
+        "navigate — Input Harga Penawaran FCL",
+        "click — No. Lelang",
+        "expect — Pilihan No. Lelang — hanya lelang Sedang Buka yang mengundang vendor"
+      ],
+      "expected": [
+        "Lelang Belum Buka, Tutup, Dibatalkan, dan tanpa undangan tidak tersedia",
+        "Tidak ada informasi lelang yang bocor"
+      ],
+      "preconditions": [
+        "Vendor membuka form dari Daftar Penawaran",
+        "Tersedia lelang Belum Buka, Tutup, Dibatalkan, dan lelang tanpa undangan"
+      ]
+    },
+    {
+      "id": "SCN-0011",
+      "sourceId": "AMS004-POS-006",
+      "title": "Vendor mengisi satu baris harga FCL valid",
+      "category": "positive",
+      "priority": "high",
+      "screen": "SCR-03",
+      "requirements": [
+        "REQ-006"
+      ],
+      "steps": [
+        "navigate — Input Harga Penawaran FCL",
+        "select — No. Lelang — FCL-NRM-01/200526",
+        "select — Pelayaran — ASDP",
+        "select — Jenis Kontainer — 20 Feet Dry",
+        "fill — Harga — 12000000",
+        "expect — Harga — Rp 12.000.000",
+        "expect — PPN dan PPh — default master dan disabled",
+        "fill — Mulai Berlaku — 24/09/2026",
+        "fill — Deskripsi Harga — Termasuk biaya operasional"
+      ],
+      "expected": [
+        "Seluruh field menerima data sesuai tipe",
+        "Banner harga sebelum PPN/PPh tampil",
+        "Deskripsi dapat dikosongkan atau diisi"
+      ],
+      "preconditions": [
+        "Lelang FCL dengan dua jenis kontainer sedang buka",
+        "Master pelayaran ASDP aktif"
+      ]
+    },
+    {
+      "id": "SCN-0012",
+      "sourceId": "AMS004-NEG-006",
+      "title": "Baris FCL kosong, harga nol, dan tanggal lampau ditolak",
+      "category": "negative",
+      "priority": "high",
+      "screen": "SCR-03",
+      "requirements": [
+        "REQ-006"
+      ],
+      "steps": [
+        "navigate — Input Harga Penawaran FCL",
+        "select — No. Lelang — FCL-NRM-01/200526",
+        "fill — Harga — 0",
+        "fill — Mulai Berlaku — 22/09/2026",
+        "click — Simpan",
+        "expect — Validasi form — Pelayaran wajib; Jenis Kontainer wajib; Harga harus lebih dari 0; tanggal tidak boleh lampau"
+      ],
+      "expected": [
+        "Border/helper error tampil",
+        "Fokus atau scroll menuju field invalid pertama",
+        "Dialog konfirmasi tidak tampil dan data tidak tersimpan"
+      ],
+      "preconditions": [
+        "Lelang FCL sedang buka"
+      ]
+    },
+    {
+      "id": "SCN-0013",
+      "sourceId": "AMS004-POS-007",
+      "title": "Vendor mengisi satu baris harga FTL valid",
+      "category": "positive",
+      "priority": "high",
+      "screen": "SCR-04",
+      "requirements": [
+        "REQ-007"
+      ],
+      "steps": [
+        "navigate — Input Harga Penawaran FTL",
+        "select — No. Lelang — FTL-NRM-01/200526",
+        "expect — Jenis Kendaraan — Tronton Box; disabled",
+        "fill — Harga — 12000000",
+        "fill — Mulai Berlaku — 24/09/2026",
+        "fill — Estimasi Pengiriman — 4",
+        "fill — Deskripsi Harga — Muatan reguler"
+      ],
+      "expected": [
+        "Jenis tunggal terisi otomatis dan terkunci",
+        "Harga berformat Rupiah",
+        "Estimasi tampil dengan satuan Jam"
+      ],
+      "preconditions": [
+        "Lelang FTL dengan satu jenis kendaraan sedang buka"
+      ]
+    },
+    {
+      "id": "SCN-0014",
+      "sourceId": "AMS004-NEG-007",
+      "title": "Estimasi nol dan harga nonnumeric pada FTL ditolak",
+      "category": "negative",
+      "priority": "high",
+      "screen": "SCR-04",
+      "requirements": [
+        "REQ-007"
+      ],
+      "steps": [
+        "navigate — Input Harga Penawaran FTL",
+        "select — No. Lelang — FTL-NRM-01/200526",
+        "fill — Harga — dua belas juta",
+        "fill — Estimasi Pengiriman — 0",
+        "click — Simpan",
+        "expect — Validasi form — Harga wajib numeric dan Estimasi Pengiriman minimal 1 jam"
+      ],
+      "expected": [
+        "Data tidak tersimpan",
+        "Helper error muncul pada kedua field"
+      ],
+      "preconditions": [
+        "Lelang FTL sedang buka"
+      ]
+    },
+    {
+      "id": "SCN-0015",
+      "sourceId": "AMS004-POS-008",
+      "title": "Dua baris kombinasi berbeda tersimpan terpisah",
+      "category": "positive",
+      "priority": "high",
+      "screen": "SCR-03",
+      "requirements": [
+        "REQ-008"
+      ],
+      "steps": [
+        "navigate — Harga Penawaran — Gunakan lelang FCL uji dengan kombinasi pelayaran/kontainer berbeda atau FTL dengan jenis armada berbeda.",
+        "click — Harga Penawaran — Isi dua baris yang masing-masing memiliki kombinasi unik, harga dan tanggal valid.",
+        "expect — Harga Penawaran — Simpan dan konfirmasi Ya."
+      ],
+      "expected": [
+        "Kombinasi berbeda diizinkan",
+        "Kedua baris disimpan sebagai record terpisah",
+        "Ikon hapus terlihat pada kedua baris selama form berisi lebih dari satu baris"
+      ],
+      "preconditions": [
+        "Lelang FCL sedang buka"
+      ]
+    },
+    {
+      "id": "SCN-0016",
+      "sourceId": "AMS004-NEG-008",
+      "title": "Satu baris invalid menggagalkan penyimpanan seluruh batch",
+      "category": "negative",
+      "priority": "high",
+      "screen": "SCR-03",
+      "requirements": [
+        "REQ-008"
+      ],
+      "steps": [
+        "navigate — Input Harga Penawaran FCL",
+        "click — Simpan",
+        "expect — Validasi baris 2 — field wajib",
+        "expect — Daftar Penawaran — tidak ada record baru dari baris 1 maupun baris 2"
+      ],
+      "expected": [
+        "Penyimpanan bersifat atomik",
+        "Scroll menuju field invalid pertama di baris 2"
+      ],
+      "preconditions": [
+        "Form berisi dua baris; baris pertama valid dan baris kedua kosong"
+      ]
+    },
+    {
+      "id": "SCN-0017",
+      "sourceId": "AMS004-POS-009",
+      "title": "Simpan FTL menghitung pajak, memperbarui status, dan Live Bidding",
+      "category": "positive",
+      "priority": "high",
+      "screen": "SCR-04",
+      "requirements": [
+        "REQ-009"
+      ],
+      "steps": [
+        "navigate — Input Harga Penawaran FTL",
+        "fill — Harga — 12000000",
+        "fill — Mulai Berlaku — 24/09/2026",
+        "fill — Estimasi Pengiriman — 4",
+        "click — Simpan",
+        "expect — Dialog konfirmasi — Apakah Harga Telah Sesuai?",
+        "click — Ya",
+        "expect — Toast — Harga penawaran berhasil disimpan",
+        "expect — Daftar Penawaran — total termasuk PPN dan PPh serta status Input Penawaran",
+        "navigate — Live Bidding Spot Rate",
+        "expect — Peringkat vendor — harga termurah per jenis kendaraan"
+      ],
+      "expected": [
+        "Harga DPP tersimpan dan total pajak dihitung",
+        "Vendor diarahkan ke Daftar Penawaran",
+        "Status dan urutan Live Bidding diperbarui"
+      ],
+      "preconditions": [
+        "Lelang FTL sedang buka",
+        "PPN master 1,1% dan PPh master 2%"
+      ]
+    },
+    {
+      "id": "SCN-0018",
+      "sourceId": "AMS004-NEG-009",
+      "title": "Lelang yang tutup saat konfirmasi tidak menyimpan harga",
+      "category": "negative",
+      "priority": "high",
+      "screen": "SCR-03",
+      "requirements": [
+        "REQ-009"
+      ],
+      "steps": [
+        "navigate — Input Harga Penawaran FCL",
+        "click — Simpan",
+        "expect — Dialog konfirmasi — Apakah Harga Telah Sesuai?",
+        "click — Ya",
+        "expect — Alert — Harga penawaran sudah melewati tanggal tutup lelang"
+      ],
+      "expected": [
+        "Tidak ada record harga baru",
+        "Status vendor dan Live Bidding tidak berubah"
+      ],
+      "preconditions": [
+        "Form valid dibuka sebelum Tgl Tutup",
+        "Jam sistem melewati Tgl Tutup saat dialog konfirmasi masih terbuka"
+      ]
+    },
+    {
+      "id": "SCN-0019",
+      "sourceId": "AMS004-POS-010",
+      "title": "Input pada lelang ulang mengkadaluwarsakan harga lama",
+      "category": "positive",
+      "priority": "high",
+      "screen": "SCR-03",
+      "requirements": [
+        "REQ-010"
+      ],
+      "steps": [
+        "navigate — Input Harga Penawaran FCL",
+        "expect — Harga sebelumnya — read-only",
+        "fill — Harga — 12500000",
+        "fill — Mulai Berlaku — 30/09/2026",
+        "click — Simpan",
+        "click — Ya",
+        "expect — Daftar Penawaran — harga baru aktif dan harga lama berbadge Kadaluwarsa"
+      ],
+      "expected": [
+        "Harga lama tetap tersedia sebagai riwayat read-only",
+        "Harga baru aktif",
+        "Tidak ada opsi gunakan harga sebelumnya"
+      ],
+      "preconditions": [
+        "Lelang ulang sedang buka",
+        "Vendor mempunyai harga dari putaran sebelumnya"
+      ]
+    },
+    {
+      "id": "SCN-0020",
+      "sourceId": "AMS004-NEG-010",
+      "title": "Harga lama lelang ulang tidak dapat diedit atau dipakai ulang",
+      "category": "negative",
+      "priority": "medium",
+      "screen": "SCR-03",
+      "requirements": [
+        "REQ-010"
+      ],
+      "steps": [
+        "navigate — Input Harga Penawaran FCL",
+        "click — Harga sebelumnya",
+        "expect — Kontrol harga lama — tidak dapat diubah dan tidak ada tombol Gunakan Harga Sebelumnya"
+      ],
+      "expected": [
+        "Tidak ada mutasi pada harga lama",
+        "Vendor harus mengisi baris harga baru"
+      ],
+      "preconditions": [
+        "Lelang ulang sedang buka",
+        "Harga putaran lama tampil read-only"
+      ]
+    },
+    {
+      "id": "SCN-0021",
+      "sourceId": "AMS004-POS-011",
+      "title": "Konfirmasi Batal mengembalikan vendor tanpa menyimpan",
+      "category": "positive",
+      "priority": "medium",
+      "screen": "SCR-03",
+      "requirements": [
+        "REQ-011"
+      ],
+      "steps": [
+        "navigate — Input Harga Penawaran FCL",
+        "fill — Harga — 12000000",
+        "click — Batal",
+        "expect — Dialog konfirmasi batal — Batalkan input harga?",
+        "click — Ya",
+        "expect — Detail Lelang Spot Rate — halaman asal"
+      ],
+      "expected": [
+        "Tidak ada harga baru",
+        "Vendor kembali ke halaman asal"
+      ],
+      "preconditions": [
+        "Vendor membuka form dari Detail Lelang dan telah mengisi harga"
+      ]
+    },
+    {
+      "id": "SCN-0022",
+      "sourceId": "AMS004-NEG-011",
+      "title": "Menolak konfirmasi Batal mempertahankan data form",
+      "category": "negative",
+      "priority": "medium",
+      "screen": "SCR-03",
+      "requirements": [
+        "REQ-011"
+      ],
+      "steps": [
+        "navigate — Input Harga Penawaran FCL",
+        "click — Batal",
+        "expect — Dialog konfirmasi batal — Batalkan input harga?",
+        "click — Tidak",
+        "expect — Harga — Rp 12.000.000",
+        "expect — Input Harga Penawaran — form tetap terbuka"
+      ],
+      "expected": [
+        "Tidak ada data tersimpan atau hilang",
+        "Semua input pengguna tetap utuh"
+      ],
+      "preconditions": [
+        "Vendor telah mengisi seluruh field valid"
+      ]
+    },
+    {
+      "id": "SCN-0023",
+      "sourceId": "AMS004-POS-012",
+      "title": "Edit harga saat lelang buka memperbarui data yang sama dan riwayat",
+      "category": "positive",
+      "priority": "high",
+      "screen": "SCR-05",
+      "requirements": [
+        "REQ-012"
+      ],
+      "steps": [
+        "navigate — Harga Penawaran — Catat ID dan jumlah penawaran aktif pada lelang buatan run.",
+        "click — Harga Penawaran — Buka Edit Harga dan ubah harga ke lebih tinggi atau rendah selama valid.",
+        "expect — Harga Penawaran — Simpan dan konfirmasi Ya, lalu baca ulang data serta riwayat."
+      ],
+      "expected": [
+        "Perubahan tersimpan pada ID yang sama tanpa menambah baris",
+        "Edit tidak membuat harga lama Tidak Berlaku; perubahan tetap tercatat",
+        "Form edit tidak dapat menambah baris"
+      ],
+      "preconditions": [
+        "Penawaran FCL aktif pada lelang Sedang Buka"
+      ]
+    },
+    {
+      "id": "SCN-0024",
+      "sourceId": "AMS004-NEG-012",
+      "title": "Edit Harga setelah lelang tutup menampilkan alert",
+      "category": "negative",
+      "priority": "high",
+      "screen": "SCR-06",
+      "requirements": [
+        "REQ-012"
+      ],
+      "steps": [
+        "navigate — Daftar Penawaran",
+        "click — Aksi penawaran",
+        "click — Edit Harga",
+        "expect — Tidak Dapat Mengedit Data — Harga penawaran sudah melewati tanggal tutup lelang",
+        "click — Mengerti"
+      ],
+      "expected": [
+        "Halaman edit tidak terbuka",
+        "Harga dan riwayat tidak berubah"
+      ],
+      "preconditions": [
+        "Penawaran berada pada lelang Tutup"
+      ]
+    },
+    {
+      "id": "SCN-0025",
+      "sourceId": "AMS004-POS-013",
+      "title": "Hapus harga FCL terakhir menghapus jadwal dan mengembalikan status",
+      "category": "positive",
+      "priority": "high",
+      "screen": "SCR-06",
+      "requirements": [
+        "REQ-013"
+      ],
+      "steps": [
+        "navigate — Daftar Penawaran",
+        "click — Aksi penawaran",
+        "click — Hapus Harga",
+        "expect — Dialog konfirmasi hapus — Hapus harga penawaran?",
+        "click — Ya",
+        "expect — Daftar Penawaran — harga terpilih tidak tampil",
+        "click — Riwayat Perubahan",
+        "expect — Riwayat Perubahan — soft delete",
+        "expect — Status vendor — Belum Input"
+      ],
+      "expected": [
+        "Hanya harga terpilih dan jadwal terkait yang terhapus",
+        "Record audit tetap ada",
+        "Status kembali Belum Input"
+      ],
+      "preconditions": [
+        "Vendor mempunyai satu harga FCL dengan jadwal pada lelang Sedang Buka"
+      ]
+    },
+    {
+      "id": "SCN-0026",
+      "sourceId": "AMS004-NEG-013",
+      "title": "Hapus Harga setelah lelang tutup ditolak",
+      "category": "negative",
+      "priority": "high",
+      "screen": "SCR-06",
+      "requirements": [
+        "REQ-013"
+      ],
+      "steps": [
+        "navigate — Daftar Penawaran",
+        "click — Aksi penawaran",
+        "click — Hapus Harga",
+        "expect — Alert — Harga penawaran sudah melewati tanggal tutup lelang"
+      ],
+      "expected": [
+        "Tidak ada soft delete",
+        "Jadwal terkait dan status vendor tetap"
+      ],
+      "preconditions": [
+        "Penawaran berada pada lelang Tutup"
+      ]
+    },
+    {
+      "id": "SCN-0027",
+      "sourceId": "AMS004-POS-014",
+      "title": "Daftar Penawaran memfilter, mengurutkan, dan menampilkan detail/action sesuai kondisi",
+      "category": "positive",
+      "priority": "medium",
+      "screen": "SCR-06",
+      "requirements": [
+        "REQ-014"
+      ],
+      "steps": [
+        "navigate — Daftar Penawaran",
+        "click — Filter",
+        "select — Jenis Pengiriman — FCL",
+        "click — Terapkan",
+        "expect — Card penawaran — hanya FCL; terbaru lebih dulu",
+        "click — Belum Input Jadwal",
+        "click — Detail Harga",
+        "click — Info Connecting",
+        "click — Penawaran Lengkap",
+        "click — Request Jadwal",
+        "click — Kadaluwarsa",
+        "click — Aksi penawaran",
+        "expect — Menu aksi — Tambah Jadwal, Lihat Jadwal, Respon Request Jadwal, Riwayat Perubahan"
+      ],
+      "expected": [
+        "Satu card mewakili satu harga",
+        "Tab dan badge memuat subset yang benar",
+        "Detail total termasuk pajak, alamat, biaya, deskripsi, tanggal, dan connecting tampil",
+        "Action sesuai kondisi tersedia"
+      ],
+      "preconditions": [
+        "Vendor mempunyai harga FCL/FTL lengkap, tanpa jadwal, request jadwal, dan kadaluwarsa"
+      ]
+    },
+    {
+      "id": "SCN-0028",
+      "sourceId": "AMS004-NEG-014",
+      "title": "Action jadwal di luar kondisi yang diizinkan tetap terlihat tetapi ditolak",
+      "category": "negative",
+      "priority": "medium",
+      "screen": "SCR-06",
+      "requirements": [
+        "REQ-014"
+      ],
+      "steps": [
+        "navigate — Daftar Penawaran",
+        "click — Aksi penawaran",
+        "click — Tambah Jadwal",
+        "expect — Alert — Aksi jadwal tidak dapat dilakukan",
+        "click — Mengerti"
+      ],
+      "expected": [
+        "Handoff ke modul Jadwal Kapal tidak terjadi",
+        "Penawaran tidak berubah"
+      ],
+      "preconditions": [
+        "Harga FCL melewati Rencana Akhir Kirim"
+      ]
+    },
+    {
+      "id": "SCN-0029",
+      "sourceId": "AMS004-EDG-001",
+      "title": "Batas minimum harga satu Rupiah dan tanggal hari ini diterima",
+      "category": "edge",
+      "priority": "high",
+      "screen": "SCR-03",
+      "requirements": [
+        "REQ-006"
+      ],
+      "steps": [
+        "navigate — Input Harga Penawaran FCL",
+        "fill — Harga — 1",
+        "fill — Mulai Berlaku — 23/09/2026",
+        "click — Simpan",
+        "click — Ya",
+        "expect — Daftar Penawaran — Rp 1 dan penawaran aktif"
+      ],
+      "expected": [
+        "Nilai lebih besar dari nol diterima",
+        "Tanggal hari ini diterima dan masih aktif"
+      ],
+      "preconditions": [
+        "Lelang FCL sedang buka pada 23/09/2026"
+      ]
+    },
+    {
+      "id": "SCN-0030",
+      "sourceId": "AMS004-EDG-002",
+      "title": "Batas minimum estimasi satu jam diterima dan angka besar diformat",
+      "category": "edge",
+      "priority": "medium",
+      "screen": "SCR-04",
+      "requirements": [
+        "REQ-007"
+      ],
+      "steps": [
+        "navigate — Input Harga Penawaran FTL",
+        "fill — Harga — 999999999999",
+        "fill — Estimasi Pengiriman — 1",
+        "fill — Mulai Berlaku — 23/09/2026",
+        "expect — Harga — Rp 999.999.999.999",
+        "click — Simpan",
+        "click — Ya",
+        "expect — Daftar Penawaran — estimasi 1 jam"
+      ],
+      "expected": [
+        "Estimasi minimum diterima",
+        "Harga besar tidak kehilangan digit dan format ribuan benar"
+      ],
+      "preconditions": [
+        "Lelang FTL sedang buka"
+      ]
+    },
+    {
+      "id": "SCN-0031",
+      "sourceId": "AMS004-EDG-003",
+      "title": "Ikon hapus mengikuti transisi jumlah baris satu dan dua",
+      "category": "edge",
+      "priority": "medium",
+      "screen": "SCR-04",
+      "requirements": [
+        "REQ-008"
+      ],
+      "steps": [
+        "navigate — Input Harga Penawaran FTL",
+        "expect — Hapus baris 1 — tidak tampil",
+        "click — Tambah Baris Input",
+        "expect — Hapus baris 1 dan 2 — tampil",
+        "click — Hapus baris 2",
+        "expect — Hapus baris 1 — tidak tampil"
+      ],
+      "expected": [
+        "Form tidak pernah memiliki nol baris",
+        "Aturan visibilitas ikon konsisten"
+      ],
+      "preconditions": [
+        "Form Input Harga FTL baru terbuka dengan satu baris"
+      ]
+    },
+    {
+      "id": "SCN-0032",
+      "sourceId": "AMS004-EDG-004",
+      "title": "Live Bidding memakai harga termurah vendor untuk tiap jenis",
+      "category": "edge",
+      "priority": "high",
+      "screen": "SCR-07",
+      "requirements": [
+        "REQ-009"
+      ],
+      "steps": [
+        "navigate — Live Bidding Spot Rate",
+        "click — Filter",
+        "fill — No. Lelang — FTL-NRM-01/200526",
+        "click — Terapkan",
+        "expect — Peringkat vendor — hanya Rp 12.000.000 mewakili Vendor A untuk Tronton Box"
+      ],
+      "expected": [
+        "Penawaran vendor tidak dihitung lebih dari sekali per jenis",
+        "Harga jenis kendaraan lain dihitung secara terpisah"
+      ],
+      "preconditions": [
+        "Vendor mempunyai tiga penawaran Tronton Box: 13 juta, 12 juta, 14 juta",
+        "Semua penawaran aktif"
+      ]
+    },
+    {
+      "id": "SCN-0033",
+      "sourceId": "AMS004-EDG-005",
+      "title": "Masa berlaku aktif secara inklusif lalu Tidak Berlaku hari berikutnya",
+      "category": "edge",
+      "priority": "high",
+      "screen": "SCR-06",
+      "requirements": [
+        "REQ-010"
+      ],
+      "steps": [
+        "navigate — Harga Penawaran — Gunakan penawaran dengan tanggal akhir masa berlaku terverifikasi hari ini dan pemicu status lain belum berlaku.",
+        "click — Harga Penawaran — Baca status sepanjang hari tersebut.",
+        "expect — Harga Penawaran — Baca ulang setelah tanggal bisnis aktual berganti hari."
+      ],
+      "expected": [
+        "Penawaran tetap aktif sepanjang tanggal yang tercantum",
+        "Pada hari berikutnya menjadi Tidak Berlaku, bukan Kadaluwarsa karena tanggal"
+      ],
+      "preconditions": [
+        "Penawaran bertanggal berlaku 23/09/2026"
+      ]
+    },
+    {
+      "id": "SCN-0034",
+      "sourceId": "AMS004-EDG-006",
+      "title": "Data ke-21 muncul di halaman kedua dan urutan terbaru konsisten",
+      "category": "edge",
+      "priority": "medium",
+      "screen": "SCR-06",
+      "requirements": [
+        "REQ-014"
+      ],
+      "steps": [
+        "navigate — Daftar Penawaran",
+        "select — Tampilkan — 20",
+        "expect — Halaman 1 — 20 card dengan tanggal terbaru lebih dulu",
+        "click — Halaman 2",
+        "expect — Halaman 2 — 1 card tertua",
+        "click — Reset",
+        "expect — Filter — kembali default"
+      ],
+      "expected": [
+        "Tidak ada card hilang atau duplikat antarhalaman",
+        "Informasi rentang dan total data akurat"
+      ],
+      "preconditions": [
+        "Vendor mempunyai 21 penawaran dengan tanggal buat berbeda"
+      ]
+    },
+    {
+      "id": "SCN-0035",
+      "sourceId": "AMS004-STR-001",
+      "title": "Lima puluh baris harga tersimpan atomik dalam satu submit",
+      "category": "stress",
+      "priority": "medium",
+      "screen": "SCR-03",
+      "requirements": [
+        "REQ-008"
+      ],
+      "steps": [
+        "navigate — Input Harga Penawaran FCL",
+        "click — Tambah Baris Input — hingga 50 baris",
+        "click — Simpan",
+        "click — Ya",
+        "expect — Daftar Penawaran — 50 card baru tanpa duplikat atau baris hilang"
+      ],
+      "expected": [
+        "UI tetap dapat dioperasikan",
+        "Seluruh baris tersimpan sebagai record terpisah atau seluruhnya gagal tanpa partial write",
+        "Summary/status tetap konsisten"
+      ],
+      "preconditions": [
+        "Lelang FCL sedang buka",
+        "50 baris valid dengan kombinasi dan tanggal bervariasi telah disiapkan"
+      ]
+    },
+    {
+      "id": "SCN-0036",
+      "sourceId": "AMS004-STR-002",
+      "title": "Dua puluh vendor menyimpan serentak tanpa kebocoran atau urutan salah",
+      "category": "stress",
+      "priority": "high",
+      "screen": "SCR-07",
+      "requirements": [
+        "REQ-009"
+      ],
+      "steps": [
+        "navigate — Input Harga Penawaran pada 20 sesi paralel",
+        "click — Simpan pada semua sesi",
+        "click — Ya pada semua sesi",
+        "expect — Live Bidding Spot Rate — 20 penawaran terproses dan urutan termurah benar",
+        "expect — Sesi vendor — masing-masing hanya melihat harga sendiri"
+      ],
+      "expected": [
+        "Tidak ada submission hilang",
+        "Peringkat deterministik berdasarkan harga",
+        "Isolasi tenant/vendor terjaga"
+      ],
+      "preconditions": [
+        "20 vendor diundang ke lelang yang sama",
+        "Setiap vendor memiliki satu harga valid berbeda"
+      ]
+    },
+    {
+      "id": "SCN-0037",
+      "sourceId": "AMS004-STR-003",
+      "title": "Sepuluh ribu penawaran tetap dapat difilter dan dipaginasi konsisten",
+      "category": "stress",
+      "priority": "medium",
+      "screen": "SCR-06",
+      "requirements": [
+        "REQ-014"
+      ],
+      "steps": [
+        "navigate — Daftar Penawaran",
+        "click — Filter",
+        "select — Jenis Pengiriman — FCL",
+        "select — Status Lelang — Sedang Buka",
+        "click — Terapkan",
+        "select — Tampilkan — 20",
+        "click — Halaman terakhir",
+        "expect — Pagination — total, rentang, dan data tanpa duplikat",
+        "click — Kadaluwarsa",
+        "expect — Daftar Penawaran — hanya data kadaluwarsa"
+      ],
+      "expected": [
+        "Tidak terjadi crash atau timeout aplikasi",
+        "Filter, tab, sort terbaru, dan pagination konsisten di seluruh dataset"
+      ],
+      "preconditions": [
+        "Vendor mempunyai 10.000 card penawaran lintas FCL/FTL dan status"
+      ]
+    },
+    {
+      "id": "SCN-0038",
+      "sourceId": "AMS004-STR-004",
+      "title": "Pencarian master pelayaran besar tidak menggandakan atau kehilangan opsi",
+      "category": "stress",
+      "priority": "low",
+      "screen": "SCR-03",
+      "requirements": [
+        "REQ-006"
+      ],
+      "steps": [
+        "navigate — Input Harga Penawaran FCL",
+        "click — Pelayaran",
+        "fill — Cari Pelayaran — ASDP",
+        "expect — Hasil Pelayaran — semua kecocokan aktif unik dan tanpa master nonaktif",
+        "select — Pelayaran — ASDP"
+      ],
+      "expected": [
+        "Dropdown dapat dicari dan tetap responsif",
+        "Tidak ada opsi duplikat atau nonaktif",
+        "Pilihan terikat ke baris yang benar"
+      ],
+      "preconditions": [
+        "Master berisi 1.000 pelayaran aktif dan 200 pelayaran nonaktif"
+      ]
+    }
+  ]
+}

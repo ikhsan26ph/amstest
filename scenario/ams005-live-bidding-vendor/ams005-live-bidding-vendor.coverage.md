@@ -63,3 +63,7 @@ Tidak ada gap requirement atau elemen UI penting berdasarkan `analysis.md`. Asum
 
 Tidak ditemukan judul atau tujuan scenario yang duplikat. Beberapa requirement memiliki tambahan edge/stress, tetapi masing-masing menguji dimensi berbeda dari pasangan positive/negative; tidak ada scenario yang dibuang.
 
+
+## Revisi 2026-10-05
+
+Rule duplikasi, Edit/Bid dan masa berlaku diperbarui sesuai user. Kasus batas dan regresi rinci: `../ams009-harga-penawaran-rules/`. Hasil run lama tetap bukti historis, tidak dihitung ulang terhadap rule baru.

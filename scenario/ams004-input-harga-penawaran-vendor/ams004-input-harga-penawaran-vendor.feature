@@ -130,21 +130,13 @@ Feature: Input Harga Penawaran Vendor FTL dan FCL
     Then sistem menampilkan "Harga wajib numeric dan Estimasi Pengiriman minimal 1 jam" pada "Validasi form"
 
   @positive @priority-high @REQ-008 @screen-input-harga-penawaran-fcl
-  Scenario: [AMS004-POS-008] Dua baris dengan kombinasi sama dan tanggal berbeda tersimpan terpisah
-    Given user berada di halaman "Input Harga Penawaran FCL"
-    When user memilih "FCL-NRM-01/200526" pada field "No. Lelang"
-    And user mengklik tombol "Tambah Baris Input"
-    And user memilih "ASDP" pada field "Pelayaran baris 1"
-    And user memilih "20 Feet Dry" pada field "Jenis Kontainer baris 1"
-    And user mengisi field "Harga baris 1" dengan "12000000"
-    And user mengisi field "Mulai Berlaku baris 1" dengan "24/09/2026"
-    And user memilih "ASDP" pada field "Pelayaran baris 2"
-    And user memilih "20 Feet Dry" pada field "Jenis Kontainer baris 2"
-    And user mengisi field "Harga baris 2" dengan "12000000"
-    And user mengisi field "Mulai Berlaku baris 2" dengan "30/09/2026"
-    And user mengklik tombol "Simpan"
-    And user mengklik tombol "Ya"
-    Then sistem menampilkan "dua card harga terpisah" pada "Daftar Penawaran"
+  Scenario: [AMS004-POS-008] Dua baris kombinasi berbeda tersimpan terpisah
+    Given Gunakan lelang FCL uji dengan kombinasi pelayaran/kontainer berbeda atau FTL dengan jenis armada berbeda.
+    When Isi dua baris yang masing-masing memiliki kombinasi unik, harga dan tanggal valid.
+    And Simpan dan konfirmasi Ya.
+    Then Kombinasi berbeda diizinkan
+    And Kedua baris disimpan sebagai record terpisah
+    And Ikon hapus terlihat pada kedua baris selama form berisi lebih dari satu baris
 
   @negative @priority-high @REQ-008 @screen-input-harga-penawaran-fcl
   Scenario: [AMS004-NEG-008] Satu baris invalid menggagalkan penyimpanan seluruh batch
@@ -210,17 +202,13 @@ Feature: Input Harga Penawaran Vendor FTL dan FCL
     And sistem menampilkan "form tetap terbuka" pada "Input Harga Penawaran"
 
   @positive @priority-high @REQ-012 @screen-edit-harga-penawaran
-  Scenario: [AMS004-POS-012] Edit harga saat lelang buka membuat versi baru dan riwayat
-    Given user berada di halaman "Daftar Penawaran"
-    When user mengklik tombol "Aksi penawaran"
-    And user mengklik tombol "Edit Harga"
-    Then sistem menampilkan "satu baris tanpa Tambah Baris Input" pada "Edit Harga Penawaran"
-    When user mengisi field "Harga" dengan "13000000"
-    And user mengklik tombol "Simpan"
-    And user mengklik tombol "Ya"
-    And user mengklik tombol "Riwayat Perubahan"
-    Then sistem menampilkan "harga lama dan harga baru" pada "Riwayat Perubahan"
-    And sistem menampilkan "badge Tidak Berlaku" pada "Harga lama"
+  Scenario: [AMS004-POS-012] Edit harga saat lelang buka memperbarui data yang sama dan riwayat
+    Given Catat ID dan jumlah penawaran aktif pada lelang buatan run.
+    When Buka Edit Harga dan ubah harga ke lebih tinggi atau rendah selama valid.
+    And Simpan dan konfirmasi Ya, lalu baca ulang data serta riwayat.
+    Then Perubahan tersimpan pada ID yang sama tanpa menambah baris
+    And Edit tidak membuat harga lama Tidak Berlaku; perubahan tetap tercatat
+    And Form edit tidak dapat menambah baris
 
   @negative @priority-high @REQ-012 @screen-daftar-penawaran
   Scenario: [AMS004-NEG-012] Edit Harga setelah lelang tutup menampilkan alert
@@ -311,11 +299,12 @@ Feature: Input Harga Penawaran Vendor FTL dan FCL
     Then sistem menampilkan "hanya Rp 12.000.000 mewakili Vendor A untuk Tronton Box" pada "Peringkat vendor"
 
   @edge @priority-high @REQ-010 @screen-daftar-penawaran
-  Scenario: [AMS004-EDG-005] Tanggal berlaku aktif secara inklusif lalu expired hari berikutnya
-    Given user berada di halaman "Daftar Penawaran pada 23/09/2026"
-    Then sistem menampilkan "Aktif" pada "Penawaran"
-    When user berada di halaman "Daftar Penawaran pada 24/09/2026"
-    Then sistem menampilkan "Expired atau Kadaluwarsa" pada "Penawaran"
+  Scenario: [AMS004-EDG-005] Masa berlaku aktif secara inklusif lalu Tidak Berlaku hari berikutnya
+    Given Gunakan penawaran dengan tanggal akhir masa berlaku terverifikasi hari ini dan pemicu status lain belum berlaku.
+    When Baca status sepanjang hari tersebut.
+    And Baca ulang setelah tanggal bisnis aktual berganti hari.
+    Then Penawaran tetap aktif sepanjang tanggal yang tercantum
+    And Pada hari berikutnya menjadi Tidak Berlaku, bukan Kadaluwarsa karena tanggal
 
   @edge @priority-medium @REQ-014 @screen-daftar-penawaran
   Scenario: [AMS004-EDG-006] Data ke-21 muncul di halaman kedua dan urutan terbaru konsisten

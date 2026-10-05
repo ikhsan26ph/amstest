@@ -1095,84 +1095,29 @@
       "priority": "high",
       "requirement": "REQ-008",
       "screen": "Input Harga Penawaran FCL",
-      "title": "Dua baris dengan kombinasi sama dan tanggal berbeda tersimpan terpisah",
+      "title": "Dua baris kombinasi berbeda tersimpan terpisah",
       "preconditions": [
         "Lelang FCL sedang buka"
       ],
       "steps": [
         {
           "action": "navigate",
-          "target": "Input Harga Penawaran FCL",
-          "value": ""
-        },
-        {
-          "action": "select",
-          "target": "No. Lelang",
-          "value": "FCL-NRM-01/200526"
+          "target": "Harga Penawaran",
+          "value": "Gunakan lelang FCL uji dengan kombinasi pelayaran/kontainer berbeda atau FTL dengan jenis armada berbeda."
         },
         {
           "action": "click",
-          "target": "Tambah Baris Input",
-          "value": ""
-        },
-        {
-          "action": "select",
-          "target": "Pelayaran baris 1",
-          "value": "ASDP"
-        },
-        {
-          "action": "select",
-          "target": "Jenis Kontainer baris 1",
-          "value": "20 Feet Dry"
-        },
-        {
-          "action": "fill",
-          "target": "Harga baris 1",
-          "value": "12000000"
-        },
-        {
-          "action": "fill",
-          "target": "Mulai Berlaku baris 1",
-          "value": "24/09/2026"
-        },
-        {
-          "action": "select",
-          "target": "Pelayaran baris 2",
-          "value": "ASDP"
-        },
-        {
-          "action": "select",
-          "target": "Jenis Kontainer baris 2",
-          "value": "20 Feet Dry"
-        },
-        {
-          "action": "fill",
-          "target": "Harga baris 2",
-          "value": "12000000"
-        },
-        {
-          "action": "fill",
-          "target": "Mulai Berlaku baris 2",
-          "value": "30/09/2026"
-        },
-        {
-          "action": "click",
-          "target": "Simpan",
-          "value": ""
-        },
-        {
-          "action": "click",
-          "target": "Ya",
-          "value": ""
+          "target": "Harga Penawaran",
+          "value": "Isi dua baris yang masing-masing memiliki kombinasi unik, harga dan tanggal valid."
         },
         {
           "action": "expect",
-          "target": "Daftar Penawaran",
-          "value": "dua card harga terpisah"
+          "target": "Harga Penawaran",
+          "value": "Simpan dan konfirmasi Ya."
         }
       ],
       "expected": [
-        "Kombinasi sama diizinkan",
+        "Kombinasi berbeda diizinkan",
         "Kedua baris disimpan sebagai record terpisah",
         "Ikon hapus terlihat pada kedua baris selama form berisi lebih dari satu baris"
       ],
@@ -1182,34 +1127,8 @@
         "container": "20 Feet Dry",
         "dates": "24/09/2026,30/09/2026"
       },
-      "selectorHints": {
-        "addRow": {
-          "role": "button",
-          "name": "Tambah Baris Input",
-          "testid": "add-offer-row"
-        },
-        "remove1": {
-          "role": "button",
-          "name": "Hapus baris 1",
-          "testid": "offer-row-1-remove"
-        },
-        "remove2": {
-          "role": "button",
-          "name": "Hapus baris 2",
-          "testid": "offer-row-2-remove"
-        },
-        "save": {
-          "role": "button",
-          "name": "Simpan",
-          "testid": "save-offer"
-        },
-        "confirm": {
-          "role": "button",
-          "name": "Ya",
-          "testid": "confirm-save-offer"
-        }
-      },
-      "id": "AMS004-POS-008"
+      "id": "AMS004-POS-008",
+      "revision": "Rule user 2026-10-05; regresi rinci AMS009"
     },
     {
       "category": "negative",
@@ -1729,104 +1648,38 @@
       "priority": "high",
       "requirement": "REQ-012",
       "screen": "Edit Harga Penawaran",
-      "title": "Edit harga saat lelang buka membuat versi baru dan riwayat",
+      "title": "Edit harga saat lelang buka memperbarui data yang sama dan riwayat",
       "preconditions": [
         "Penawaran FCL aktif pada lelang Sedang Buka"
       ],
       "steps": [
         {
           "action": "navigate",
-          "target": "Daftar Penawaran",
-          "value": ""
+          "target": "Harga Penawaran",
+          "value": "Catat ID dan jumlah penawaran aktif pada lelang buatan run."
         },
         {
           "action": "click",
-          "target": "Aksi penawaran",
-          "value": ""
-        },
-        {
-          "action": "click",
-          "target": "Edit Harga",
-          "value": ""
+          "target": "Harga Penawaran",
+          "value": "Buka Edit Harga dan ubah harga ke lebih tinggi atau rendah selama valid."
         },
         {
           "action": "expect",
-          "target": "Edit Harga Penawaran",
-          "value": "satu baris tanpa Tambah Baris Input"
-        },
-        {
-          "action": "fill",
-          "target": "Harga",
-          "value": "13000000"
-        },
-        {
-          "action": "click",
-          "target": "Simpan",
-          "value": ""
-        },
-        {
-          "action": "click",
-          "target": "Ya",
-          "value": ""
-        },
-        {
-          "action": "click",
-          "target": "Riwayat Perubahan",
-          "value": ""
-        },
-        {
-          "action": "expect",
-          "target": "Riwayat Perubahan",
-          "value": "harga lama dan harga baru"
-        },
-        {
-          "action": "expect",
-          "target": "Harga lama",
-          "value": "badge Tidak Berlaku"
+          "target": "Harga Penawaran",
+          "value": "Simpan dan konfirmasi Ya, lalu baca ulang data serta riwayat."
         }
       ],
       "expected": [
-        "Perubahan tersimpan",
-        "Harga lama tidak berlaku tetapi tercatat",
+        "Perubahan tersimpan pada ID yang sama tanpa menambah baris",
+        "Edit tidak membuat harga lama Tidak Berlaku; perubahan tetap tercatat",
         "Form edit tidak dapat menambah baris"
       ],
       "testData": {
         "oldPrice": "12000000",
         "newPrice": "13000000"
       },
-      "selectorHints": {
-        "action": {
-          "role": "button",
-          "name": "Aksi penawaran",
-          "testid": "offer-action"
-        },
-        "edit": {
-          "role": "menuitem",
-          "name": "Edit Harga",
-          "testid": "offer-edit"
-        },
-        "form": {
-          "role": "form",
-          "name": "Edit Harga Penawaran",
-          "testid": "edit-offer-form"
-        },
-        "save": {
-          "role": "button",
-          "name": "Simpan",
-          "testid": "save-offer"
-        },
-        "history": {
-          "role": "menuitem",
-          "name": "Riwayat Perubahan",
-          "testid": "offer-history"
-        },
-        "invalidBadge": {
-          "role": "status",
-          "name": "Tidak Berlaku",
-          "testid": "invalid-offer-badge"
-        }
-      },
-      "id": "AMS004-POS-012"
+      "id": "AMS004-POS-012",
+      "revision": "Rule user 2026-10-05; regresi rinci AMS009"
     },
     {
       "category": "negative",
@@ -2538,58 +2391,37 @@
       "priority": "high",
       "requirement": "REQ-010",
       "screen": "Daftar Penawaran",
-      "title": "Tanggal berlaku aktif secara inklusif lalu expired hari berikutnya",
+      "title": "Masa berlaku aktif secara inklusif lalu Tidak Berlaku hari berikutnya",
       "preconditions": [
         "Penawaran bertanggal berlaku 23/09/2026"
       ],
       "steps": [
         {
           "action": "navigate",
-          "target": "Daftar Penawaran pada 23/09/2026",
-          "value": ""
+          "target": "Harga Penawaran",
+          "value": "Gunakan penawaran dengan tanggal akhir masa berlaku terverifikasi hari ini dan pemicu status lain belum berlaku."
+        },
+        {
+          "action": "click",
+          "target": "Harga Penawaran",
+          "value": "Baca status sepanjang hari tersebut."
         },
         {
           "action": "expect",
-          "target": "Penawaran",
-          "value": "Aktif"
-        },
-        {
-          "action": "navigate",
-          "target": "Daftar Penawaran pada 24/09/2026",
-          "value": ""
-        },
-        {
-          "action": "expect",
-          "target": "Penawaran",
-          "value": "Expired atau Kadaluwarsa"
+          "target": "Harga Penawaran",
+          "value": "Baca ulang setelah tanggal bisnis aktual berganti hari."
         }
       ],
       "expected": [
         "Penawaran tetap aktif sepanjang tanggal yang tercantum",
-        "Transisi terjadi setelah pergantian tanggal"
+        "Pada hari berikutnya menjadi Tidak Berlaku, bukan Kadaluwarsa karena tanggal"
       ],
       "testData": {
         "effectiveThrough": "23/09/2026",
         "nextDay": "24/09/2026"
       },
-      "selectorHints": {
-        "offer": {
-          "role": "article",
-          "name": "Penawaran",
-          "testid": "offer-card"
-        },
-        "active": {
-          "role": "status",
-          "name": "Aktif",
-          "testid": "offer-active-status"
-        },
-        "expired": {
-          "role": "status",
-          "name": "Kadaluwarsa",
-          "testid": "expired-offer-badge"
-        }
-      },
-      "id": "AMS004-EDG-005"
+      "id": "AMS004-EDG-005",
+      "revision": "Rule user 2026-10-05; regresi rinci AMS009"
     },
     {
       "category": "edge",
@@ -2978,4 +2810,3 @@
     }
   ]
 }
-

@@ -1,0 +1,1249 @@
+{
+  "module": "ams005-live-bidding-vendor",
+  "sourceFile": "ams005-live-bidding-vendor.scenarios.json",
+  "screenMap": {
+    "Live Bidding Spot Rate": "SCR-01",
+    "Tidak Dapat Bid Harga": "SCR-02",
+    "Riwayat Harga Penawaran": "SCR-03"
+  },
+  "scenarios": [
+    {
+      "id": "SCN-0001",
+      "sourceId": "AMS005-LIVE-BIDDING-VENDOR-POS-001",
+      "title": "Vendor melihat satu tampilan Live Bidding berisi lelang aktif yang mengundangnya",
+      "category": "positive",
+      "priority": "high",
+      "screen": "SCR-01",
+      "requirements": [
+        "REQ-001"
+      ],
+      "steps": [
+        "navigate — Live Bidding Spot Rate",
+        "expect — Navigasi Live Bidding — aktif tanpa tab Laporan Lelang",
+        "expect — Card lelang — lelang aktif yang mengundang vendor"
+      ],
+      "expected": [
+        "Halaman hanya memiliki tampilan Live Bidding",
+        "Card lelang terundang tampil"
+      ],
+      "preconditions": [
+        "Vendor terautentikasi dan memiliki akses ke menu Lelang Spot Rate",
+        "Vendor diundang ke lelang Spot Rate yang berstatus Sedang Buka"
+      ]
+    },
+    {
+      "id": "SCN-0002",
+      "sourceId": "AMS005-LIVE-BIDDING-VENDOR-NEG-001",
+      "title": "Lelang yang tidak mengundang vendor tidak ditampilkan",
+      "category": "negative",
+      "priority": "high",
+      "screen": "SCR-01",
+      "requirements": [
+        "REQ-001"
+      ],
+      "steps": [
+        "navigate — Live Bidding Spot Rate",
+        "expect — Card lelang tidak berhak — tidak terlihat"
+      ],
+      "expected": [
+        "Vendor tidak dapat melihat atau mengakses card lelang yang tidak mengundangnya"
+      ],
+      "preconditions": [
+        "Vendor terautentikasi dan memiliki akses ke menu Lelang Spot Rate"
+      ]
+    },
+    {
+      "id": "SCN-0003",
+      "sourceId": "AMS005-LIVE-BIDDING-VENDOR-POS-002",
+      "title": "Card muncul otomatis saat waktu buka tercapai dalam WIB",
+      "category": "positive",
+      "priority": "high",
+      "screen": "SCR-01",
+      "requirements": [
+        "REQ-002"
+      ],
+      "steps": [
+        "navigate — Live Bidding Spot Rate",
+        "expect — Card lelang terjadwal — muncul otomatis saat waktu buka WIB"
+      ],
+      "expected": [
+        "Card muncul tanpa reload ketika waktu buka tercapai"
+      ],
+      "preconditions": [
+        "Vendor terautentikasi dan memiliki akses ke menu Lelang Spot Rate"
+      ]
+    },
+    {
+      "id": "SCN-0004",
+      "sourceId": "AMS005-LIVE-BIDDING-VENDOR-NEG-002",
+      "title": "Card lelang yang dibatalkan langsung hilang",
+      "category": "negative",
+      "priority": "high",
+      "screen": "SCR-01",
+      "requirements": [
+        "REQ-002"
+      ],
+      "steps": [
+        "navigate — Live Bidding Spot Rate",
+        "expect — Card lelang dibatalkan — tidak terlihat tanpa reload"
+      ],
+      "expected": [
+        "Card yang dibatalkan hilang dan tidak dapat dibid"
+      ],
+      "preconditions": [
+        "Vendor terautentikasi dan memiliki akses ke menu Lelang Spot Rate",
+        "Vendor diundang ke lelang Spot Rate yang berstatus Sedang Buka"
+      ]
+    },
+    {
+      "id": "SCN-0005",
+      "sourceId": "AMS005-LIVE-BIDDING-VENDOR-POS-003",
+      "title": "Setiap jenis armada memiliki card sendiri dan urutan terbaru di atas",
+      "category": "positive",
+      "priority": "high",
+      "screen": "SCR-01",
+      "requirements": [
+        "REQ-003"
+      ],
+      "steps": [
+        "navigate — Live Bidding Spot Rate",
+        "expect — Daftar card lelang — dua card terpisah untuk dua jenis armada",
+        "expect — Card lelang terbaru — berada paling atas"
+      ],
+      "expected": [
+        "Card dipisahkan per jenis",
+        "Urutan mengikuti tanggal buka terbaru"
+      ],
+      "preconditions": [
+        "Vendor terautentikasi dan memiliki akses ke menu Lelang Spot Rate",
+        "Vendor diundang ke lelang Spot Rate yang berstatus Sedang Buka"
+      ]
+    },
+    {
+      "id": "SCN-0006",
+      "sourceId": "AMS005-LIVE-BIDDING-VENDOR-NEG-003",
+      "title": "Data lintas jenis tidak tercampur pada satu card",
+      "category": "negative",
+      "priority": "high",
+      "screen": "SCR-01",
+      "requirements": [
+        "REQ-003"
+      ],
+      "steps": [
+        "navigate — Live Bidding Spot Rate",
+        "expect — Card Tronton Box — tidak memuat Top 3 atau opsi Wing Box"
+      ],
+      "expected": [
+        "Top 3 dan form Bid terisolasi per jenis armada/kontainer"
+      ],
+      "preconditions": [
+        "Vendor terautentikasi dan memiliki akses ke menu Lelang Spot Rate",
+        "Vendor diundang ke lelang Spot Rate yang berstatus Sedang Buka"
+      ]
+    },
+    {
+      "id": "SCN-0007",
+      "sourceId": "AMS005-LIVE-BIDDING-VENDOR-POS-004",
+      "title": "Vendor menerapkan seluruh filter daftar lelang",
+      "category": "positive",
+      "priority": "medium",
+      "screen": "SCR-01",
+      "requirements": [
+        "REQ-004"
+      ],
+      "steps": [
+        "navigate — Live Bidding Spot Rate",
+        "click — Filter",
+        "fill — No. Lelang — FCL-NRM-01/200526",
+        "fill — Buka Lelang — 11/05/2026 08:00 - 11/05/2026 09:00",
+        "fill — Tutup Lelang — 18/05/2026 14:00 - 18/05/2026 16:00",
+        "fill — Periode Pengiriman — 20/05/2026 00:00 - 31/05/2026 23:59",
+        "select — Jenis Pengiriman — FCL",
+        "select — Tipe Pengiriman — Normal",
+        "select — Kota Asal — Surabaya",
+        "select — Kota Tujuan — Makassar",
+        "select — Pelabuhan Asal — Tanjung Perak",
+        "select — Pelabuhan Tujuan — Makassar",
+        "click — Terapkan",
+        "expect — Daftar card lelang — hanya data yang memenuhi seluruh filter"
+      ],
+      "expected": [
+        "Seluruh filter dapat diisi dan diterapkan",
+        "Hasil merupakan irisan semua kriteria"
+      ],
+      "preconditions": [
+        "Vendor terautentikasi dan memiliki akses ke menu Lelang Spot Rate",
+        "Vendor diundang ke lelang Spot Rate yang berstatus Sedang Buka"
+      ]
+    },
+    {
+      "id": "SCN-0008",
+      "sourceId": "AMS005-LIVE-BIDDING-VENDOR-NEG-004",
+      "title": "Rentang tanggal terbalik ditolak",
+      "category": "negative",
+      "priority": "medium",
+      "screen": "SCR-01",
+      "requirements": [
+        "REQ-004"
+      ],
+      "steps": [
+        "navigate — Live Bidding Spot Rate",
+        "click — Filter",
+        "fill — Buka Lelang — 12/05/2026 09:00 - 11/05/2026 08:00",
+        "click — Terapkan",
+        "expect — Validasi Buka Lelang — Tanggal awal tidak boleh melewati tanggal akhir"
+      ],
+      "expected": [
+        "Filter tidak dijalankan dengan rentang tidak valid"
+      ],
+      "preconditions": [
+        "Vendor terautentikasi dan memiliki akses ke menu Lelang Spot Rate",
+        "Vendor diundang ke lelang Spot Rate yang berstatus Sedang Buka"
+      ]
+    },
+    {
+      "id": "SCN-0009",
+      "sourceId": "AMS005-LIVE-BIDDING-VENDOR-POS-005",
+      "title": "Filter kota cocok dengan salah satu titik rute multipickup",
+      "category": "positive",
+      "priority": "medium",
+      "screen": "SCR-01",
+      "requirements": [
+        "REQ-005"
+      ],
+      "steps": [
+        "navigate — Live Bidding Spot Rate",
+        "click — Filter",
+        "select — Kota Asal — Sidoarjo",
+        "click — Terapkan",
+        "expect — Card Multipickup — terlihat karena salah satu titik cocok"
+      ],
+      "expected": [
+        "Pencocokan kota memeriksa seluruh titik multipickup/multidrop"
+      ],
+      "preconditions": [
+        "Vendor terautentikasi dan memiliki akses ke menu Lelang Spot Rate",
+        "Vendor diundang ke lelang Spot Rate yang berstatus Sedang Buka"
+      ]
+    },
+    {
+      "id": "SCN-0010",
+      "sourceId": "AMS005-LIVE-BIDDING-VENDOR-NEG-005",
+      "title": "Filter pelabuhan tidak memasukkan lelang FTL",
+      "category": "negative",
+      "priority": "medium",
+      "screen": "SCR-01",
+      "requirements": [
+        "REQ-005"
+      ],
+      "steps": [
+        "navigate — Live Bidding Spot Rate",
+        "click — Filter",
+        "select — Pelabuhan Asal — Tanjung Perak",
+        "click — Terapkan",
+        "expect — Card FTL — tidak terlihat akibat filter pelabuhan"
+      ],
+      "expected": [
+        "Filter pelabuhan hanya menghasilkan lelang FCL"
+      ],
+      "preconditions": [
+        "Vendor terautentikasi dan memiliki akses ke menu Lelang Spot Rate",
+        "Vendor diundang ke lelang Spot Rate yang berstatus Sedang Buka"
+      ]
+    },
+    {
+      "id": "SCN-0011",
+      "sourceId": "AMS005-LIVE-BIDDING-VENDOR-POS-006",
+      "title": "Sub-tab FCL dan pagination menampilkan kelompok data yang tepat",
+      "category": "positive",
+      "priority": "medium",
+      "screen": "SCR-01",
+      "requirements": [
+        "REQ-006"
+      ],
+      "steps": [
+        "navigate — Live Bidding Spot Rate",
+        "expect — Tab Semua Jenis Pengiriman — aktif",
+        "expect — Tampilkan — 20",
+        "click — Tab FCL",
+        "expect — Daftar card lelang — hanya card FCL",
+        "click — Tab FTL",
+        "expect — Daftar card lelang — hanya card FTL",
+        "click — Tab FCL",
+        "click — Halaman 2",
+        "expect — Daftar card lelang — hanya FCL pada data 21 sampai 40"
+      ],
+      "expected": [
+        "Default page size 20",
+        "Sub-tab Semua, FCL, dan FTL serta pagination bekerja bersama"
+      ],
+      "preconditions": [
+        "Vendor terautentikasi dan memiliki akses ke menu Lelang Spot Rate",
+        "Vendor diundang ke lelang Spot Rate yang berstatus Sedang Buka"
+      ]
+    },
+    {
+      "id": "SCN-0012",
+      "sourceId": "AMS005-LIVE-BIDDING-VENDOR-NEG-006",
+      "title": "Nilai page size tidak didukung dikembalikan ke default",
+      "category": "negative",
+      "priority": "low",
+      "screen": "SCR-01",
+      "requirements": [
+        "REQ-006"
+      ],
+      "steps": [
+        "navigate — Live Bidding Spot Rate",
+        "select — Tampilkan — 7",
+        "expect — Tampilkan — 20",
+        "expect — Daftar card lelang — maksimal 20 card"
+      ],
+      "expected": [
+        "Sistem tidak menerima page size di luar opsi desain"
+      ],
+      "preconditions": [
+        "Vendor terautentikasi dan memiliki akses ke menu Lelang Spot Rate",
+        "Vendor diundang ke lelang Spot Rate yang berstatus Sedang Buka"
+      ]
+    },
+    {
+      "id": "SCN-0013",
+      "sourceId": "AMS005-LIVE-BIDDING-VENDOR-POS-007",
+      "title": "Card menampilkan seluruh informasi dan aksi wajib",
+      "category": "positive",
+      "priority": "high",
+      "screen": "SCR-01",
+      "requirements": [
+        "REQ-007"
+      ],
+      "steps": [
+        "navigate — Live Bidding Spot Rate",
+        "expect — Card lelang — No. Lelang, jenis pengiriman, rute, jenis armada, periode, countdown, Top 3, Total Penawaran, form Bid, Riwayat Harga Penawaran, dan Detail Lelang"
+      ],
+      "expected": [
+        "Semua komponen wajib card terlihat"
+      ],
+      "preconditions": [
+        "Vendor terautentikasi dan memiliki akses ke menu Lelang Spot Rate",
+        "Vendor diundang ke lelang Spot Rate yang berstatus Sedang Buka"
+      ]
+    },
+    {
+      "id": "SCN-0014",
+      "sourceId": "AMS005-LIVE-BIDDING-VENDOR-NEG-007",
+      "title": "Badge tipe pengiriman tidak tampil untuk tipe Normal",
+      "category": "negative",
+      "priority": "low",
+      "screen": "SCR-01",
+      "requirements": [
+        "REQ-007"
+      ],
+      "steps": [
+        "navigate — Live Bidding Spot Rate",
+        "expect — Badge tipe pengiriman — tidak terlihat pada card Normal",
+        "expect — Badge FTL — terlihat"
+      ],
+      "expected": [
+        "Card Normal tidak memiliki badge tipe tambahan"
+      ],
+      "preconditions": [
+        "Vendor terautentikasi dan memiliki akses ke menu Lelang Spot Rate",
+        "Vendor diundang ke lelang Spot Rate yang berstatus Sedang Buka"
+      ]
+    },
+    {
+      "id": "SCN-0015",
+      "sourceId": "AMS005-LIVE-BIDDING-VENDOR-POS-008",
+      "title": "Card Lelang Ulang menampilkan badge dan memindahkan Detail Lelang",
+      "category": "positive",
+      "priority": "medium",
+      "screen": "SCR-01",
+      "requirements": [
+        "REQ-008"
+      ],
+      "steps": [
+        "navigate — Live Bidding Spot Rate",
+        "expect — Badge Lelang Ulang — terlihat pada baris Top 3",
+        "expect — Detail Lelang — terlihat di bagian bawah card"
+      ],
+      "expected": [
+        "Tata letak card Lelang Ulang sesuai aturan"
+      ],
+      "preconditions": [
+        "Vendor terautentikasi dan memiliki akses ke menu Lelang Spot Rate",
+        "Vendor diundang ke lelang Spot Rate yang berstatus Sedang Buka"
+      ]
+    },
+    {
+      "id": "SCN-0016",
+      "sourceId": "AMS005-LIVE-BIDDING-VENDOR-NEG-008",
+      "title": "Card biasa tidak menampilkan badge Lelang Ulang",
+      "category": "negative",
+      "priority": "low",
+      "screen": "SCR-01",
+      "requirements": [
+        "REQ-008"
+      ],
+      "steps": [
+        "navigate — Live Bidding Spot Rate",
+        "expect — Badge Lelang Ulang — tidak terlihat",
+        "expect — Detail Lelang — terlihat pada baris Top 3"
+      ],
+      "expected": [
+        "Card non-Lelang Ulang memakai tata letak normal"
+      ],
+      "preconditions": [
+        "Vendor terautentikasi dan memiliki akses ke menu Lelang Spot Rate",
+        "Vendor diundang ke lelang Spot Rate yang berstatus Sedang Buka"
+      ]
+    },
+    {
+      "id": "SCN-0017",
+      "sourceId": "AMS005-LIVE-BIDDING-VENDOR-POS-009",
+      "title": "Link rute Multipoint membuka detail pada kedua sisi",
+      "category": "positive",
+      "priority": "medium",
+      "screen": "SCR-01",
+      "requirements": [
+        "REQ-009"
+      ],
+      "steps": [
+        "navigate — Live Bidding Spot Rate",
+        "click — Multipickup",
+        "expect — Dialog Detail Multipickup — daftar titik asal",
+        "click — Tutup dialog rute",
+        "click — Multidrop",
+        "expect — Dialog Detail Multidrop — daftar titik tujuan"
+      ],
+      "expected": [
+        "Kedua sisi Multipoint dapat dibuka dan menampilkan titik yang benar"
+      ],
+      "preconditions": [
+        "Vendor terautentikasi dan memiliki akses ke menu Lelang Spot Rate",
+        "Vendor diundang ke lelang Spot Rate yang berstatus Sedang Buka"
+      ]
+    },
+    {
+      "id": "SCN-0018",
+      "sourceId": "AMS005-LIVE-BIDDING-VENDOR-NEG-009",
+      "title": "Rute Normal tidak membuka dialog titik banyak",
+      "category": "negative",
+      "priority": "low",
+      "screen": "SCR-01",
+      "requirements": [
+        "REQ-009"
+      ],
+      "steps": [
+        "navigate — Live Bidding Spot Rate",
+        "click — Teks rute Normal",
+        "expect — Dialog detail rute — tidak terlihat"
+      ],
+      "expected": [
+        "Teks rute Normal bukan link detail multipoint"
+      ],
+      "preconditions": [
+        "Vendor terautentikasi dan memiliki akses ke menu Lelang Spot Rate",
+        "Vendor diundang ke lelang Spot Rate yang berstatus Sedang Buka"
+      ]
+    },
+    {
+      "id": "SCN-0019",
+      "sourceId": "AMS005-LIVE-BIDDING-VENDOR-POS-010",
+      "title": "Countdown berkurang setiap detik dan warna mengikuti sisa waktu",
+      "category": "positive",
+      "priority": "high",
+      "screen": "SCR-01",
+      "requirements": [
+        "REQ-010"
+      ],
+      "steps": [
+        "navigate — Live Bidding Spot Rate",
+        "expect — Countdown — format Hari Jam Menit Detik",
+        "expect — Countdown detik berikutnya — berkurang satu detik",
+        "expect — Warna countdown — sesuai sisa waktu"
+      ],
+      "expected": [
+        "Countdown berjalan realtime dan memakai indikator warna yang tepat"
+      ],
+      "preconditions": [
+        "Vendor terautentikasi dan memiliki akses ke menu Lelang Spot Rate",
+        "Vendor diundang ke lelang Spot Rate yang berstatus Sedang Buka"
+      ]
+    },
+    {
+      "id": "SCN-0020",
+      "sourceId": "AMS005-LIVE-BIDDING-VENDOR-NEG-010",
+      "title": "Card kedaluwarsa tidak bertahan pada 00:00:00:00",
+      "category": "negative",
+      "priority": "high",
+      "screen": "SCR-01",
+      "requirements": [
+        "REQ-010"
+      ],
+      "steps": [
+        "navigate — Live Bidding Spot Rate",
+        "expect — Countdown — 00:00:00:00",
+        "expect — Card lelang kedaluwarsa — tidak terlihat"
+      ],
+      "expected": [
+        "Card hilang tanpa reload saat countdown habis"
+      ],
+      "preconditions": [
+        "Vendor terautentikasi dan memiliki akses ke menu Lelang Spot Rate",
+        "Vendor diundang ke lelang Spot Rate yang berstatus Sedang Buka"
+      ]
+    },
+    {
+      "id": "SCN-0021",
+      "sourceId": "AMS005-LIVE-BIDDING-VENDOR-POS-011",
+      "title": "Posisi vendor sendiri ditampilkan sementara posisi lain dimasking",
+      "category": "positive",
+      "priority": "high",
+      "screen": "SCR-01",
+      "requirements": [
+        "REQ-011"
+      ],
+      "steps": [
+        "navigate — Live Bidding Spot Rate",
+        "expect — Rank vendor sendiri — highlight, nama vendor, dan Rp 8.000.000",
+        "expect — Rank vendor lain — Rp •••••••"
+      ],
+      "expected": [
+        "Hanya identitas dan harga vendor login yang terbuka"
+      ],
+      "preconditions": [
+        "Vendor terautentikasi dan memiliki akses ke menu Lelang Spot Rate",
+        "Vendor diundang ke lelang Spot Rate yang berstatus Sedang Buka",
+        "Vendor memiliki harga penawaran aktif untuk Jenis Kendaraan Tronton Box"
+      ]
+    },
+    {
+      "id": "SCN-0022",
+      "sourceId": "AMS005-LIVE-BIDDING-VENDOR-NEG-011",
+      "title": "Vendor di luar Top 3 tidak dapat melihat identitas semua peringkat",
+      "category": "negative",
+      "priority": "high",
+      "screen": "SCR-01",
+      "requirements": [
+        "REQ-011"
+      ],
+      "steps": [
+        "navigate — Live Bidding Spot Rate",
+        "expect — Rank 1 — Rp •••••••",
+        "expect — Rank 2 — Rp •••••••",
+        "expect — Rank 3 — Rp •••••••"
+      ],
+      "expected": [
+        "Semua posisi termasking bila vendor tidak masuk Top 3"
+      ],
+      "preconditions": [
+        "Vendor terautentikasi dan memiliki akses ke menu Lelang Spot Rate",
+        "Vendor diundang ke lelang Spot Rate yang berstatus Sedang Buka"
+      ]
+    },
+    {
+      "id": "SCN-0023",
+      "sourceId": "AMS005-LIVE-BIDDING-VENDOR-POS-012",
+      "title": "Top 3 mengikuti harga dan tie-break lalu diperbarui realtime",
+      "category": "positive",
+      "priority": "high",
+      "screen": "SCR-01",
+      "requirements": [
+        "REQ-012"
+      ],
+      "steps": [
+        "navigate — Live Bidding Spot Rate",
+        "expect — Top 3 — harga terendah dan timestamp tercepat berada lebih atas",
+        "expect — Top 3 realtime — bid baru tampil tanpa reload"
+      ],
+      "expected": [
+        "Ranking menerapkan urutan bisnis dan update realtime"
+      ],
+      "preconditions": [
+        "Vendor terautentikasi dan memiliki akses ke menu Lelang Spot Rate",
+        "Vendor diundang ke lelang Spot Rate yang berstatus Sedang Buka"
+      ]
+    },
+    {
+      "id": "SCN-0024",
+      "sourceId": "AMS005-LIVE-BIDDING-VENDOR-NEG-012",
+      "title": "Top 3 yang sudah ditutup tidak berubah oleh event bid terlambat",
+      "category": "negative",
+      "priority": "high",
+      "screen": "SCR-01",
+      "requirements": [
+        "REQ-012"
+      ],
+      "steps": [
+        "navigate — Live Bidding Spot Rate",
+        "expect — Top 3 terkunci — urutan tetap setelah lelang tutup"
+      ],
+      "expected": [
+        "Event terlambat tidak mengubah ranking final"
+      ],
+      "preconditions": [
+        "Vendor terautentikasi dan memiliki akses ke menu Lelang Spot Rate"
+      ]
+    },
+    {
+      "id": "SCN-0025",
+      "sourceId": "AMS005-LIVE-BIDDING-VENDOR-POS-013",
+      "title": "Total Penawaran dan ranking Lelang Ulang memakai data yang tepat",
+      "category": "positive",
+      "priority": "high",
+      "screen": "SCR-01",
+      "requirements": [
+        "REQ-013"
+      ],
+      "steps": [
+        "navigate — Live Bidding Spot Rate",
+        "expect — Total Penawaran — 3 dari 10 Vendor",
+        "expect — Warna Total Penawaran — normal",
+        "expect — Opsi harga lama — tersedia sebagai basis bid",
+        "expect — Top 3 Lelang Ulang — hanya bid yang diajukan selama periode ulang"
+      ],
+      "expected": [
+        "Jumlah peserta dan undangan akurat",
+        "Harga lama dapat dijadikan basis bid tetapi ranking hanya menghitung bid periode ulang"
+      ],
+      "preconditions": [
+        "Vendor terautentikasi dan memiliki akses ke menu Lelang Spot Rate",
+        "Vendor diundang ke lelang Spot Rate yang berstatus Sedang Buka",
+        "Lelang sedang berada pada periode Lelang Ulang dan memiliki harga lama vendor"
+      ]
+    },
+    {
+      "id": "SCN-0026",
+      "sourceId": "AMS005-LIVE-BIDDING-VENDOR-NEG-013",
+      "title": "FCL tanpa jadwal tidak dihitung sebagai penawaran lengkap",
+      "category": "negative",
+      "priority": "high",
+      "screen": "SCR-01",
+      "requirements": [
+        "REQ-013"
+      ],
+      "steps": [
+        "navigate — Live Bidding Spot Rate",
+        "expect — Total Penawaran — 0 dari 10 Vendor",
+        "expect — Warna Total Penawaran — merah"
+      ],
+      "expected": [
+        "Harga FCL tanpa jadwal tidak menaikkan x dan kondisi nol berwarna merah"
+      ],
+      "preconditions": [
+        "Vendor terautentikasi dan memiliki akses ke menu Lelang Spot Rate",
+        "Vendor diundang ke lelang Spot Rate yang berstatus Sedang Buka"
+      ]
+    },
+    {
+      "id": "SCN-0027",
+      "sourceId": "AMS005-LIVE-BIDDING-VENDOR-POS-014",
+      "title": "Form Bid menampilkan opsi aktif sesuai jenis dan format Rupiah",
+      "category": "positive",
+      "priority": "high",
+      "screen": "SCR-01",
+      "requirements": [
+        "REQ-014"
+      ],
+      "steps": [
+        "navigate — Live Bidding Spot Rate",
+        "select — Pelayaran — ASDP",
+        "fill — Harga Baru — 15900000",
+        "expect — Harga Baru — Rp 15.900.000"
+      ],
+      "expected": [
+        "Dropdown hanya berisi opsi aktif dan harga diformat Rupiah"
+      ],
+      "preconditions": [
+        "Vendor terautentikasi dan memiliki akses ke menu Lelang Spot Rate",
+        "Vendor diundang ke lelang Spot Rate yang berstatus Sedang Buka",
+        "Vendor memiliki harga dan jadwal aktif untuk Pelayaran ASDP pada kontainer 20 Feet Dry"
+      ]
+    },
+    {
+      "id": "SCN-0028",
+      "sourceId": "AMS005-LIVE-BIDDING-VENDOR-NEG-014",
+      "title": "Opsi tidak aktif atau milik card lain tidak tersedia",
+      "category": "negative",
+      "priority": "high",
+      "screen": "SCR-01",
+      "requirements": [
+        "REQ-014"
+      ],
+      "steps": [
+        "navigate — Live Bidding Spot Rate",
+        "click — Pelayaran",
+        "expect — Opsi Pelayaran nonaktif — tidak terlihat",
+        "expect — Opsi Pelayaran dari kontainer lain — tidak terlihat"
+      ],
+      "expected": [
+        "Opsi dropdown terisolasi pada penawaran aktif dan konteks card"
+      ],
+      "preconditions": [
+        "Vendor terautentikasi dan memiliki akses ke menu Lelang Spot Rate",
+        "Vendor diundang ke lelang Spot Rate yang berstatus Sedang Buka",
+        "Vendor memiliki harga dan jadwal aktif untuk Pelayaran ASDP pada kontainer 20 Feet Dry"
+      ]
+    },
+    {
+      "id": "SCN-0029",
+      "sourceId": "AMS005-LIVE-BIDDING-VENDOR-POS-015",
+      "title": "Vendor dengan penawaran awal mendapat opsi Bid",
+      "category": "positive",
+      "priority": "high",
+      "screen": "SCR-01",
+      "requirements": [
+        "REQ-015"
+      ],
+      "steps": [
+        "navigate — Live Bidding Spot Rate",
+        "click — Jenis Kendaraan",
+        "expect — Opsi Tronton Box — terlihat"
+      ],
+      "expected": [
+        "Penawaran awal aktif membuat opsi dropdown tersedia"
+      ],
+      "preconditions": [
+        "Vendor terautentikasi dan memiliki akses ke menu Lelang Spot Rate",
+        "Vendor diundang ke lelang Spot Rate yang berstatus Sedang Buka",
+        "Vendor memiliki harga penawaran aktif untuk Jenis Kendaraan Tronton Box"
+      ]
+    },
+    {
+      "id": "SCN-0030",
+      "sourceId": "AMS005-LIVE-BIDDING-VENDOR-NEG-015",
+      "title": "Vendor tanpa penawaran awal mendapat alert arahan",
+      "category": "negative",
+      "priority": "high",
+      "screen": "SCR-02",
+      "requirements": [
+        "REQ-015"
+      ],
+      "steps": [
+        "navigate — Live Bidding Spot Rate",
+        "click — Bid Harga",
+        "expect — Dialog belum punya penawaran — Anda belum memiliki harga penawaran pada lelang ini. Silakan input harga melalui menu Input Harga Penawaran"
+      ],
+      "expected": [
+        "Bid tidak tersimpan dan vendor diarahkan ke Input Harga Penawaran"
+      ],
+      "preconditions": [
+        "Vendor terautentikasi dan memiliki akses ke menu Lelang Spot Rate",
+        "Vendor diundang ke lelang Spot Rate yang berstatus Sedang Buka"
+      ]
+    },
+    {
+      "id": "SCN-0031",
+      "sourceId": "AMS005-LIVE-BIDDING-VENDOR-POS-016",
+      "title": "Harga lebih rendah lolos validasi awal",
+      "category": "positive",
+      "priority": "high",
+      "screen": "SCR-01",
+      "requirements": [
+        "REQ-016"
+      ],
+      "steps": [
+        "navigate — Live Bidding Spot Rate",
+        "select — Jenis Kendaraan — Tronton Box",
+        "fill — Harga Baru — 7900000",
+        "click — Bid Harga",
+        "expect — Dialog konfirmasi bid — Apakah Harga Telah Sesuai?"
+      ],
+      "expected": [
+        "Harga positif yang lebih rendah membuka konfirmasi"
+      ],
+      "preconditions": [
+        "Vendor terautentikasi dan memiliki akses ke menu Lelang Spot Rate",
+        "Vendor diundang ke lelang Spot Rate yang berstatus Sedang Buka",
+        "Vendor memiliki harga penawaran aktif untuk Jenis Kendaraan Tronton Box"
+      ]
+    },
+    {
+      "id": "SCN-0032",
+      "sourceId": "AMS005-LIVE-BIDDING-VENDOR-NEG-016",
+      "title": "Harga sama atau lebih besar ditolak dengan pesan yang sesuai",
+      "category": "negative",
+      "priority": "high",
+      "screen": "SCR-02",
+      "requirements": [
+        "REQ-016"
+      ],
+      "steps": [
+        "navigate — Live Bidding Spot Rate",
+        "select — Jenis Kendaraan — Tronton Box",
+        "fill — Harga Baru — 8100000",
+        "click — Bid Harga",
+        "expect — Dialog Tidak Dapat Bid Harga — Harga penawaran tidak boleh lebih besar dari harga sebelumnya",
+        "click — Mengerti",
+        "fill — Harga Baru — 8000000",
+        "click — Bid Harga",
+        "expect — Dialog Tidak Dapat Bid Harga — Harga penawaran sama dengan harga sebelumnya"
+      ],
+      "expected": [
+        "Harga lebih besar ditolak tanpa penyimpanan",
+        "Harga sama ditolak dengan pesan khusus tanpa penyimpanan"
+      ],
+      "preconditions": [
+        "Vendor terautentikasi dan memiliki akses ke menu Lelang Spot Rate",
+        "Vendor diundang ke lelang Spot Rate yang berstatus Sedang Buka",
+        "Vendor memiliki harga penawaran aktif untuk Jenis Kendaraan Tronton Box"
+      ]
+    },
+    {
+      "id": "SCN-0033",
+      "sourceId": "AMS005-LIVE-BIDDING-VENDOR-POS-017",
+      "title": "Konfirmasi Ya memperbarui bid pada penawaran yang sama",
+      "category": "positive",
+      "priority": "high",
+      "screen": "SCR-01",
+      "requirements": [
+        "REQ-017"
+      ],
+      "steps": [
+        "navigate — Harga Penawaran — Catat ID, jumlah record, harga dan atribut penawaran aktif fixture.",
+        "click — Harga Penawaran — Bid lebih rendah pada kombinasi yang sama lalu konfirmasi Ya.",
+        "expect — Harga Penawaran — Baca ulang penawaran dan Live Bidding."
+      ],
+      "expected": [
+        "Harga diperbarui pada ID yang sama dengan atribut lain tetap",
+        "Jumlah penawaran tidak bertambah dan bid tidak membuat harga lama Tidak Berlaku",
+        "Form reset dan Top 3 diperbarui"
+      ],
+      "preconditions": [
+        "Vendor terautentikasi dan memiliki akses ke menu Lelang Spot Rate",
+        "Vendor diundang ke lelang Spot Rate yang berstatus Sedang Buka",
+        "Vendor memiliki harga dan jadwal aktif untuk Pelayaran ASDP pada kontainer 20 Feet Dry"
+      ]
+    },
+    {
+      "id": "SCN-0034",
+      "sourceId": "AMS005-LIVE-BIDDING-VENDOR-NEG-017",
+      "title": "Konfirmasi Batal tidak menyimpan bid",
+      "category": "negative",
+      "priority": "high",
+      "screen": "SCR-01",
+      "requirements": [
+        "REQ-017"
+      ],
+      "steps": [
+        "navigate — Live Bidding Spot Rate",
+        "select — Pelayaran — ASDP",
+        "fill — Harga Baru — 15900000",
+        "click — Bid Harga",
+        "click — Batal",
+        "expect — Top 3 — tetap memakai harga sebelumnya",
+        "expect — Toast sukses — tidak terlihat"
+      ],
+      "expected": [
+        "Tidak ada harga atau riwayat baru saat konfirmasi dibatalkan"
+      ],
+      "preconditions": [
+        "Vendor terautentikasi dan memiliki akses ke menu Lelang Spot Rate",
+        "Vendor diundang ke lelang Spot Rate yang berstatus Sedang Buka",
+        "Vendor memiliki harga dan jadwal aktif untuk Pelayaran ASDP pada kontainer 20 Feet Dry"
+      ]
+    },
+    {
+      "id": "SCN-0035",
+      "sourceId": "AMS005-LIVE-BIDDING-VENDOR-POS-018",
+      "title": "Beberapa bid selama lelang buka seluruhnya tercatat",
+      "category": "positive",
+      "priority": "high",
+      "screen": "SCR-03",
+      "requirements": [
+        "REQ-018"
+      ],
+      "steps": [
+        "navigate — Live Bidding Spot Rate",
+        "click — Riwayat Harga Penawaran",
+        "expect — Tabel riwayat — harga awal dan seluruh bid terbaru"
+      ],
+      "expected": [
+        "Jumlah bid tidak dibatasi selama buka",
+        "Setiap bid tercatat pada kedua jenis riwayat"
+      ],
+      "preconditions": [
+        "Vendor terautentikasi dan memiliki akses ke menu Lelang Spot Rate",
+        "Vendor diundang ke lelang Spot Rate yang berstatus Sedang Buka",
+        "Vendor memiliki harga penawaran aktif untuk Jenis Kendaraan Tronton Box"
+      ]
+    },
+    {
+      "id": "SCN-0036",
+      "sourceId": "AMS005-LIVE-BIDDING-VENDOR-NEG-018",
+      "title": "Submit saat lelang baru saja tutup ditolak",
+      "category": "negative",
+      "priority": "high",
+      "screen": "SCR-02",
+      "requirements": [
+        "REQ-018"
+      ],
+      "steps": [
+        "navigate — Live Bidding Spot Rate",
+        "select — Jenis Kendaraan — Tronton Box",
+        "fill — Harga Baru — 7900000",
+        "click — Bid Harga",
+        "click — Ya",
+        "expect — Dialog lelang tutup — Harga penawaran sudah melewati tanggal tutup lelang",
+        "expect — Aksi ubah atau hapus harga — tidak tersedia"
+      ],
+      "expected": [
+        "Harga tidak tersimpan setelah deadline",
+        "Vendor tidak dapat mengubah atau menghapus harga"
+      ],
+      "preconditions": [
+        "Vendor terautentikasi dan memiliki akses ke menu Lelang Spot Rate",
+        "Vendor diundang ke lelang Spot Rate yang berstatus Sedang Buka",
+        "Vendor memiliki harga penawaran aktif untuk Jenis Kendaraan Tronton Box"
+      ]
+    },
+    {
+      "id": "SCN-0037",
+      "sourceId": "AMS005-LIVE-BIDDING-VENDOR-POS-019",
+      "title": "Link Detail Lelang membuka lelang Spot Rate yang tepat",
+      "category": "positive",
+      "priority": "medium",
+      "screen": "SCR-01",
+      "requirements": [
+        "REQ-019"
+      ],
+      "steps": [
+        "navigate — Live Bidding Spot Rate",
+        "click — Detail Lelang",
+        "expect — Halaman Detail Lelang Spot Rate — nomor lelang yang dipilih"
+      ],
+      "expected": [
+        "Navigasi membawa konteks nomor lelang yang benar"
+      ],
+      "preconditions": [
+        "Vendor terautentikasi dan memiliki akses ke menu Lelang Spot Rate",
+        "Vendor diundang ke lelang Spot Rate yang berstatus Sedang Buka"
+      ]
+    },
+    {
+      "id": "SCN-0038",
+      "sourceId": "AMS005-LIVE-BIDDING-VENDOR-NEG-019",
+      "title": "Deep link detail lelang tanpa hak akses ditolak",
+      "category": "negative",
+      "priority": "high",
+      "screen": "SCR-01",
+      "requirements": [
+        "REQ-019"
+      ],
+      "steps": [
+        "navigate — Detail Lelang Spot Rate tanpa undangan",
+        "expect — Pesan akses ditolak — Anda tidak memiliki akses ke lelang ini"
+      ],
+      "expected": [
+        "Detail lelang tidak membocorkan data kepada vendor yang tidak diundang"
+      ],
+      "preconditions": [
+        "Vendor terautentikasi dan memiliki akses ke menu Lelang Spot Rate"
+      ]
+    },
+    {
+      "id": "SCN-0039",
+      "sourceId": "AMS005-LIVE-BIDDING-VENDOR-POS-020",
+      "title": "Dialog riwayat menampilkan konteks FCL dan harga milik vendor",
+      "category": "positive",
+      "priority": "high",
+      "screen": "SCR-03",
+      "requirements": [
+        "REQ-020"
+      ],
+      "steps": [
+        "navigate — Live Bidding Spot Rate",
+        "click — Riwayat Harga Penawaran",
+        "expect — Dialog Riwayat Harga Penawaran — No. Lelang, Jenis Pengiriman, Jenis Kontainer, Skema Pengiriman, rute dan alamat",
+        "expect — Tabel riwayat — harga awal dan bid milik vendor"
+      ],
+      "expected": [
+        "Informasi lelang read-only lengkap",
+        "Riwayat dibatasi pada vendor dan card"
+      ],
+      "preconditions": [
+        "Vendor terautentikasi dan memiliki akses ke menu Lelang Spot Rate",
+        "Vendor diundang ke lelang Spot Rate yang berstatus Sedang Buka",
+        "Vendor memiliki harga dan jadwal aktif untuk Pelayaran ASDP pada kontainer 20 Feet Dry"
+      ]
+    },
+    {
+      "id": "SCN-0040",
+      "sourceId": "AMS005-LIVE-BIDDING-VENDOR-NEG-020",
+      "title": "Dialog riwayat tidak menampilkan harga vendor lain",
+      "category": "negative",
+      "priority": "high",
+      "screen": "SCR-03",
+      "requirements": [
+        "REQ-020"
+      ],
+      "steps": [
+        "navigate — Live Bidding Spot Rate",
+        "click — Riwayat Harga Penawaran",
+        "expect — Baris vendor lain — tidak terlihat"
+      ],
+      "expected": [
+        "Tidak ada identitas atau harga vendor lain pada riwayat"
+      ],
+      "preconditions": [
+        "Vendor terautentikasi dan memiliki akses ke menu Lelang Spot Rate",
+        "Vendor diundang ke lelang Spot Rate yang berstatus Sedang Buka",
+        "Vendor memiliki harga dan jadwal aktif untuk Pelayaran ASDP pada kontainer 20 Feet Dry"
+      ]
+    },
+    {
+      "id": "SCN-0041",
+      "sourceId": "AMS005-LIVE-BIDDING-VENDOR-POS-021",
+      "title": "Riwayat dapat difilter diurutkan dan dipaginasi",
+      "category": "positive",
+      "priority": "medium",
+      "screen": "SCR-03",
+      "requirements": [
+        "REQ-021"
+      ],
+      "steps": [
+        "navigate — Live Bidding Spot Rate",
+        "click — Riwayat Harga Penawaran",
+        "select — Semua Pelayaran — ASDP",
+        "click — Pelayaran header",
+        "click — Harga Penawaran header",
+        "click — Tanggal Input",
+        "select — Tampilkan riwayat — 20",
+        "click — Halaman 2 riwayat",
+        "expect — Tabel riwayat — data ASDP terurut pada halaman kedua"
+      ],
+      "expected": [
+        "Filter, sorting tiap kolom, page size, dan pagination bekerja"
+      ],
+      "preconditions": [
+        "Vendor terautentikasi dan memiliki akses ke menu Lelang Spot Rate",
+        "Vendor diundang ke lelang Spot Rate yang berstatus Sedang Buka",
+        "Vendor memiliki harga dan jadwal aktif untuk Pelayaran ASDP pada kontainer 20 Feet Dry"
+      ]
+    },
+    {
+      "id": "SCN-0042",
+      "sourceId": "AMS005-LIVE-BIDDING-VENDOR-NEG-021",
+      "title": "Filter riwayat tanpa kecocokan menampilkan empty state stabil",
+      "category": "negative",
+      "priority": "low",
+      "screen": "SCR-03",
+      "requirements": [
+        "REQ-021"
+      ],
+      "steps": [
+        "navigate — Live Bidding Spot Rate",
+        "click — Riwayat Harga Penawaran",
+        "select — Semua Pelayaran — Pelayaran tanpa riwayat",
+        "expect — Tabel riwayat — Tidak ada data",
+        "expect — Pagination riwayat — tidak aktif",
+        "click — Tutup Riwayat Harga Penawaran"
+      ],
+      "expected": [
+        "Empty state tidak menampilkan baris lama dan pagination dinonaktifkan"
+      ],
+      "preconditions": [
+        "Vendor terautentikasi dan memiliki akses ke menu Lelang Spot Rate",
+        "Vendor diundang ke lelang Spot Rate yang berstatus Sedang Buka",
+        "Vendor memiliki harga dan jadwal aktif untuk Pelayaran ASDP pada kontainer 20 Feet Dry"
+      ]
+    },
+    {
+      "id": "SCN-0043",
+      "sourceId": "AMS005-LIVE-BIDDING-VENDOR-EDG-001",
+      "title": "Batas waktu buka memakai WIB saat zona klien berbeda",
+      "category": "edge",
+      "priority": "high",
+      "screen": "SCR-01",
+      "requirements": [
+        "REQ-002"
+      ],
+      "steps": [
+        "navigate — Live Bidding Spot Rate",
+        "expect — Card lelang batas WIB — muncul tepat pada 00:00:00 WIB"
+      ],
+      "expected": [
+        "Zona waktu browser tidak menggeser waktu buka lelang"
+      ],
+      "preconditions": [
+        "Vendor terautentikasi dan memiliki akses ke menu Lelang Spot Rate"
+      ]
+    },
+    {
+      "id": "SCN-0044",
+      "sourceId": "AMS005-LIVE-BIDDING-VENDOR-EDG-002",
+      "title": "Warna dan visibilitas tepat pada batas 24 jam 1 jam dan nol",
+      "category": "edge",
+      "priority": "high",
+      "screen": "SCR-01",
+      "requirements": [
+        "REQ-010"
+      ],
+      "steps": [
+        "navigate — Live Bidding Spot Rate",
+        "expect — Countdown 24 jam — oranye",
+        "expect — Countdown 1 jam — merah",
+        "expect — Countdown nol — card hilang"
+      ],
+      "expected": [
+        "Perubahan warna tidak memiliki celah atau overlap di boundary"
+      ],
+      "preconditions": [
+        "Vendor terautentikasi dan memiliki akses ke menu Lelang Spot Rate",
+        "Vendor diundang ke lelang Spot Rate yang berstatus Sedang Buka"
+      ]
+    },
+    {
+      "id": "SCN-0045",
+      "sourceId": "AMS005-LIVE-BIDDING-VENDOR-EDG-003",
+      "title": "Harga kosong dan nol menampilkan helper serta border error",
+      "category": "edge",
+      "priority": "high",
+      "screen": "SCR-01",
+      "requirements": [
+        "REQ-016"
+      ],
+      "steps": [
+        "navigate — Live Bidding Spot Rate",
+        "select — Jenis Kendaraan — Tronton Box",
+        "fill — Harga Baru",
+        "click — Bid Harga",
+        "expect — Helper Harga Baru — Harga Baru wajib diisi",
+        "fill — Harga Baru — 0",
+        "click — Bid Harga",
+        "expect — Border Harga Baru — error"
+      ],
+      "expected": [
+        "Kosong dan nol tidak membuka konfirmasi atau menyimpan data"
+      ],
+      "preconditions": [
+        "Vendor terautentikasi dan memiliki akses ke menu Lelang Spot Rate",
+        "Vendor diundang ke lelang Spot Rate yang berstatus Sedang Buka",
+        "Vendor memiliki harga penawaran aktif untuk Jenis Kendaraan Tronton Box"
+      ]
+    },
+    {
+      "id": "SCN-0046",
+      "sourceId": "AMS005-LIVE-BIDDING-VENDOR-EDG-004",
+      "title": "Tie-break lengkap menghasilkan urutan deterministik",
+      "category": "edge",
+      "priority": "high",
+      "screen": "SCR-01",
+      "requirements": [
+        "REQ-012"
+      ],
+      "steps": [
+        "navigate — Live Bidding Spot Rate",
+        "expect — Top 3 — urutan konsisten untuk harga dan timestamp yang sama"
+      ],
+      "expected": [
+        "Rating, jumlah kemenangan, jenis armada/kapal, lalu created menentukan urutan akhir"
+      ],
+      "preconditions": [
+        "Vendor terautentikasi dan memiliki akses ke menu Lelang Spot Rate",
+        "Vendor diundang ke lelang Spot Rate yang berstatus Sedang Buka"
+      ]
+    },
+    {
+      "id": "SCN-0047",
+      "sourceId": "AMS005-LIVE-BIDDING-VENDOR-EDG-005",
+      "title": "Filter menerima karakter khusus sebagai data dan Reset membersihkan semua",
+      "category": "edge",
+      "priority": "medium",
+      "screen": "SCR-01",
+      "requirements": [
+        "REQ-004"
+      ],
+      "steps": [
+        "navigate — Live Bidding Spot Rate",
+        "click — Filter",
+        "fill — No. Lelang — ' OR 1=1 -- <script>",
+        "click — Terapkan",
+        "expect — Daftar card lelang — Tidak ada data",
+        "click — Reset",
+        "expect — No. Lelang — kosong",
+        "expect — Daftar card lelang — kembali ke daftar tanpa filter"
+      ],
+      "expected": [
+        "Input khusus tidak dieksekusi dan semua filter dapat direset"
+      ],
+      "preconditions": [
+        "Vendor terautentikasi dan memiliki akses ke menu Lelang Spot Rate",
+        "Vendor diundang ke lelang Spot Rate yang berstatus Sedang Buka"
+      ]
+    },
+    {
+      "id": "SCN-0048",
+      "sourceId": "AMS005-LIVE-BIDDING-VENDOR-STR-001",
+      "title": "Seribu card tetap terurut dan dipaginasi konsisten",
+      "category": "stress",
+      "priority": "medium",
+      "screen": "SCR-01",
+      "requirements": [
+        "REQ-003"
+      ],
+      "steps": [
+        "navigate — Live Bidding Spot Rate",
+        "expect — Daftar card lelang — 20 card pertama dari 1000 data",
+        "click — Halaman terakhir",
+        "expect — Daftar card lelang — card tersisa tanpa duplikasi"
+      ],
+      "expected": [
+        "Urutan terbaru stabil di seluruh halaman",
+        "Tidak ada card hilang atau ganda"
+      ],
+      "preconditions": [
+        "Vendor terautentikasi dan memiliki akses ke menu Lelang Spot Rate",
+        "Vendor diundang ke lelang Spot Rate yang berstatus Sedang Buka"
+      ]
+    },
+    {
+      "id": "SCN-0049",
+      "sourceId": "AMS005-LIVE-BIDDING-VENDOR-STR-002",
+      "title": "Bid paralel banyak vendor menghasilkan Top 3 konsisten realtime",
+      "category": "stress",
+      "priority": "high",
+      "screen": "SCR-01",
+      "requirements": [
+        "REQ-012"
+      ],
+      "steps": [
+        "navigate — Live Bidding Spot Rate",
+        "expect — Top 3 realtime — tiga peringkat final konsisten setelah 100 bid paralel"
+      ],
+      "expected": [
+        "Tidak ada race condition, harga bocor, atau ranking sementara yang menetap"
+      ],
+      "preconditions": [
+        "Vendor terautentikasi dan memiliki akses ke menu Lelang Spot Rate",
+        "Vendor diundang ke lelang Spot Rate yang berstatus Sedang Buka"
+      ]
+    },
+    {
+      "id": "SCN-0050",
+      "sourceId": "AMS005-LIVE-BIDDING-VENDOR-STR-003",
+      "title": "Seratus bid berurutan tercatat lengkap tanpa kehilangan data",
+      "category": "stress",
+      "priority": "high",
+      "screen": "SCR-03",
+      "requirements": [
+        "REQ-018"
+      ],
+      "steps": [
+        "navigate — Live Bidding Spot Rate",
+        "click — Riwayat Harga Penawaran",
+        "expect — Tabel riwayat — 101 entri termasuk harga awal",
+        "click — Halaman terakhir riwayat",
+        "expect — Baris riwayat terakhir — bid pertama tetap tersedia"
+      ],
+      "expected": [
+        "Seluruh bid tersimpan sekali, urut terbaru, dan dapat dipaginasi"
+      ],
+      "preconditions": [
+        "Vendor terautentikasi dan memiliki akses ke menu Lelang Spot Rate",
+        "Vendor diundang ke lelang Spot Rate yang berstatus Sedang Buka",
+        "Vendor memiliki harga penawaran aktif untuk Jenis Kendaraan Tronton Box"
+      ]
+    }
+  ]
+}

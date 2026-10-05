@@ -2049,7 +2049,7 @@
     },
     {
       "id": "AMS005-LIVE-BIDDING-VENDOR-POS-017",
-      "title": "Konfirmasi Ya menyimpan bid dan memperbarui card",
+      "title": "Konfirmasi Ya memperbarui bid pada penawaran yang sama",
       "category": "positive",
       "priority": "high",
       "requirement": "REQ-017",
@@ -2062,91 +2062,30 @@
       "steps": [
         {
           "action": "navigate",
-          "target": "Live Bidding Spot Rate",
-          "value": ""
-        },
-        {
-          "action": "select",
-          "target": "Pelayaran",
-          "value": "ASDP"
-        },
-        {
-          "action": "fill",
-          "target": "Harga Baru",
-          "value": "15900000"
+          "target": "Harga Penawaran",
+          "value": "Catat ID, jumlah record, harga dan atribut penawaran aktif fixture."
         },
         {
           "action": "click",
-          "target": "Bid Harga",
-          "value": ""
-        },
-        {
-          "action": "click",
-          "target": "Ya",
-          "value": ""
+          "target": "Harga Penawaran",
+          "value": "Bid lebih rendah pada kombinasi yang sama lalu konfirmasi Ya."
         },
         {
           "action": "expect",
-          "target": "Toast sukses",
-          "value": "Harga penawaran berhasil disimpan"
-        },
-        {
-          "action": "expect",
-          "target": "Harga Baru",
-          "value": "Rp 0"
-        },
-        {
-          "action": "expect",
-          "target": "Top 3",
-          "value": "Rp 15.900.000"
+          "target": "Harga Penawaran",
+          "value": "Baca ulang penawaran dan Live Bidding."
         }
       ],
       "expected": [
-        "Harga baru tersimpan dengan atribut warisan",
-        "Harga lama Tidak Berlaku",
+        "Harga diperbarui pada ID yang sama dengan atribut lain tetap",
+        "Jumlah penawaran tidak bertambah dan bid tidak membuat harga lama Tidak Berlaku",
         "Form reset dan Top 3 diperbarui"
       ],
       "testData": {
         "previousPrice": 16000000,
         "newPrice": 15900000
       },
-      "selectorHints": {
-        "Live Bidding Spot Rate": {
-          "role": "region",
-          "name": "Live Bidding Spot Rate",
-          "testid": "live-bidding-spot-rate"
-        },
-        "Pelayaran": {
-          "role": "combobox",
-          "name": "Pelayaran",
-          "testid": "bid-shipping-line"
-        },
-        "Harga Baru": {
-          "role": "textbox",
-          "name": "Harga Baru",
-          "testid": "bid-new-price"
-        },
-        "Bid Harga": {
-          "role": "button",
-          "name": "Bid Harga",
-          "testid": "submit-bid"
-        },
-        "Ya": {
-          "role": "button",
-          "name": "Ya",
-          "testid": "bid-confirm-yes"
-        },
-        "Toast sukses": {
-          "role": "status",
-          "name": "Harga penawaran berhasil disimpan",
-          "testid": "bid-success-toast"
-        },
-        "Top 3": {
-          "role": "region",
-          "name": "Top 3",
-          "testid": "top-three"
-        }
-      }
+      "revision": "Rule user 2026-10-05; regresi rinci AMS009"
     },
     {
       "id": "AMS005-LIVE-BIDDING-VENDOR-NEG-017",

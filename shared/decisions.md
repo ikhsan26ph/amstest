@@ -209,3 +209,19 @@ harga Kadaluwarsa terverifikasi backend 409. Fixture order, harga N/A, dan harga
 - Batas: tidak seluruh record/paginasi; step yang memerlukan submit belum diperiksa; Input Harga Vendor tidak punya lelang sedang buka; Tambah Jadwal sampel ditolak karena melewati rencana akhir kirim. Sesi Vendor kemudian redirect login setelah cross-context check berhasil, penyebab belum dibuktikan.
 - Hipotesis diperbarui di CLAUDE.md: native click berhasil; dropdown kustom dengan select Tampilkan; datepicker dashboard flatpickr/form kustom; dialog Batal tanpa role; 0 data-testid. Tidak ada verdict skenario formal maupun report Excel dari eksplorasi ini.
 - Handoff: eksplorasi selesai sesuai cakupan read-only; run test-module sebelumnya tidak dilanjutkan oleh permintaan ini.
+
+## 2026-10-05 — Revisi rule Harga Penawaran dan pengecekan staging
+
+- User meminta pembaruan rule Harga Penawaran FCL/FTL, Bid/Edit, Kadaluwarsa dan Tidak Berlaku, lalu mengizinkan pembaruan skenario serta pengecekan staging. Untuk Closing Time, jalankan dahulu dan masukkan ketidakpastian/ketidaksesuaian dalam laporan; arah pembanding belum dikonfirmasi.
+- Rule terbaru menggantikan asumsi key duplikasi AMS004 dan versioning Edit/Bid AMS004/AMS005: FCL unik per vendor/lelang/pelayaran/kontainer, FTL per vendor/lelang/armada; harga/tanggal bukan pembeda. Bid/Edit update in-place; Bid hanya turun, Edit naik/turun. Kadaluwarsa terjadi setelah harga baru berhasil disimpan saat ulang berjalan. Masa berlaku < hari ini menjadi Tidak Berlaku, = hari ini inklusif, serta Rencana Akhir Kirim lewat menjadi Tidak Berlaku.
+- Regresi terfokus AMS009: **23 passed / 1 failed / 6 blocked / 0 skipped** (30). Semua input/keunikan, Bid/Edit kedua jenis, dan Lelang Ulang lulus pada fixture run.
+- Kandidat status/tampilan SCN-0025: Rencana Akhir Kirim lewat tetapi badge Tidak Berlaku tidak tampil; API EXPIRED, badge null, lelang Selesai. Bukan bukti backend mengabaikan expiry atau penawaran masih bisa dipakai order. Detail: `shared/bug-triage-harga-penawaran-20261005.md`.
+- Blocked: pemetaan tanggal akhir masa berlaku (UI Mulai Berlaku, SCN-0020/0021), transisi hari aktual (0022), arah Closing Time dan isolasi pemicu (0023/0024), akun vendor kedua (0027). Tidak diklaim passed atas asumsi.
+- Hasil: `results/ams009-harga-penawaran-rules__20261005-051211.json`; report: `reports/ams009-harga-penawaran-rules__20261005-051211.xlsx` dan batch01–03. Hasil lama dipertahankan; temuan historis versioning Edit/Bid bukan basis expected baru.
+- Fixture run tertinggal: FTL-NRM-12/051026, FCL-NRM-13/051026, FCL-NRM-14/051026 (putaran 1), berprefix AUTOTEST-20261005-RULES-. Daftar ID/harga/jadwal final: `artifacts/harga-rules/20261005-051211/fixtures-final.json`. Tidak memutasi data existing atau setting/master.
+
+## 2026-10-05 — Pembuatan lelang dan harga baru atas permintaan user
+
+- FCL-NRM-15/051026 (`3fb77d2b-45aa-4a8e-84e8-699331e7643a`): SPIL / 40 ft = Rp14.000.000; Meratus / 20 ft = Rp10.000.000. Vendor PT. Integrasi Kinerja (IK), durasi 1 Hari, buka 05/10/2026 13:16 WIB. Harga terverifikasi tersimpan dan AKTIF.
+- FTL-NRM-16/051026 (`0932660f-0348-413c-bbe7-893399849ec4`): CDE = Rp8.500.000; Pickup = Rp7.500.000. Vendor PT. Integrasi Kinerja (IK), durasi 1 Hari, buka 05/10/2026 13:17 WIB. Harga terverifikasi tersimpan dan AKTIF.
+- Prefix data `AUTOTEST-20261005-BARU-`; bukti dan ID harga: `artifacts/harga-rules/20261005-061519/new-prices.json`. Membuat 2 lelang dan 4 harga baru; tidak menjalankan ulang 30 skenario dan tidak mengubah hasil laporan sebelumnya.

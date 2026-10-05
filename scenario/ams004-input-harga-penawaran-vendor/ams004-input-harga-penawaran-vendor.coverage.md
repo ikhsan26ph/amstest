@@ -40,7 +40,7 @@ Seluruh 14 requirement memiliki sedikitnya satu skenario positive dan satu negat
 | Input Harga Penawaran FCL | AMS004-POS-005, AMS004-POS-006, AMS004-POS-008, AMS004-NEG-006, AMS004-NEG-008, AMS004-EDG-001, AMS004-STR-001, AMS004-STR-004 | No. Lelang, info umum, POL/POD, Multipickup/Multidrop dan dialog, banner DPP, seluruh field FCL, default/disabled, tambah/hapus baris, validasi, Batal/Simpan/konfirmasi |
 | Input Harga Penawaran FTL | AMS004-POS-007, AMS004-NEG-007, AMS004-EDG-002, AMS004-EDG-003 | Jenis Kendaraan, Harga, PPN/PPh, tanggal, Estimasi Pengiriman, deskripsi, multirow dan ikon hapus |
 | Daftar Penawaran | AMS004-POS-009 hingga AMS004-NEG-014, AMS004-EDG-005, AMS004-EDG-006, AMS004-STR-003 | lima tab, filter/reset, card/detail/badge, total pajak, connecting, action edit/hapus/jadwal/riwayat, alert, urutan, page size, pagination |
-| Edit Harga Penawaran | AMS004-POS-012, AMS004-NEG-012 | satu baris edit, tanpa Tambah Baris, konfirmasi, riwayat, Tidak Berlaku, alert lelang tutup |
+| Edit Harga Penawaran | AMS004-POS-012, AMS004-NEG-012 | satu baris edit, tanpa Tambah Baris, konfirmasi, riwayat, update record yang sama, tanpa versi Tidak Berlaku, alert lelang tutup |
 | Live Bidding Spot Rate | AMS004-POS-009, AMS004-EDG-004, AMS004-STR-002 | filter, ranking harga termurah per jenis, konkurensi, isolasi vendor |
 
 ## Gap dan Rekomendasi
@@ -59,3 +59,7 @@ Ambiguitas produk mengenai arti tanggal `Mulai Berlaku` versus contoh tanggal ak
 - Seluruh scenario JSON memiliki preconditions, steps terstruktur, expected, testData, dan selectorHints dengan `role`, `name`, serta `testid`.
 - Pemeriksaan deduplikasi tidak menemukan skenario identik atau tumpang tindih material. Tidak ada skenario yang dibuang.
 
+
+## Revisi 2026-10-05
+
+Rule duplikasi, Edit/Bid dan masa berlaku diperbarui sesuai user. Kasus batas dan regresi rinci: `../ams009-harga-penawaran-rules/`. Hasil run lama tetap bukti historis, tidak dihitung ulang terhadap rule baru.
