@@ -1,0 +1,339 @@
+{
+  "source": {
+    "document": "/home/icun/Produk/AMS/AMS008 - Negosiasi/Nego.docx",
+    "scope": "Regresi DOCX; tidak mengganti 49 skenario lama. Kasus 1-12 observasi UI dan validasi sampai konfirmasi; bukan bukti submit end-to-end.",
+    "requirements": {
+      "DOC-PRICE": "Harga respons vendor terakhir menjadi harga aktif",
+      "DOC-HISTORY": "Harga dan aktivitas tercatat di riwayat",
+      "DOC-REOPEN": "Status final putaran tidak menutup kesempatan nego berikutnya",
+      "DOC-AMOUNT": "Nominal shipper bebas naik/turun antarputaran dan harus di bawah harga saat ini",
+      "DOC-ACTOR": "Hak aksi aktor; konflik teks perlu klarifikasi",
+      "DOC-STATUS": "Status Negosiasi setelah pengajuan ulang belum terpetakan",
+      "DOC-TIMER": "Timeout dan counting hari kedua pihak",
+      "DOC-ROUND": "Batas lima putaran bertentangan dengan tidak ada batasan",
+      "DOC-FCL": "Kelayakan FCL belum jelas"
+    }
+  },
+  "scenarios": [
+    {
+      "id": "SCN-0001",
+      "title": "Harga Terbaru mempertahankan balasan 191.000 setelah penolakan",
+      "category": "positive",
+      "priority": "high",
+      "screen": "SCR-01",
+      "requirements": [
+        "DOC-PRICE"
+      ],
+      "steps": [
+        "Buka daftar shipper; baca FTL-NRM-08/051026 Solutiva"
+      ],
+      "expected": [
+        "Harga Terbaru 191.000; Harga Awal 198.000"
+      ]
+    },
+    {
+      "id": "SCN-0002",
+      "title": "Harga Saat Ini detail mempertahankan 191.000 setelah penolakan",
+      "category": "positive",
+      "priority": "high",
+      "screen": "SCR-02",
+      "requirements": [
+        "DOC-PRICE"
+      ],
+      "steps": [
+        "Buka Detail Nego dari baris Solutiva FTL-NRM-08/051026"
+      ],
+      "expected": [
+        "Harga Saat Ini 191.000; Nominal Nego 186.000"
+      ]
+    },
+    {
+      "id": "SCN-0003",
+      "title": "Riwayat menyimpan balasan vendor dan penolakan tanpa harga baru",
+      "category": "positive",
+      "priority": "high",
+      "screen": "SCR-02",
+      "requirements": [
+        "DOC-HISTORY"
+      ],
+      "steps": [
+        "Periksa riwayat detail Solutiva FTL-NRM-08/051026"
+      ],
+      "expected": [
+        "Putaran 1 memuat 190.000 dan 191.000; putaran 2 memuat 186.000, Ditolak dan Harga Baru -"
+      ]
+    },
+    {
+      "id": "SCN-0004",
+      "title": "Harga penawaran demo memakai harga respons terakhir 450.000",
+      "category": "positive",
+      "priority": "high",
+      "screen": "SCR-03",
+      "requirements": [
+        "DOC-PRICE"
+      ],
+      "steps": [
+        "Buka penawaran demo FTL-NRM-09/051026"
+      ],
+      "expected": [
+        "Card Astra menampilkan 450.000 dan Nego 3x"
+      ]
+    },
+    {
+      "id": "SCN-0005",
+      "title": "Penawaran Nego Berakhir dapat dipilih untuk pengajuan ulang",
+      "category": "positive",
+      "priority": "high",
+      "screen": "SCR-04",
+      "requirements": [
+        "DOC-REOPEN"
+      ],
+      "steps": [
+        "Dari penawaran demo klik Ajukan Nego dan pilih Astra"
+      ],
+      "expected": [
+        "Card Astra dapat dipilih; counter 1 Terpilih"
+      ]
+    },
+    {
+      "id": "SCN-0006",
+      "title": "Nominal di atas nego pertama mencapai konfirmasi",
+      "category": "positive",
+      "priority": "high",
+      "screen": "SCR-04",
+      "requirements": [
+        "DOC-AMOUNT"
+      ],
+      "steps": [
+        "Pilih Astra; isi 425000; Kirim; batalkan konfirmasi"
+      ],
+      "expected": [
+        "Konfirmasi 1 penawaran muncul; tidak ditolak karena nego pertama 400.000"
+      ]
+    },
+    {
+      "id": "SCN-0007",
+      "title": "Nominal lebih rendah dari nego sebelumnya mencapai konfirmasi",
+      "category": "positive",
+      "priority": "high",
+      "screen": "SCR-04",
+      "requirements": [
+        "DOC-AMOUNT"
+      ],
+      "steps": [
+        "Pilih Astra; isi 350000; Kirim; batalkan konfirmasi"
+      ],
+      "expected": [
+        "Konfirmasi 1 penawaran muncul"
+      ]
+    },
+    {
+      "id": "SCN-0008",
+      "title": "Nominal sama harga saat ini ditolak dengan pesan baru",
+      "category": "negative",
+      "priority": "high",
+      "screen": "SCR-04",
+      "requirements": [
+        "DOC-AMOUNT"
+      ],
+      "steps": [
+        "Pilih Astra; isi 450000; Kirim"
+      ],
+      "expected": [
+        "Nominal nego tidak dapat sama / lebih tinggi dari harga sebelumnya."
+      ]
+    },
+    {
+      "id": "SCN-0009",
+      "title": "Nominal di atas harga saat ini ditolak",
+      "category": "negative",
+      "priority": "high",
+      "screen": "SCR-04",
+      "requirements": [
+        "DOC-AMOUNT"
+      ],
+      "steps": [
+        "Pilih Astra; isi 450001; Kirim"
+      ],
+      "expected": [
+        "Validasi nominal muncul; tidak ada konfirmasi pengajuan"
+      ]
+    },
+    {
+      "id": "SCN-0010",
+      "title": "Pembatalan konfirmasi tidak menambah putaran",
+      "category": "negative",
+      "priority": "high",
+      "screen": "SCR-01",
+      "requirements": [
+        "DOC-REOPEN"
+      ],
+      "steps": [
+        "Batalkan konfirmasi; kembali ke daftar"
+      ],
+      "expected": [
+        "Demo masih Nego #3 dan Nego Berakhir"
+      ]
+    },
+    {
+      "id": "SCN-0011",
+      "title": "Pengajuan ulang setelah Diterima mencapai konfirmasi",
+      "category": "positive",
+      "priority": "high",
+      "screen": "SCR-04",
+      "requirements": [
+        "DOC-REOPEN"
+      ],
+      "steps": [
+        "Buka penawaran FTL-NRM-27/051026; pilih Solutiva yang Diterima; isi nilai di bawah harga saat ini; Kirim; batalkan konfirmasi"
+      ],
+      "expected": [
+        "Penawaran Diterima bisa dipilih dan mencapai konfirmasi"
+      ]
+    },
+    {
+      "id": "SCN-0012",
+      "title": "Daftar vendor memisahkan hak akses dari daftar shipper",
+      "category": "positive",
+      "priority": "high",
+      "screen": "SCR-05",
+      "requirements": [
+        "DOC-ACTOR"
+      ],
+      "steps": [
+        "Login vendor tersedia; buka daftar negosiasi"
+      ],
+      "expected": [
+        "Tab Menunggu Shipper tersedia; Tidak Direspons tidak tersedia; data vendor lain tidak ditampilkan"
+      ]
+    },
+    {
+      "id": "SCN-0013",
+      "title": "Pengajuan ulang benar-benar tersimpan dan mengubah status",
+      "category": "positive",
+      "priority": "high",
+      "screen": "SCR-04",
+      "requirements": [
+        "DOC-STATUS"
+      ],
+      "steps": [
+        "Ajukan ulang; verifikasi status kedua pihak"
+      ],
+      "expected": [
+        "Putaran bertambah dan status pengajuan ulang sesuai keputusan produk"
+      ]
+    },
+    {
+      "id": "SCN-0014",
+      "title": "Vendor menerima dan harga aktif berubah lintas layar",
+      "category": "positive",
+      "priority": "high",
+      "screen": "SCR-06",
+      "requirements": [
+        "DOC-PRICE"
+      ],
+      "steps": [
+        "Login vendor pemilik penawaran dan Terima Nego"
+      ],
+      "expected": [
+        "Harga diterima konsisten di kedua pihak dan penawaran"
+      ]
+    },
+    {
+      "id": "SCN-0015",
+      "title": "Vendor membalas dan harga baru menjadi acuan langsung",
+      "category": "positive",
+      "priority": "high",
+      "screen": "SCR-06",
+      "requirements": [
+        "DOC-PRICE"
+      ],
+      "steps": [
+        "Login vendor pemilik penawaran dan Ajukan Balasan"
+      ],
+      "expected": [
+        "Harga Saat Ini langsung mengikuti balasan"
+      ]
+    },
+    {
+      "id": "SCN-0016",
+      "title": "Deadline shipper mengakhiri nego dan menampilkan counting hari",
+      "category": "edge",
+      "priority": "high",
+      "screen": "SCR-02",
+      "requirements": [
+        "DOC-TIMER"
+      ],
+      "steps": [
+        "Siapkan nego Perlu Aksi shipper; amati sebelum dan sesudah deadline"
+      ],
+      "expected": [
+        "Counting hari tampil; lewat deadline menjadi Nego Berakhir"
+      ]
+    },
+    {
+      "id": "SCN-0017",
+      "title": "Deadline vendor mengubah status menjadi Tidak Direspons",
+      "category": "edge",
+      "priority": "high",
+      "screen": "SCR-06",
+      "requirements": [
+        "DOC-TIMER"
+      ],
+      "steps": [
+        "Siapkan nego Perlu Aksi vendor; amati sebelum dan sesudah deadline"
+      ],
+      "expected": [
+        "Lewat deadline menjadi Tidak Direspons"
+      ]
+    },
+    {
+      "id": "SCN-0018",
+      "title": "Batas putaran keenam mengikuti keputusan aturan terbaru",
+      "category": "edge",
+      "priority": "high",
+      "screen": "SCR-04",
+      "requirements": [
+        "DOC-ROUND"
+      ],
+      "steps": [
+        "Siapkan lima putaran; ajukan keenam"
+      ],
+      "expected": [
+        "Expected ditetapkan setelah konflik Tidak ada batasan / Ada 5 diklarifikasi"
+      ]
+    },
+    {
+      "id": "SCN-0019",
+      "title": "Nego FCL tanpa jadwal dan melewati Closing Time",
+      "category": "edge",
+      "priority": "high",
+      "screen": "SCR-04",
+      "requirements": [
+        "DOC-FCL"
+      ],
+      "steps": [
+        "Siapkan FCL tanpa jadwal dan FCL melewati Closing Time"
+      ],
+      "expected": [
+        "Expected ditetapkan setelah kelayakan kedua kondisi diklarifikasi"
+      ]
+    },
+    {
+      "id": "SCN-0020",
+      "title": "Aksi shipper dan batas balasan vendor mengikuti keputusan produk",
+      "category": "edge",
+      "priority": "high",
+      "screen": "SCR-02",
+      "requirements": [
+        "DOC-ACTOR"
+      ],
+      "steps": [
+        "Siapkan Perlu Aksi shipper dan vendor; periksa aksi dan nominal"
+      ],
+      "expected": [
+        "Expected ditetapkan setelah konflik aksi shipper dan batas respon akhir diklarifikasi"
+      ]
+    }
+  ]
+}
