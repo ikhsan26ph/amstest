@@ -225,3 +225,13 @@ harga Kadaluwarsa terverifikasi backend 409. Fixture order, harga N/A, dan harga
 - FCL-NRM-15/051026 (`3fb77d2b-45aa-4a8e-84e8-699331e7643a`): SPIL / 40 ft = Rp14.000.000; Meratus / 20 ft = Rp10.000.000. Vendor PT. Integrasi Kinerja (IK), durasi 1 Hari, buka 05/10/2026 13:16 WIB. Harga terverifikasi tersimpan dan AKTIF.
 - FTL-NRM-16/051026 (`0932660f-0348-413c-bbe7-893399849ec4`): CDE = Rp8.500.000; Pickup = Rp7.500.000. Vendor PT. Integrasi Kinerja (IK), durasi 1 Hari, buka 05/10/2026 13:17 WIB. Harga terverifikasi tersimpan dan AKTIF.
 - Prefix data `AUTOTEST-20261005-BARU-`; bukti dan ID harga: `artifacts/harga-rules/20261005-061519/new-prices.json`. Membuat 2 lelang dan 4 harga baru; tidak menjalankan ulang 30 skenario dan tidak mengubah hasil laporan sebelumnya.
+
+## 2026-10-05 — AMS004 full non-stress setelah persetujuan user
+
+- User menyetujui plan 34 skenario dengan “lanjutkan”. Run `20261005-072048`: **16 passed / 12 failed / 6 blocked / 4 skipped** (38 total; empat stress tidak diminta).
+- Lulus: input FCL/FTL, dua kombinasi berbeda, validasi atomik, Rp1, angka besar/1 jam, ikon baris, Edit in-place/audit, Lelang Ulang/read-only harga lama, penolakan simpan setelah waktu tutup nyata, pembatasan jadwal setelah akhir kirim, dropdown eligible, pagination20+1/Reset.
+- Failed mencakup 7 probable bug (termasuk duplikasi kasus Batal) dan 5 gap desain. SCN0008/0024/0026 hanya wording alert; enforcement closed terverifikasi. Temuan utama: PPN/PPh editable default0, Batal tanpa konfirmasi/konteks asal, section/filter tidak tersedia, UI audit hapus tidak terbuka, dan tanggal lampau tanpa validasi UI. Audit backend/cascade jadwal tidak dinyatakan hilang.
+- Blocked: akun/penawaran vendor kedua (0001/0006), master PPN1,1/PPh2 (0017), request jadwal/connecting (0027), fixture legacy tiga harga aktif armada sama yang bertentangan rule baru (0032), dan akhir masa berlaku/pergantian hari aktual (0033).
+- Fixture sendiri: FCL-NRM-19, FCL-MPT-20, FTL-NRM-21, FTL-NRM-22, FCL-NRM-23, FCL-NRM-24, FCL-NRM-25/051026. FCL25 putaran1. Hapus hanya satu harga/jadwal pada FCL24 milik run ini. Skenario privat membaca fixture existing saja; tidak memutasi master/setting/data lain. Daftar final: `artifacts/ams004-run/20261005-072048/fixtures-final.json`.
+- Pemulihan selector/data assertion dicatat pada triase; seluruh verdict dan metadata38 diverifikasi. Tidak ada timeout executor yang disisakan sebagai bug aplikasi. Hasil lama tidak ditimpa.
+- Report final: `reports/ams004-input-harga-penawaran-vendor__20261005-072048.xlsx`; batch01–03 dibuat. Triase: `shared/bug-triage-ams004-20261005.md`. JSON: `results/ams004-input-harga-penawaran-vendor__20261005-072048.json`.
