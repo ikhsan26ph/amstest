@@ -4,11 +4,13 @@
 Usage:
     python scripts/generate_report.py results/<modul>__<runId>.json [file2.json ...]
     python scripts/generate_report.py --all   # gabungkan run TERBARU per modul
+    python scripts/generate_report.py --explore explore/<laporan-gabungan>.md
 
 Output: reports/<modul>__<runId>.xlsx  (atau reports/rekap-all__<timestamp>.xlsx untuk --all)
 Sheet: Summary, Detail, Failed_BugCandidates
 """
 import json
+import re
 import sys
 from datetime import datetime
 from pathlib import Path
@@ -176,11 +178,110 @@ def write_failed(ws, runs):
     ws.freeze_panes = "A2"
 
 
+def write_explore_report(source):
+    """Konversi dokumentasi eksplorasi tanpa membuat verdict skenario sintetis."""
+    source = source.resolve()
+    sections = {}
+    current = "Judul"
+    for line in source.read_text(encoding="utf-8").splitlines():
+        if line.startswith("## "):
+            current = line[3:]
+        else:
+            sections.setdefault(current, []).append(line)
+
+    def plain(text):
+        text = re.sub(r"\[([^]]+)\]\(([^)]+)\)", r"\1 (\2)", text)
+        return text.replace("**", "").replace("`", "")
+
+    wb = Workbook()
+    wb.remove(wb.active)
+    names = {
+        "Judul": "Identitas",
+        "Ringkasan hasil": "Ringkasan",
+        "Cakupan dan sumber per batch": "Cakupan Batch",
+        "Register temuan gabungan": "Temuan",
+        "Rule dan keputusan yang menjadi acuan": "Rule dan Keputusan",
+        "Backlog improve gabungan": "Improve",
+        "Urutan tindak lanjut per batch": "Tindak Lanjut",
+        "Bukti, metode dan keterbatasan": "Bukti dan Batas",
+        "Berkas laporan": "Berkas Laporan",
+    }
+    for heading, lines in sections.items():
+        ws = wb.create_sheet(names.get(heading, heading[:31]))
+        ws.append([heading if heading != "Judul" else "Laporan Gabungan Eksplorasi AMS — Batch 01–10"])
+        ws["A1"].font = TITLE_FONT
+        header_row = None
+        end_table = None
+        for line in lines:
+            if not line.strip() or line.startswith("# "):
+                continue
+            if line.startswith("|"):
+                cells = [c.strip() for c in line.strip().strip("|").split("|")]
+                if all(re.fullmatch(r":?-+:?", c) for c in cells):
+                    continue
+                ws.append([plain(c) for c in cells])
+                if header_row is None:
+                    header_row = ws.max_row
+                    for c in ws[header_row]:
+                        c.font, c.fill = HDR_FONT, HDR_FILL
+                end_table = ws.max_row
+            else:
+                ws.append([plain(line.removeprefix("- "))])
+        columns = max(ws.max_column, 1)
+        for row in ws.iter_rows(min_row=2):
+            for c in row:
+                if c.row != header_row:
+                    c.font = BASE_FONT
+                c.alignment = Alignment(vertical="top", wrap_text=True)
+                c.border = BORDER
+                # Dokumentasi tidak dieksekusi sebagai formula Excel.
+                if isinstance(c.value, str):
+                    c.data_type = "s"
+            if columns > 1 and all(c.value is None for c in row[1:]):
+                ws.merge_cells(start_row=row[0].row, start_column=1,
+                               end_row=row[0].row, end_column=columns)
+        for i in range(1, columns + 1):
+            ws.column_dimensions[get_column_letter(i)].width = 34 if columns > 1 else 115
+        if columns >= 4:
+            ws.column_dimensions["A"].width = 28
+            ws.column_dimensions[get_column_letter(columns)].width = 65
+            ws.column_dimensions[get_column_letter(columns - 1)].width = 65
+        for row in ws.iter_rows(min_row=2):
+            lengths = []
+            for c in row:
+                if c.value:
+                    width = ws.column_dimensions[c.column_letter].width
+                    if columns > 1 and all(x.value is None for x in row[1:]):
+                        width = sum(ws.column_dimensions[get_column_letter(i)].width for i in range(1, columns + 1))
+                    lengths.append((len(str(c.value)) // max(int(width * .9), 1) + 2) * 15)
+            ws.row_dimensions[row[0].row].height = min(409, max(lengths or [30]))
+        ws.freeze_panes = f"A{(header_row or 1) + 1}"
+        if header_row:
+            ws.auto_filter.ref = f"A{header_row}:{get_column_letter(columns)}{end_table}"
+            ws.print_title_rows = f"1:{header_row}"
+        ws.sheet_view.showGridLines = False
+        ws.sheet_properties.pageSetUpPr.fitToPage = True
+        ws.page_setup.orientation = "landscape"
+        ws.page_setup.paperSize = ws.PAPERSIZE_A3
+        ws.page_setup.fitToWidth = 1
+        ws.page_setup.fitToHeight = 0
+    REPORTS.mkdir(exist_ok=True)
+    out = REPORTS / f"{source.stem}.xlsx"
+    wb.save(out)
+    print(f"Report eksplorasi tersimpan: {out}")
+    return out
+
+
 def main():
     args = sys.argv[1:]
     if not args:
         print(__doc__)
         sys.exit(1)
+    if args[0] == "--explore":
+        if len(args) != 2 or not Path(args[1]).is_file():
+            sys.exit("Usage: generate_report.py --explore explore/<laporan-gabungan>.md")
+        write_explore_report(Path(args[1]))
+        return
     paths = latest_per_module() if args == ["--all"] else [Path(a) for a in args]
     missing = [p for p in paths if not Path(p).exists()]
     if missing:

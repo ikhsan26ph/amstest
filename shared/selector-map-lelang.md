@@ -41,7 +41,7 @@ Pemetaan browser dilakukan pada `/lelang`, panel Filter, `/lelang/buat` mode FTL
 |---|---|---|---|---|
 | list-lelang | Buat Lelang | `page.getByRole('button', { name: 'Buat Lelang' })` | role | Navigasi ke `/lelang/buat`; tidak ada modal pilih jenis |
 | list-lelang | Riwayat Pembatalan | `page.getByRole('button', { name: 'Riwayat Pembatalan' })` | role | Navigasi ke riwayat pembatalan |
-| list-lelang | Filter | `page.getByRole('button', { name: 'Filter', exact: true })` | role | 2026-09-25 membuka panel Filter Lelang |
+| list-lelang | Filter | `page.getByRole('button', { name: /^Filter/ })` | role | 2026-10-08: nama saat aktif FilterFilter aktif; exact Filter hanya sebelum aktif |
 | list-lelang | Tampilkan | `page.locator('select')` | TIDAK STABIL | Satu-satunya `<select>` native; opsi 10/20/50/100 |
 | list-lelang | Semua Lelang | `page.getByRole('button', { name: /^Semua Lelang/ })` | role | Elemen berupa button, bukan `role=tab` |
 | list-lelang | Lelang Ulang | `page.getByRole('button', { name: /^Lelang Ulang/ })` | role | Nama berisi counter, mis. `Lelang Ulang 1` |
@@ -56,13 +56,13 @@ Pemetaan browser dilakukan pada `/lelang`, panel Filter, `/lelang/buat` mode FTL
 | list-lelang | Halaman berikutnya/sebelumnya | tombol ikon paging tanpa teks | TIDAK STABIL | Gunakan posisi dekat teks jumlah data bila terpaksa |
 | list-lelang | Detail | `page.getByRole('button', { name: 'Detail' })` | role | Setelah menu aksi dibuka; scope menu/card |
 | list-lelang | Edit Data | `page.getByRole('button', { name: 'Edit Data' })` | role | Item tidak relevan bisa tetap terlihat abu-abu |
-| list-lelang | Tambah Peserta Lelang | `page.getByRole('button', { name: 'Tambah Peserta Lelang' })` | role | Scope menu/card |
+| list-lelang | Edit Peserta Lelang | `page.getByRole('button', { name: 'Edit Peserta Lelang', exact: true })` | role | Label aktual 2026-10-08; route belum dipetakan ulang |
 | list-lelang | Lihat Penawaran | `page.getByRole('button', { name: 'Lihat Penawaran' })` | role | Scope menu/card |
 | list-lelang | Lelang Ulang | `page.getByRole('button', { name: 'Lelang Ulang' })` | role | Scope menu/card |
 | list-lelang | Batalkan Lelang | `page.getByRole('button', { name: 'Batalkan Lelang' })` | role | Jangan submit pembatalan pada data orang lain |
 | list-lelang | Riwayat Perubahan | `page.getByRole('button', { name: 'Riwayat Perubahan' })` | role | Scope menu/card |
 | list-lelang | Riwayat Lelang Ulang | `page.getByRole('button', { name: 'Riwayat Lelang Ulang' })` | role | Scope menu/card |
-| list-lelang | Hapus Draft | `page.getByRole('button', { name: 'Hapus Draft' })` | role | Jangan konfirmasi hapus kecuali data dibuat run sendiri |
+| list-lelang | Hapus Draf | `page.getByRole('button', { name: 'Hapus Draf', exact: true })` | role | Label aktual 2026-10-08; aksi tidak diklik |
 
 ## filter-lelang (`/lelang` -> Filter)
 
@@ -107,8 +107,8 @@ Pemetaan browser dilakukan pada `/lelang`, panel Filter, `/lelang/buat` mode FTL
 | informasi-umum | Tutup Lelang | `page.getByPlaceholder('DD/MM/YYYY hh:mm')` | placeholder | Input disabled/read-only |
 | informasi-umum | Rencana Awal Kirim | `page.locator('div[role="button"]').filter({ hasText: 'DD/MM/YYYY hh:mm' }).nth(1)` | TIDAK STABIL | Index berubah jika field periode salin aktif |
 | informasi-umum | Rencana Akhir Kirim | `page.locator('div[role="button"]').filter({ hasText: 'DD/MM/YYYY hh:mm' }).nth(2)` | TIDAK STABIL | Index berubah jika field periode salin aktif |
-| informasi-umum | Jumlah Armada | locator input di bawah label `Jumlah Armada` | TIDAK STABIL | FTL |
-| informasi-umum | Jumlah Kontainer | locator input di bawah label `Jumlah Kontainer` | TIDAK STABIL | FCL |
+| informasi-umum | Jumlah Armada | — | Tidak berlaku | Ditiadakan sesuai user di shared/decisions.md; jangan mencari input atau melaporkan missing field |
+| informasi-umum | Jumlah Kontainer | — | Tidak berlaku | Ditiadakan sesuai user di shared/decisions.md; jangan mencari input atau melaporkan missing field |
 | informasi-umum | Jenis Armada | `page.locator('button').filter({ hasText: 'Pilih Jenis Armada' })` | text | FTL |
 | informasi-umum | Jenis Kontainer | `page.locator('button').filter({ hasText: 'Pilih Jenis Kontainer' })` | text | FCL |
 | informasi-umum | Deskripsi Barang | `page.getByPlaceholder('Masukkan Deskripsi Barang')` | placeholder | Textarea |
@@ -166,7 +166,7 @@ Pemetaan browser dilakukan pada `/lelang`, panel Filter, `/lelang/buat` mode FTL
 |---|---|---|---|---|
 | peserta-lelang | Cari nama vendor | `page.getByPlaceholder('Cari nama vendor')` | placeholder | Belum diverifikasi ulang 2026-09-25 karena step 02 butuh data valid |
 | peserta-lelang | Semua Kota | `page.locator('button').filter({ hasText: 'Semua Kota' })` | text | Dari catatan sebelumnya |
-| peserta-lelang | Semua Rating | `page.locator('button').filter({ hasText: 'Semua Rating' })` | text | Dari catatan sebelumnya |
+| peserta-lelang | Semua Rating | — | Tidak ditemukan | 2026-10-08: tidak terlihat di peserta FTL/FCL dan ulang; expected perlu triage |
 | peserta-lelang | Pilih Semua | `page.getByText(/Pilih semua vendor|Pilih Semua/)` | text | Dari catatan sebelumnya |
 | peserta-lelang | Tampilkan | `page.locator('select')` atau combobox vendor | TIDAK STABIL | Perlu verifikasi saat step 02 bisa dibuka aman |
 | peserta-lelang | Batal | `page.getByRole('button', { name: 'Batal' })` | role | |
@@ -197,7 +197,7 @@ Pemetaan browser dilakukan pada `/lelang`, panel Filter, `/lelang/buat` mode FTL
 - `lelang-filter-panel`, `lelang-filter-no`, `lelang-filter-jenis`, `lelang-filter-tipe`, `lelang-filter-status`
 - `buat-lelang-jenis-ftl`, `buat-lelang-jenis-fcl`
 - `buat-lelang-durasi`, `buat-lelang-buka`, `buat-lelang-tutup`, `buat-lelang-awal-kirim`, `buat-lelang-akhir-kirim`
-- `buat-lelang-jenis-armada`, `buat-lelang-jenis-kontainer`, `buat-lelang-jumlah-armada`, `buat-lelang-jumlah-kontainer`
+- `buat-lelang-jenis-armada`, `buat-lelang-jenis-kontainer`
 - `buat-lelang-drop-point-asal-{n}`, `buat-lelang-pengirim-{n}`, `buat-lelang-pic-pengirim-{n}`, `buat-lelang-wa-pengirim-{n}`
 - `buat-lelang-drop-point-tujuan-{n}`, `buat-lelang-penerima-{n}`, `buat-lelang-pic-penerima-{n}`, `buat-lelang-wa-penerima-{n}`
 - `buat-lelang-add-pengirim`, `buat-lelang-add-penerima`, `buat-lelang-submit-next`, `buat-lelang-save-draft`
@@ -211,3 +211,25 @@ Tidak ada perubahan status hipotesis pada 2026-09-25.
 - #4 datepicker `/lelang/buat` tetap kustom berbasis `button`, berbeda dari flatpickr dashboard.
 - #5 modal konfirmasi Batal tetap tanpa `role="dialog"`.
 - #6 `data-testid` tetap tidak ditemukan (`0` pada list, filter, form, datepicker, dialog).
+
+## Verifikasi tambahan 2026-10-08 — Batch 02
+
+Bagian SKIPPED di atas adalah status historis 25 September. [Laporan Batch02](../explore/explore-batch02-20261008.md) memperbarui peserta via resume draf, detail, riwayat dan ulang; edit submitted/edit peserta/riwayat ulang belum dipetakan ulang.
+
+| Area | Selector/route diamati | Catatan |
+|---|---|---|
+| Card Aksi | `page.getByText(noLelang, {exact:true}).locator('../..').getByRole('button')` | Berhasil Admin/Vendor sampel; fallback struktur DOM, bukan kontrak stabil; tombol title=Aksi tanpa aria-label |
+| Draf Edit Data | `/lelang/buat?id={draftId}` | Dari UI; bisa langsung step02, berbeda dari edit submitted |
+| Peserta cari vendor | `page.getByPlaceholder('Cari nama vendor')` | Step02 draf FTL/FCL diverifikasi |
+| Peserta kota | `page.getByRole('button', {name:'Semua Kota', exact:true})` | Kustom; Surabaya10→4 |
+| Peserta page-size | `page.locator('select')` | Native20/50/100; scope bila ada select lain |
+| Kalender waktu | `page.getByLabel('Waktu (24 jam)')` | HH:mm pada popover; scope trigger menurut label |
+| Riwayat perubahan Admin | `/lelang/{id}/riwayat` | FCL03 terbuka, empty state; tunggu URL sebelum inventory |
+| Riwayat pembatalan | `/lelang/riwayat-pembatalan` | Data existing |
+| Ulang | `/lelang/{id}/ulang` | FTL/FCL read-only; Simpan mutasi |
+| Vendor search | `page.getByPlaceholder('Cari No. Lelang / pelabuhan')` | Isi+Enter, clear+Enter; empty state diverifikasi |
+| Vendor detail | `/vendor-portal/lelang/{id}` | Menu Detail; harga sendiri ada pada halaman |
+
+Tunggu data/URL aktual sebelum snapshot. Snapshot sebelum data siap bukan bukti dropdown kosong atau 404. Tidak submit atau memetakan aksi harga Batch05.
+
+Menu Vendor `Riwayat Perubahan` diverifikasi dua kali pada FCL03: menuju `/vendor-portal/penawaran` tanpa scope lelang (B02-C03), sehingga jangan memakai hasil navigasi ini sebagai route riwayat yang benar.

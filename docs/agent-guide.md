@@ -134,6 +134,10 @@ Catatan eksplorasi 2026-10-04: pemeriksaan Vendor menerima `storageState` pada c
   nama tool tertentu tersedia atau menurunkan pengamanan agar bisa memakainya.
 - Untuk diagnosis, gunakan `browser_find` bila tersedia; jika tidak, gunakan
   locator melalui tool run-code. Snapshot tetap terbatas untuk explore/harvest/diagnosis.
+- Komponen AMS tidak seragam: filter Dashboard Lelang memakai dropdown kustom,
+  Tipe Order Operasional memakai select native; modal pengelompokan jumlah order
+  memakai role=dialog, sedangkan beberapa dialog lelang tidak (bukti 2026-10-08
+  dan 2026-10-04, lihat CLAUDE.md). Tentukan locator dari elemen aktual.
 - Jika kemampuan browser yang diperlukan tidak tersedia, laporkan hambatan dan
   tandai skenario terdampak `blocked`; jangan mengarang hasil pengujian.
 - Jangan menulis password, token, cookie, atau storage sesi ke dokumentasi/laporan.
@@ -153,3 +157,45 @@ Catatan eksplorasi 2026-10-04: pemeriksaan Vendor menerima `storageState` pada c
   disediakan; tambahkan penanda agent/run setelah prefix `AUTOTEST-<tanggal>-` jika
   skenario mengizinkan. Bila isolasi data/sesi tidak tersedia, jalankan test bergantian.
 - Jangan menimpa hasil run lama. Pertahankan format runId yang digunakan runner.
+
+Catatan locator eksplorasi Batch06 (8 Oktober 2026): Negosiasi memakai tab role=tab,
+filter dropdown button/listbox/option dan ukuran halaman select native. Link Tidak Direspons
+serta link Batal form bulk bukan button. Scope Aksi negosiasi pada role row berisi nomorlelang
++vendor; tabel mempunyai baris kosong sehingga tbodytr.first tidak aman. Modal respons
+Vendor dan Ajukan Shipper pada sampel tidak memakai role=dialog. Lihat
+shared/selector-map-negosiasi.md; guard pending tetap harus diperiksa, bukan disimpulkan
+dari disabled DOM. Tidak memerlukan perubahan pola fixture/login.
+
+
+Catatan eksplorasi Batch07: list/form Order memakai klik native, dropdown kustom dan select
+ukuran halaman native. Filter Order Vendor memakai flatpickr70sel hari; Batal Order/Batch dan
+picker barang tidak memakai role=dialog pada sampel. Lihat shared/selector-map-order-tracking-muatan.md.
+Perhitungan baca Simulator/Visualisasi Order memakai POST; bila guard jaringan digunakan,
+klasifikasikan fungsi dari UI/prosedur sebelum memberi allowlist endpoint spesifik.
+Jangan membuka semua POST atau menganggap error akibat abort harness sebagai bug aplikasi.
+Next wizard Order dapat menyimpan progress; tidak dijalankan dalam eksplorasi baca.
+
+
+Catatan Batch08: Master Wilayah/Drop Point memakai klik native, dropdown wilayah kustom
+button/option dan Tampilkan select native. Filter harus dibuka eksplisit; visibility Reset di
+panel terklip tidak membuktikan panel siap diklik. Form edit perusahaan/lookup kelurahan
+Drop Point render async: tunggu nilai existing selesai sebelum menyimpulkan data hilang.
+Toggle Tambah Detail Lainnya ditemukan lewat teks, bukan role button pada sampel.
+Lihat shared/selector-map-master-wilayah-drop-point.md. Login/fixture tidak diubah.
+
+
+Catatan Batch09: Tambah Jenis Kontainer memakai route dari link UI
+/master/unit/tambah-jenis-kontainer. Jangan menebak path dari nama master.
+Tab Unit/riwayat merender skeleton sebelum data; tunggu settled sebelum menyimpulkan0record.
+Tanggal Update Unit memakai flatpickr42sel. Promise download harus segera memiliki catch
+agar kegagalan endpoint tidak menghentikan harness; CS template404PRODUCT_NOT_ACTIVE adalah
+observasi endpoint, berbeda dari path yang salah. Lihat shared/selector-map-master-operasional-vendor.md.
+
+
+Catatan Batch10: Pengaturan Sistem berada di /setting/sistem. Tambah Hak Akses adalahbutton,
+EditInformasiVendor berpindah kehalaman /vendor-portal/akun-saya/edit secaraasync.
+Batalprofile/password dapat membuka konfirmasi; tutup sebelum berinteraksi denganheader.
+Lanjutkan UbahPassword mengarahkirimOTP, KirimUndangan Vendor dan TandaiDibaca/HapusNotif
+adalah aksi tulis/kirim dan tidak dijalankan dalam explorebaca. Bell tanpa accessible name
+pada sampel; periksaSVGBell/visibility dan duaversi responsiveDOM.
+Lihat shared/selector-map-vendor-akun-setting-notifikasi.md. Login/fixture tidakdiubah.
