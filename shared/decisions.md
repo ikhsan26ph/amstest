@@ -383,3 +383,95 @@ Atas permintaan user, dibuat [laporan gabungan](../explore/explore-consolidated-
 ## 2026-10-08 — format laporan gabungan Excel saja
 
 User meminta laporan dalam format Excel saja dan menanyakan perlunya menghapus laporan per batch. Sumber per batch tetap dipertahankan untuk traceability; Markdown gabungan menjadi sumber regenerasi. Generator scripts/generate_report.py mendukung --explore tanpa verdict sintetis. PDF/HTML/TXT hasil konversi gabungan diganti dengan workbook Excel; ekspor aplikasi dan artefak batch tidak dihapus.
+
+## 2026-10-08 — ams009-order-penugasan-fcl, run 20261008-191943
+
+- User menyetujui 262 non-stress. Precondition check live: Admin 4 order existing, Vendor 0 order dan Tracking kosong; kedua login sukses. Tidak menjalankan mutasi bisnis.
+- Seluruh 262 non-stress blocked sebelum steps/assertion formal: belum ada fixture isolasi/mapping, clock backend 8 Oktober berbeda dari clockWib tetap 7 Oktober, dan baseline OMS/helper belum tersedia. Tidak menganggap observasi wizard parsial sebagai passed. 20 stress skipped.
+- Normalisasi sumber asli `.scenarios.json` ke `_scenarios.json` sesuai scenario/README.md (SCN-0001..0282, ID asli di sourceId); sumber asli tidak diubah. Dokumen ui-inventory dan inputs sumber belum tersedia di repository. Selector menggunakan shared/selector-map-order-tracking-muatan.md.
+- 18 JSON/report batch serta JSON/report final tersedia; triage shared/bug-triage-ams009-order-penugasan-fcl-20261008-191943.md. Dependency report dipasang di venv artifacts current-run; script generator tidak diubah. Browser ditutup. Belum ada pengujian bisnis yang dapat disimpulkan lulus/gagal; rerun memerlukan fixture/oracle/clock yang memenuhi kontrak. Perubahan setting tenant tetap dilarang panduan.
+
+## 2026-10-08 malam — eksplorasi fokus AMS009 dan koreksi blocker
+
+- Permintaan user: explore AMS009 karena Order sudah ada di sidebar. Diperiksa langsung: Order Admin /order aktif berisi4data, detail FCL berjadwal tersedia, form FCL/masterkontainer/pelabuhan terisi, filter ID0→Reset4, Batch Order dan riwayat serta Tracking terbuka. Tidak ada mutasi bisnis.
+- Penetapan seluruh262blocked sebelumnya terlalu luas; fixed-clock/baseline/fixture bukan hambatan universal bagi menu/list/detail/filter. ID JSON contoh perlu binding sesuai analysis, bukan dicari literal di staging. Report lama dipertahankan sebagai audit precondition check, tidak diklaim hasil262test UI.
+- Master pelabuhan aktual MKS/BPN/TJP berbeda dari SUB/PNJ pada template; fixture harus diselaraskan tanpa mengubah expected sembarang. FormJumlahKontainer type=text,0testid dan Batal tanpa role=dialog; inventaris/selector dan module-map diperbarui.
+- Rincian serta bukti: explore/ams009-order-penugasan-fcl-20261008.md. Run bisnis formal dan konfirmasi/penugasan tetap belum dijalankan dalam eksplorasi baca ini.
+
+## 2026-10-08 — rerun AMS009, 20261008-203333
+
+- Permintaan user ulang test-module AMS009, mengikuti cakupan non-stress yang telah disetujui. Hasil 117 passed, 9 failed, 135 blocked, 21 skipped (20 stress dan pagination41record). Alasan blocked individual tersedia di JSON/Excel; tidak mengklaim assertion yang belum dijalankan. Run sebelumnya tetap disimpan.
+- UI Order, draft empat step, pembuatan order dari lelang, konfirmasi Terima/Tolak, penugasan manual, detail kedua aktor, guard akses, dan gagal simpan sebelum commit telah diuji dengan fixture sendiri. Semua mutasi memakai data prefixed AUTOTEST-20261008-; setting tenant/data existing pihak lain tidak diubah. Fixture tetap untuk audit.
+- Triage failed: 4 kandidat BUG pada3masalah (draft satu field, notifikasi Order Baru, jadwal Edit Penugasan editable),1TEST ISSUE helper,4NEED RECHECK oracle sanitasi/tampilan alasan penolakan. Tidak mengklaim seluruh failed sebagai bug terkonfirmasi.
+- Binding9order sendiri: ORD1468071051(directdraft), ORD1468785302(ditugaskan), ORD1469128449(ditolak), ORD1469191529(diterima), ORD1470640910(waitconfirm), ORD1471657064(waitconfirm), ORD1472354777/ORD1472366648/ORD1472376583(toleransi diterima). Lelang FCL-NRM-16/081026 dan FCL-NRM-17/081026; penugasan7656feeb-1abf-4d02-884c-7a33193bcf24; barang5ef5b5bb-2d7c-4270-bda9-b07a7fe7a1d2.
+- Tambahan batas toleransi tanggal masa depan: ketiga acuan menolak20:01 dan menerima20:00 pada09/10/2026;6checkpassed, tidak menggantikan oracle tanggal literal sumber.
+- 18batchJSON/Excel dan final282case tersedia pada run20261008-203333. Triage shared/bug-triage-ams009-order-penugasan-fcl-20261008-203333.md. Laporan menggunakan generator bersama; environment report menampilkan alias akun, tidak credential.
+
+## 2026-10-09 — AMS010 Order FTL Shipper, run 20261009-002826
+
+- User meminta test-module AMS010 dan menyetujui136non-stress melalui `lanjut`. Hasil final88passed,7failed,41blocked,13stress skipped. Sepuluh batch dan report final dibuat dengan generator bersama. Metadata149case dan sourceId ditelusurkan ke sumber asli tanpa mengubah title/steps/expected/testData.
+- Run audit20261009-001330dipertahankan: eksekusi dihentikan setelah locator `<main>` tidak tersedia; failed audit tidak diklaim sebagai bug produk. Run utama memakai harness Playwright ad hoc dengan persistent context per role/login config, tanpa spec permanen. Navigasi SPA membutuhkan waitForURL dan data card selesai dimuat; selector bersama diperbarui.
+- Business flow yang diuji: draft/resume empat step, validasi PIC/WA/barang/quantity/asuransi/DO, unit reduction, finalisasi, Terima/Tolak, stale popup409 dalam dua tab satu context, penggantian penawaran dan rollback503 sebelum backend, penugasan master/manual/required serta detail kedua role. Satu sumber dengan hanya satu offer dipakai untuk empty alternative setelah order run ditolak. Setting tenant dan data existing pihak lain tidak diubah.
+- Triage tujuh failed: enam probable BUG pada lima masalah unik (draft Step02 meminta tanggal Step03, delivery notifikasi Order Baru, filter No.Lelang hilang, kota ringkasan route kosong, aksi salin No.Lelang tidak tersedia); satu NEED RECHECK filter Metode Pengiriman bagi FTL. SCN-0051/0131 merujuk masalah delivery yang sama. Tidak mengklaim email gagal atau penyebab backend tertentu.
+- A18 belum disahkan: Nilai Barang teramati total baris, bukan harga satuan. Kasus nominal/capacity/clock/baseline/aktor/geometri yang belum cocok memiliki alasan individual, bukan blocker universal. Multipickup FTL-MPU-11 aktual mempunyai3Muat/1Bongkar; validasi PIC Muat3 diuji. Tambahan deadline aktual31/10/2026:00:00 diterima,00:01 ditahan tanpa commit, tidak mengganti kasus tanggal literal.
+- Binding data run: ORD1480913583(diterima,2CDD), ORD1481431846(ditolak/diganti; tetap list vendor dan riwayat shipper), ORD1481806729(ditugaskan), ORD1482684336(ditolak/stale), ORD1483974413(ditolak/empty alternative), ORD1482479434(pengganti Indah,pending). Penugasan bb6d84ee-4629-4bff-9274-cd365d9415b2. Master armada/sopir dibuat current-run; barang dan lelang audit hanya digunakan sebagai sumber baca. Fixture dipertahankan untuk audit.
+- Mock awal penggantian salah matcher PATCH dan menghasilkan commit nyata pada order uji sendiri; setelah endpoint POST /api/order/auction diketahui, SCN-0068diulang terisolasi pada order run lain dan lulus. Bukti awal dan recheck dipertahankan. Failed locator/timing/DO/modal diperbaiki lewat recheck, tidak menjadi failed produk final.
+- Hasil results/ams010-order-ftl-shipper__20261009-002826.json; Excel reports/ams010-order-ftl-shipper__20261009-002826.xlsx; triage shared/bug-triage-ams010-order-ftl-shipper-20261009-002826.md. Akun utama adalah Admin menjalankan alur shipper; tidak membuktikan isolasi akun shipper kedua (SCN-0147blocked).
+# 9 Oktober 2026 — penyelesaian blocked AMS010, run20261009-020419
+
+Permintaan user `selesaikan 41 blocked` mengotorisasi retest41 kasus; tidak meminta approval scope ulang. Hasil18passed/3failed/20blocked; gabungan106passed/10failed/20blocked/13skipped.108verdict lama dibawa dengansourceRun dan tidak diujiulang. Tiga failedbaru satu kandidatbugREQ020: popupdetaildrop point tidak tersedia pada fixture geometri tepat. Lihat `shared/bug-triage-ams010-order-ftl-shipper-20261009-020419.md`.
+
+BaselineOMS wajib A11 kini ditemukan pada proyekomstest sebagai referensi read-only; perilaku divalidasiulangAMS. TidakmenjalankanOMS/menyalinkredensial/menulisproyeklain. Fixedclock/oracleA18/tarif1%/roundingbaseline/akunVendorB danShipperkedua masihbelumterpenuhi. Tidakmengubahexpected sumberatau settingtenant. Pertanyaanrebindingclock,basisNilaiBarang,danakun telahdiajukan danbelum dijawab saatpelaporan.13stress tetapdis skip.
+
+FixtureCURRENT kapasitas18.000kg/54,72m³,SKUboundary,geometri2/3,1/3,2/1,2/2,offer6M4jam/pajak1,1%2% dan0%0%,orderdirect/auction serta penugasan/tracking dibuatmelaluiUI. Dataexisting hanya dibaca. MCP run-code tidak dapatmembaca config viarequire/import; fallbackNodePlaywright mempertahankan contextperrole,loginparameterconfig,guardlogin/settingwrite. Tidakada specpermanenAMS010 yangditambahkan.
+
+## 2026-10-09 — AMS010 retest Vendor B (20261009-081648)
+
+- Akun tambahan dari user terverifikasi PT. Indah Karya (IK); kredensial hanya in-memory, konfigurasi tidak diisi otomatis.
+- Tiga blocked diuji ulang: SCN-0129/0130 passed; SCN-0067 failed karena notifikasi B tidak muncul walaupun order pengganti pending dan PIC/barang terjaga. Gabungan149=108passed/11failed/17blocked/13skipped.146hasil lain dibawa dengan sourceRun.
+- Penolakan A lalu B mengecualikan kedua offer; C yang berbeda armada dari vendorA tetap dapat dipilih. Histori A tetap ada di riwayat tidak aktif shipper serta listvendorA, B aktif Ditolak di shipper/vendorB. Tidak perlu vendorC terpisah untuk kasus129, karena oracle mengenai penawaran.
+- Triage/binding/data uji: shared/bug-triage-ams010-order-ftl-shipper-20261009-081648.md. Sisa clock/angkaasuransi/oracleNilaiBarang/shipperkedua belum diselesaikan oleh akun vendor tambahan.
+
+
+## 2026-10-09 — AMS009: audit seluruh 135 blocked
+
+Run `20261009-083040` meninjau seluruh 135 blocked run `20261008-203333`: 65 passed, 26 failed, 44 masih blocked. Total gabungan 282: 182 passed, 35 failed, 44 blocked, 21 skipped. Sebanyak 147 verdict lama dipertahankan; bukan klaim seluruh suite dieksekusi ulang. `executionType` membedakan pengujian browser dari peninjauan prasyarat/parsial.
+
+Tanggal dan ID contoh boleh diikat ke fixture aktual bila mempertahankan aturan yang diuji; equality clock backend tetap membutuhkan kontrol clock. A14/A24 memakai error semantik untuk SCN0052/0210. Tidak mengubah expected/source untuk memperoleh pass. Kasus mixed Vendor A/B tidak boleh dianggap terpenuhi oleh dua penawaran vendor sama. Langkah Selanjutnya replacement berbeda dengan UI Pilih langsung Review; SCN0166/0171 ditriage TEST ISSUE.
+
+Master port BDJ/JKT, Trailer20FT, barang kapasitas dan lelang multi-offer berhasil dibuat melalui UI. Hambatan lama master/tanggal/Connecting bukan blocker blanket. Mode Tugaskan ke Sopir masih absen setelah fixture valid dan tiga reproduksi; kasus dependennya blocked dengan rujukan SCN0216/0217/0236. Own DirectAdmin legacy tanpa jadwal bukan fixture konfirmasi-lelang vendor dikelola Admin atau source konfirmasi-tanpa-lelang.
+
+Tidak mengubah setting tenant atau data pihak lain. Detail alasan 44 blocked dan triage ada di [laporan triage](bug-triage-ams009-order-penugasan-fcl-20261009-083040.md), hasil JSON/Excel dan ledger135 pada run yang sama.
+
+
+## 2026-10-09 — akun Vendor B tersedia
+
+Atas instruksi pengguna, akun PT. Indah Karya (IK) ditambahkan ke konfigurasi lokal sebagai `vendorB`; kredensial tetap hanya di `config/env.md` yang diabaikan Git. Parser mendukung `env.vendorB` tanpa mengganti Vendor IK pertama. Login native berhasil dan identitas perusahaan/role Vendor cocok pada `/vendor-portal/order`. Bukti tersanitasi: `artifacts/account-checks/vendor-b-login.json`. Sekarang tersedia dua akun vendor dan satu MainAdmin.
+
+Hambatan akun Vendor B pada lima kasus AMS009 dapat ditinjau ulang; verdict laporan sebelumnya tetap hasil historis, belum otomatis menjadi passed. SCN0277 masih membutuhkan fixture tarif asuransi yang sesuai. Akun Shipper tenant kedua belum tersedia.
+
+
+## 2026-10-09 — AMS009, eksekusi blocked dengan Vendor B
+
+Run `20261009-105614` meninjau44blocked dari `20261009-083040`. Enam kasus benar-benar diuji: SCN0174/0177/0245 passed; SCN0173/0237 failed karena kontrol Filter/Urutkan dan mode Sopir absen; SCN0276 failed dengan triage TEST ISSUE karena Pilih langsung menuju Review tanpa langkah Selanjutnya. Sebanyak38kasus tetap blocked dengan peninjauan prasyarat; bukan klaim seluruh44assertionbrowser selesai. Total282:185passed,38failed,38blocked,21skipped.
+
+Aktor source SCN0245 adalah Vendor B, sehingga akun baru juga membuka kasus akses detail penugasan lintas vendor. SCN0207 tetap memerlukan Shipper B. SCN0277 kini hanya terhambat fixture asuransi0,5%; Vendor B dan tarif1,5m/PPN5%/PPh1% sudah tersedia, tetapi endpoint rate UI mengembalikan0,2%. Tidak mengubah setting tenant.
+
+Lelang own `FCL-NRM-13/091026` dengan kedua vendor berhasil dibuat201; Vendor A mengisi2offer, Vendor B3offer dan1jadwal Direct. Dua order A dibuat/ditolak melalui UI, lalu dua replacement B dibuat201. PIC/barang dan jadwal sumber diperiksa exact pada SCN0174. SCN0177 hanya membuka form jadwal tanpa menyimpannya; kedua replacement tetap Menunggu Konfirmasi.
+
+Verdict lama dipertahankan melalui sourceRun. Sumber metadata/expected tidak diubah. [Triage run Vendor B](bug-triage-ams009-order-penugasan-fcl-20261009-105614.md).
+
+
+## 2026-10-09 — Koreksi scope AMS009 vendor dikelola Admin
+
+Pengguna mengonfirmasi vendor dikelola Admin tidak dapat diundang lelang AMS. Prasyarat lelang/offer vendorManagedByAdmin pada SCN0180,0184–0190,0211,0251 tidak valid untuk scope AMS. Sepuluh kasus direklasifikasi blocked → skipped (not applicable / TEST ISSUE), bukan pass atau bug aplikasi. Sumber skenario/expected dipertahankan untuk traceability; perlu revisi applicability terpisah dari OMS/alur order langsung. Run koreksi 20261009-113301:185passed/38failed/28blocked/31skipped; tidak ada browser rerun; hasil lama tidak ditimpa.
+
+
+## 2026-10-09 — OMS aktif; koreksi alasan baseline AMS009
+
+GET system/status200 products OMS/AMS terkonfirmasi. Wizard langsung4jenis, Batch Order, Riwayat Pembatalan, lima aksi order, PesanFTL dari lelang dan input manual penugasan ditemukan. Delapan kasus tidak boleh disebut paket OMS tidak tersedia. Pembanding regression/validasi belum didefinisikan; eksplorasi baca parsial bukan pass. Run20261009-124003:185P38F28B31S. Bukti [eksplorasi](../explore/oms-baseline-ams009-20261009.md).
+
+
+## 2026-10-09 — Kelanjutan28blocked, run20261009-131334
+
+SCN0026passed: explicit baseline daftar lima aksi dapat diuji tanpa baseline historis; Detail ID fixture cocok. SCN0225failed TEST ISSUE: Jenis Armada Manual=Trailer tidak tersedia setelah Isi Data Manual; diagnosis mode Sopir absen (dependencyREQ037existing), tanpa Simpan. SCN0001–0004/0027/0273skipped TEST ISSUE karena oracle baseline tidak mempunyai kontrak pembanding; fungsi konkret sebelumnya diamati, bukan pass keseluruhan.20blocked tersisa tetap prasyarat/dependency. Total186P39F20B37S. Sumber skenario/expected tidak diubah. [Ledger](../results/_blocked-review__ams009-order-penugasan-fcl__20261009-131334.md).

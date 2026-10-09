@@ -10,7 +10,9 @@
 // Key yang dikenal: baseUrl, loginPath, loginSuccessUrlPattern, loginEmailSelector,
 //   loginPasswordSelector, loginButtonSelector, loginClickMode (opsional: native|dispatch),
 //   email, password, role (opsional),
-//   vendorEmail, vendorPassword, vendorRole, vendorLoginSuccessUrlPattern (opsional — akun kedua, env.vendor).
+//   vendorEmail, vendorPassword, vendorRole, vendorLoginSuccessUrlPattern (opsional — env.vendor),
+//   vendorBName, vendorBEmail, vendorBPassword, vendorBRole,
+//   vendorBLoginSuccessUrlPattern (opsional — vendor perusahaan berbeda, env.vendorB).
 const fs = require('fs');
 const path = require('path');
 
@@ -67,6 +69,14 @@ function parseEnv(opts = {}) {
     : null;
   if (vendor) accounts.push(vendor);
 
+  const vendorB = !isPlaceholder(raw.vendorBEmail) && !isPlaceholder(raw.vendorBPassword)
+    ? { key: 'vendorB', name: raw.vendorBName || '', email: raw.vendorBEmail,
+        password: raw.vendorBPassword, role: raw.vendorBRole || 'Vendor',
+        loginSuccessUrlPattern: isPlaceholder(raw.vendorBLoginSuccessUrlPattern)
+          ? vendor?.loginSuccessUrlPattern || '' : raw.vendorBLoginSuccessUrlPattern }
+    : null;
+  if (vendorB) accounts.push(vendorB);
+
   const env = {
     baseUrl,
     loginPath: isPlaceholder(raw.loginPath) ? '' : raw.loginPath,
@@ -78,6 +88,7 @@ function parseEnv(opts = {}) {
     accounts,
     main: accounts.find((a) => a.key === 'main') || null,
     vendor,
+    vendorB,
   };
   return env;
 }

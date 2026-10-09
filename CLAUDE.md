@@ -44,3 +44,5 @@ dan `/harvest-selectors` di AMS — minimal pada 1 halaman list dan 1 halaman fo
 Catatan: bila hasil verifikasi `BERBEDA`, perbarui juga komentar terkait di
 `tests/helpers/fixtures.js`, `playwright.config.js`, dan `docs/agent-guide.md`. (Sudah dilakukan
 untuk item #1, #2, #4 di atas per 2026-09-23.)
+
+Catatan fokus AMS009 Order (8 Oktober 2026 malam): sidebar Order dan menu row/filter/form bekerja dengan klik native; tunggu waitForURL sebelum inventory karena navigasi SPA async. Form FCL memiliki Jumlah Kontainer type=text; dropdown button/option kustom, ukuran halaman select native. Kalender filter Admin flatpickr70sel; Batal lokal tanpa role=dialog; list/form0testid. StorageState tidak diuji ulang. Bukti explore/ams009-order-penugasan-fcl-20261008.md.

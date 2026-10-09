@@ -32,3 +32,10 @@ vendorEmail: ISI_DISINI
 vendorPassword: ISI_DISINI
 vendorLoginSuccessUrlPattern: \/vendor-portal
 vendorRole: Vendor
+
+# Vendor perusahaan kedua (opsional), tersedia sebagai env.vendorB.
+vendorBName: ISI_DISINI
+vendorBEmail: ISI_DISINI
+vendorBPassword: ISI_DISINI
+vendorBLoginSuccessUrlPattern: \/vendor-portal
+vendorBRole: Vendor

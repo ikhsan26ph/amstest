@@ -57,6 +57,7 @@ Saat mengeksekusi modul, SELALU baca `scenario/<modul>/*_scenarios.json` sebagai
 | `loginEmailSelector`, `loginPasswordSelector`, `loginButtonSelector` | selector: CSS biasa, atau `placeholder=…`, `label=…`, `testid=…`, `role=button:Label` |
 | `loginClickMode` | opsional `native` (default) / `dispatch` — hanya `dispatch` jika kalibrasi membuktikan klik native gagal (hipotesis #1) |
 | `email`, `password`, `role` | kredensial (manual oleh manusia) + label role untuk laporan |
+| `vendorBName`, `vendorBEmail`, `vendorBPassword`, `vendorBRole`, `vendorBLoginSuccessUrlPattern` | opsional: vendor perusahaan kedua, tersedia melalui `env.vendorB` dan `env.accounts`; pola URL mengikuti vendor pertama bila tidak diisi |
 
 ## Skema Hasil Eksekusi (`results/`)
 
@@ -199,3 +200,8 @@ Lanjutkan UbahPassword mengarahkirimOTP, KirimUndangan Vendor dan TandaiDibaca/H
 adalah aksi tulis/kirim dan tidak dijalankan dalam explorebaca. Bell tanpa accessible name
 pada sampel; periksaSVGBell/visibility dan duaversi responsiveDOM.
 Lihat shared/selector-map-vendor-akun-setting-notifikasi.md. Login/fixture tidakdiubah.
+
+Catatan fokus AMS009 Order (8 Oktober 2026 malam): menu Order tersedia pada kedua role. Admin mempunyai4order existing; menu/list/detail/filter/form terjangkau tanpa fixture fixed-clock. Contoh ID pada skenario Order harus dibinding ke ID fixture aktual; kekurangan baseline OMS/clock hanya blocker pada assertion/precondition yang membutuhkannya, jangan otomatis memblokir seluruh suite. Tunggu URL/elemen setelah navigasi SPA. Jumlah Kontainer form FCL type=text. Lihat explore/ams009-order-penugasan-fcl-20261008.md dan shared/selector-map-order-tracking-muatan.md.
+
+
+Aturan bisnis AMS dikonfirmasi pengguna (2026-10-09): vendor dikelola Admin tidak dapat diundang lelang. Jangan menyiapkan fixture lelang/penawaran untuk vendor pengelola ADMIN. Skenario yang mensyaratkan kombinasi tersebut dicatat skipped (not applicable / TEST ISSUE), dengan sumber konfirmasi; pisahkan applicability OMS/order langsung tanpa menyatakan fungsi itu sudah diuji.
